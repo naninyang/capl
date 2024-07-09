@@ -17,7 +17,8 @@
     "react-dom": "^18",
     "react-perfect-scrollbar": "^1.5.8",
     "react-responsive": "^10.0.0",
-    "react-youtube": "^10.1.0"
+    "react-youtube": "^10.1.0",
+    "recoil": "^0.7.7"
   },
   "devDependencies": {
     "@types/gtag.js": "^0.0.20",
