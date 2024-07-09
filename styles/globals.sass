@@ -11,6 +11,7 @@ html
   font-size: 16px
 
 body
+  background-color: $hex-black
   margin: 0
   font-size: 16px
   word-break: keep-all
@@ -26,9 +27,7 @@ body, pre, input, button, textarea, select
   text-size-adjust: 100%
   text-rendering: optimizeLegibility
   -webkit-font-smoothing: antialiased
-
-body
-  background-color: $hex-white
+  color: $hex-white
 
 h1, h2, h3, h4, h5, h6
   margin-top: 0
@@ -89,3 +88,26 @@ iframe
 
 a, button, select, input
   user-select: none
+
+.body
+  +row
+
+  +mq(portraitMobile)
+    min-height: calc(100dvh - rem(122))
+
+  +mq(landscapeDesktop)
+    min-height: calc(100dvh - rem(93))
+
+  +mq(portraitDesktop)
+    min-height: calc(100dvh - rem(93))
+
+  nav
+    width: rem(170)
+
+  .content
+    display: flex
+    flex-direction: column
+    +col
+
+    main
+      flex-grow: 1

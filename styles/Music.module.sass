@@ -1,6 +1,32 @@
 @import './designSystem'
 
+nav
+  & + .music
+    bottom: rem(55)
+
 .music
+  position: fixed
+  bottom: 0
+  left: 0
+  width: 100%
+
   .music-bar
+    padding: rem(23)
+    height: rem(93)
+
+    +mq(portraitMobile)
+      height: rem(67)
+
+    +mq(landscapeMobile)
+      height: rem(67)
+
+    +mq(landscapeDesktop)
+      height: rem(93)
+
+    +mq(portraitDesktop)
+      height: rem(93)
 
   .music-player
+    &:not(.open)
+      height: 0
+      overflow: hidden

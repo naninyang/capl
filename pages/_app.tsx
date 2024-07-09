@@ -10,6 +10,7 @@ import {
 import Music from "@/components/Music";
 import Navigation from "@/components/Navigation";
 import "@/styles/globals.sass";
+import Footer from "@/components/Footer";
 
 const Happiness = localFont({
   src: [
@@ -41,10 +42,13 @@ export default function App({ Component, pageProps }: AppProps) {
       </style>
       <div className='body'>
         {(isLandscapeDesktop || isPortraitDesktop) && <Navigation />}
-        <Component {...pageProps} />
+        <div className='content'>
+          <Component {...pageProps} />
+          <Footer />
+        </div>
       </div>
-      <Music />
       {(isLandscapeMobile || isPortraitMobile) && <Navigation />}
+      <Music />
     </RecoilRoot>
   );
 }
