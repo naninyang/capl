@@ -6,3 +6,129 @@
   left: 0
   width: 100%
   height: rem(55)
+
+  ol
+    +row
+    justify-content: space-between
+    width: 100%
+    height: rem(55)
+
+    li
+      display: flex
+      align-items: center
+      +col
+
+      &.current
+        a
+          font-variation-settings: 'wdth' 900, 'wght' 900
+          color: $hex-accent
+
+          svg
+            path
+              fill: $hex-accent
+
+      a
+        display: flex
+        flex-direction: column
+        justify-content: center
+        align-items: center
+        gap: rem(3)
+        width: 100%
+        font-size: rem(12)
+        line-height: 1
+        color: $hex-white
+
+        svg
+          width: rem(28)
+          height: rem(28)
+
+.navigation-long
+  display: flex
+  flex-direction: column
+  justify-content: space-between
+  border-right: 1px solid $hex-gray
+
+  .menu
+    display: flex
+    flex-direction: column
+    padding-bottom: rem(23)
+
+    h1
+      display: flex
+      padding: rem(23)
+      width: rem(170)
+      height: rem(72)
+
+      a
+        width: 100%
+
+        svg
+          width: rem(70)
+          height: rem(23)
+
+        span
+          +screen-reader-only
+
+    .menu-container
+      display: flex
+      flex-direction: column
+      gap: rem(12)
+      padding: 0 rem(23)
+      width: rem(170)
+
+      ol
+        display: flex
+        flex-direction: column
+        gap: rem(7)
+
+        .current
+          a
+            color: $hex-accent
+
+            svg
+              path
+                fill: $hex-accent
+
+        a
+          display: flex
+          gap: rem(3)
+          padding: rem(7) 0
+          font-size: rem(14)
+          color: $hex-white
+
+          svg
+            width: rem(20)
+            height: rem(20)
+
+      hr
+        margin: 0
+        border: 0
+        border-top: 1px solid $hex-gray
+
+  .misc
+    padding: rem(23)
+
+    ul
+      display: flex
+      flex-direction: column
+      gap: rem(7)
+
+      li
+        border-radius: rem(3)
+
+        &.open-sources
+          border: 1px solid $hex-gray
+
+        &.get-app
+          border: 1px solid $hex-accent
+
+        a
+          display: flex
+          align-items: center
+          justify-content: center
+          width: rem(124)
+          height: rem(37)
+          font-size: rem(14)
+          line-height: 1
+          color: $hex-white
+          text-align: center

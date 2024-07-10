@@ -1,3 +1,118 @@
 @import './designSystem'
 
 .footer
+  background-color: $hex-gray
+
+  +mq(portraitMobile)
+    padding: rem(27) rem(23)
+
+  +mq(landscapeMobile)
+    padding: rem(27) rem(23)
+
+  +mq(landscapeDesktop)
+    padding: rem(52) rem(37)
+
+  +mq(portraitDesktop)
+    padding: rem(52) rem(37)
+
+  .container
+    display: flex
+    flex-direction: column
+    gap: rem(23)
+
+    +mq(portraitMobile)
+      gap: rem(23)
+
+    +mq(landscapeMobile)
+      gap: rem(23)
+
+    +mq(landscapeDesktop)
+      gap: rem(27)
+      position: relative
+
+    +mq(portraitDesktop)
+      gap: rem(27)
+      position: relative
+
+    .misc
+      +mq(landscapeDesktop)
+        padding: rem(6) 0
+
+      +mq(portraitDesktop)
+        padding: rem(6) 0
+
+      ul
+        display: flex
+        gap: rem(12)
+
+        li
+          display: flex
+          align-items: center
+          gap: rem(12)
+
+          &::before
+            content: ''
+            display: block
+            background-color: rgba($hex-white, .2)
+            border-radius: rem(6)
+            width: rem(6)
+            height: rem(6)
+
+          &:first-of-type::before
+            display: none
+
+          a
+            font-size: rem(14)
+            line-height: 1
+            color: $hex-white
+
+            &:hover, &:focus
+              text-decoration: underline
+
+    .copyright
+      display: flex
+      justify-content: space-between
+      align-items: center
+
+      p
+        span
+          font-size: rem(14)
+          line-height: 1
+          color: $hex-white
+
+        svg
+          width: rem(123)
+          height: rem(16)
+
+        i
+          +screen-reader-only
+
+      ul
+        display: flex
+        gap: rem(23)
+
+        +mq(landscapeDesktop)
+          position: absolute
+          top: 0
+          right: 0
+
+        +mq(portraitDesktop)
+          position: absolute
+          top: 0
+          right: 0
+
+        li, a, svg
+          width: rem(26)
+          height: rem(26)
+
+        li
+          a
+            display: block
+
+            span
+              +screen-reader-only
+
+    hr
+      margin: 0
+      border: 0
+      border-top: 1px solid rgba($hex-white, .07)

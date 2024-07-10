@@ -10,21 +10,126 @@ nav
   left: 0
   width: 100%
 
+  &.day
+    .music-bar
+      background-color: $hex-dark
+
+      .thumbnail
+        background-color: #4D335D
+
+        svg
+          path
+            fill: $hex-dark
+
+      .info
+        strong, cite
+          color: $hex-white
+
+        cite
+          opacity: .5
+
   .music-bar
-    padding: rem(23)
-    height: rem(93)
+    display: flex
+    justify-content: space-between
 
     +mq(portraitMobile)
+      padding: rem(12) rem(23)
       height: rem(67)
 
     +mq(landscapeMobile)
+      padding: rem(12) rem(23)
       height: rem(67)
 
     +mq(landscapeDesktop)
+      padding: rem(23)
       height: rem(93)
 
     +mq(portraitDesktop)
+      padding: rem(23)
       height: rem(93)
+
+    .thumbnail
+      +mq(portraitMobile)
+        width: rem(43)
+        height: rem(42)
+
+      +mq(landscapeMobile)
+        width: rem(43)
+        height: rem(42)
+
+      +mq(landscapeDesktop)
+        width: rem(47)
+        height: rem(47)
+
+      +mq(portraitDesktop)
+        width: rem(47)
+        height: rem(47)
+
+    .info
+      display: flex
+      flex-direction: column
+      gap: rem(5)
+
+      strong, cite
+        line-height: 1
+
+      +mq(portraitMobile)
+        strong
+          font-size: rem(14)
+
+        cite
+          font-size: rem(12)
+
+      +mq(landscapeMobile)
+        strong
+          font-size: rem(14)
+
+        cite
+          font-size: rem(12)
+
+      +mq(landscapeDesktop)
+        strong
+          font-size: rem(16)
+
+        cite
+          font-size: rem(14)
+
+      +mq(portraitDesktop)
+        strong
+          font-size: rem(16)
+
+        cite
+          font-size: rem(14)
+
+    .started
+      display: flex
+      justify-content: center
+      width: 100%
+
+      .music-info
+        display: flex
+        align-items: center
+
+        +mq(portraitMobile)
+          gap: rem(12)
+
+        +mq(landscapeMobile)
+          gap: rem(12)
+
+        +mq(landscapeDesktop)
+          gap: rem(7)
+
+        +mq(portraitDesktop)
+          gap: rem(7)
+
+      .thumbnail
+        display: flex
+        justify-content: center
+        align-items: center
+
+        svg
+          width: rem(27)
+          height: rem(27)
 
   .music-player
     &:not(.open)
