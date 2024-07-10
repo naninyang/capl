@@ -6,6 +6,8 @@ import {
   ChartCurrentMenuIcon,
   ChartDefaultMenuIcon,
   ContactMenuIcon,
+  LicenseMenuIcon,
+  MoreMenuIcon,
   NewlyCurrentMenuIcon,
   NewlyDefaultMenuIcon,
   NoticeMenuIcon,
@@ -20,8 +22,14 @@ import {
   usePortraitDesktop,
   usePortraitMobile,
 } from "./MediaQuery";
+import { useState } from "react";
 
 export default function Navigation() {
+  const [isMore, setIsMore] = useState(false);
+  const closeMore = () => {
+    setIsMore(false);
+  };
+
   const router = useRouter();
   const isLandscapeMobile = useLandscapeMobile();
   const isPortraitMobile = usePortraitMobile();
@@ -30,50 +38,106 @@ export default function Navigation() {
   return (
     <>
       {(isLandscapeMobile || isPortraitMobile) && (
-        <nav className={styles["navigation-short"]}>
-          <ol>
-            <li
-              className={router.pathname === "/" ? styles.current : undefined}
-            >
-              <Anchor href='/'>
-                {router.pathname === "/" ? (
-                  <PlaylistCurrentMenuIcon />
-                ) : (
-                  <PlaylistDefaultMenuIcon />
-                )}
-                플레이리스트
-              </Anchor>
-            </li>
-            <li
-              className={
-                router.pathname === "/chart" ? styles.current : undefined
-              }
-            >
-              <Anchor href='/'>
-                {router.pathname === "/chart" ? (
-                  <ChartCurrentMenuIcon />
-                ) : (
-                  <ChartDefaultMenuIcon />
-                )}
-                차트
-              </Anchor>
-            </li>
-            <li
-              className={
-                router.pathname === "/newly" ? styles.current : undefined
-              }
-            >
-              <Anchor href='/'>
-                {router.pathname === "/newly" ? (
-                  <NewlyCurrentMenuIcon />
-                ) : (
-                  <NewlyDefaultMenuIcon />
-                )}
-                최근등록
-              </Anchor>
-            </li>
-          </ol>
-        </nav>
+        <>
+          {isMore && (
+            <div className={styles["navigation-more"]}>
+              <ol>
+                <li>
+                  <Anchor href='/service'>
+                    서비스 소개
+                    <ServiceMenuIcon />
+                  </Anchor>
+                </li>
+                <li>
+                  <Anchor href='/notice'>
+                    공지사항
+                    <NoticeMenuIcon />
+                  </Anchor>
+                </li>
+                <li>
+                  <Anchor href='/contact'>
+                    문의하기
+                    <ContactMenuIcon />
+                  </Anchor>
+                </li>
+                <li>
+                  <Anchor href='/licenses'>
+                    저작권 안내
+                    <LicenseMenuIcon />
+                  </Anchor>
+                </li>
+                <li>
+                  <Anchor href='/caution'>
+                    유의사항
+                    <CautionMenuIcon />
+                  </Anchor>
+                </li>
+              </ol>
+              <hr />
+              <ul>
+                <li className={styles["open-sources"]}>
+                  <Anchor href='open-sources'>오픈소스</Anchor>
+                </li>
+                <li className={styles["get-app"]}>
+                  <Anchor href='get-app'>앱 설치</Anchor>
+                </li>
+              </ul>
+            </div>
+          )}
+          <nav className={styles["navigation-short"]}>
+            <ol>
+              <li
+                className={router.pathname === "/" ? styles.current : undefined}
+              >
+                <Anchor href='/' onClick={closeMore}>
+                  {router.pathname === "/" ? (
+                    <PlaylistCurrentMenuIcon />
+                  ) : (
+                    <PlaylistDefaultMenuIcon />
+                  )}
+                  플레이리스트
+                </Anchor>
+              </li>
+              <li
+                className={
+                  router.pathname === "/chart" ? styles.current : undefined
+                }
+              >
+                <Anchor href='/chart' onClick={closeMore}>
+                  {router.pathname === "/chart" ? (
+                    <ChartCurrentMenuIcon />
+                  ) : (
+                    <ChartDefaultMenuIcon />
+                  )}
+                  차트
+                </Anchor>
+              </li>
+              <li
+                className={
+                  router.pathname === "/newly" ? styles.current : undefined
+                }
+              >
+                <Anchor href='/newly' onClick={closeMore}>
+                  {router.pathname === "/newly" ? (
+                    <NewlyCurrentMenuIcon />
+                  ) : (
+                    <NewlyDefaultMenuIcon />
+                  )}
+                  최근등록
+                </Anchor>
+              </li>
+              <li>
+                <button
+                  type='button'
+                  onClick={() => setIsMore((more) => !more)}
+                >
+                  <MoreMenuIcon />
+                  더보기
+                </button>
+              </li>
+            </ol>
+          </nav>
+        </>
       )}
       {(isLandscapeDesktop || isPortraitDesktop) && (
         <nav className={styles["navigation-long"]}>
@@ -105,7 +169,7 @@ export default function Navigation() {
                     router.pathname === "/chart" ? styles.current : undefined
                   }
                 >
-                  <Anchor href='/'>
+                  <Anchor href='/chart'>
                     {router.pathname === "/chart" ? (
                       <ChartCurrentMenuIcon />
                     ) : (
@@ -119,7 +183,7 @@ export default function Navigation() {
                     router.pathname === "/newly" ? styles.current : undefined
                   }
                 >
-                  <Anchor href='/'>
+                  <Anchor href='/newly'>
                     {router.pathname === "/newly" ? (
                       <NewlyCurrentMenuIcon />
                     ) : (
@@ -151,7 +215,7 @@ export default function Navigation() {
                 </li>
                 <li>
                   <Anchor href='/licenses'>
-                    <ContactMenuIcon />
+                    <LicenseMenuIcon />
                     저작권 안내
                   </Anchor>
                 </li>

@@ -1,5 +1,57 @@
 @import './designSystem'
 
+.navigation-more
+  position: fixed
+  bottom: rem(57)
+  right: rem(23)
+  z-index: 7
+  background-color: $hex-white
+  border-radius: rem(3)
+  padding: rem(7) rem(12)
+
+  ol, ul
+    display: flex
+    flex-direction: column
+    gap: rem(3)
+
+  ol
+    a
+      display: flex
+      justify-content: flex-end
+      align-items: center
+      gap: rem(5)
+      padding: rem(7) 0 rem(7) rem(7)
+      font-size: rem(14)
+      color: $hex-black
+
+      svg
+        width: rem(20)
+        height: rem(20)
+
+        path
+          fill: $hex-black
+
+  ul
+    li
+      border-radius: rem(3)
+
+      &.open-sources
+        border: 1px solid $hex-gray
+
+      &.get-app
+        border: 1px solid $hex-accent
+
+      a
+        display: flex
+        align-items: center
+        justify-content: center
+        width: 100%
+        height: rem(34)
+        font-size: rem(14)
+        line-height: 1
+        color: $hex-black
+        text-align: center
+
 .navigation-short
   position: fixed
   bottom: 0
@@ -27,12 +79,13 @@
             path
               fill: $hex-accent
 
-      a
+      a, button
         display: flex
         flex-direction: column
         justify-content: center
         align-items: center
         gap: rem(3)
+        background-color: transparent
         width: 100%
         font-size: rem(12)
         line-height: 1
