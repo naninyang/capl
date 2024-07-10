@@ -1,5 +1,13 @@
+import { useState } from "react";
 import { useRouter } from "next/router";
 import Anchor from "./Anchor";
+import styles from "@/styles/Navigation.module.sass";
+import {
+  useLandscapeDesktop,
+  useLandscapeMobile,
+  usePortraitDesktop,
+  usePortraitMobile,
+} from "./MediaQuery";
 import {
   CaplLogo,
   CautionMenuIcon,
@@ -15,14 +23,6 @@ import {
   PlaylistDefaultMenuIcon,
   ServiceMenuIcon,
 } from "./Icons";
-import styles from "@/styles/Navigation.module.sass";
-import {
-  useLandscapeDesktop,
-  useLandscapeMobile,
-  usePortraitDesktop,
-  usePortraitMobile,
-} from "./MediaQuery";
-import { useState } from "react";
 
 export default function Navigation() {
   const [isMore, setIsMore] = useState(false);

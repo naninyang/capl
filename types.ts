@@ -28,7 +28,7 @@ export interface ArtistsData {
   otherName: string;
   debut: string;
   birth: string;
-  number: any;
+  member: any;
   group: any;
   abbr: any;
   isSolo: boolean;
@@ -42,7 +42,7 @@ export interface ArtistData {
     otherName: string;
     debut: string;
     birth: string;
-    number: any;
+    member: any;
     group: any;
     abbr: any;
     isSolo: boolean;

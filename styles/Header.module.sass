@@ -1,0 +1,118 @@
+@import './designSystem'
+
+.header
+  display: flex
+  justify-content: space-between
+  align-items: center
+  position: relative
+
+  a, svg
+    width: rem(55)
+    height: rem(20)
+
+  a
+    display: block
+
+    span
+      +screen-reader-only
+
+  button
+    background-color: transparent
+
+  .search-button
+    margin-right: rem(7)
+    width: rem(34)
+    height: rem(34)
+
+    svg
+      width: rem(20)
+      height: rem(20)
+
+    span
+      +screen-reader-only
+
+  form
+    position: absolute
+    top: 0
+    right: 0
+    height: rem(34)
+
+    &.search-form
+      overflow: visible
+      width: 100%
+      animation: search-show .3s cubic-bezier(.5,0,.2,0)
+
+    &:not(.search-form)
+      overflow: hidden
+      width: 0
+      animation: search-hidden .3s cubic-bezier(.5,0,.2,0)
+
+    fieldset
+      +row
+      position: relative
+      background-color: $hex-black
+      width: 100%
+      height: rem(34)
+
+    input
+      background-color: $hex-white
+      border: 0
+      border-radius: rem(34)
+      padding: 0 rem(72) 0 rem(23)
+      height: 100%
+      font-size: rem(14)
+      font-variation-settings: 'wdth' 900, 'wght' 900
+      color: $hex-black
+
+      &::-webkit-search-cancel-button
+        display: none
+
+      &::placeholder
+        color: rgba($hex-black, .5)
+        font-variation-settings: 'wdth' 400, 'wght' 400
+
+    .button-group
+      position: absolute
+      top: 0
+      right: rem(7)
+      display: flex
+      width: rem(68)
+      height: rem(34)
+
+      button
+        display: flex
+        justify-content: center
+        align-items: center
+        width: rem(34)
+        height: rem(34)
+
+        span
+          +screen-reader-only
+
+      .search-cancel
+        svg
+          path
+            fill: $hex-light
+
+      .search-submit
+        svg
+          path
+            fill: $hex-black
+
+@keyframes search-show
+  0%
+    width: 0
+    opacity: 0
+
+  100%
+    width: 100%
+    opacity: 1
+
+@keyframes search-hidden
+  0%
+    width: 100%
+    opacity: 1
+
+  100%
+    width: 0
+    opacity: 0
