@@ -83,6 +83,7 @@
 
         .current
           a
+            font-variation-settings: 'wdth' 900, 'wght' 900
             color: $hex-accent
 
             svg
@@ -91,14 +92,26 @@
 
         a
           display: flex
+          align-items: center
           gap: rem(3)
           padding: rem(7) 0
           font-size: rem(14)
           color: $hex-white
+          transition: all .3s cubic-bezier(.5,0,.2,0)
+
+          &:hover, &:focus
+            color: $hex-accent
+
+            svg
+              path
+                fill: $hex-accent
 
           svg
             width: rem(20)
             height: rem(20)
+
+            path
+              transition: all .3s cubic-bezier(.5,0,.2,0)
 
       hr
         margin: 0

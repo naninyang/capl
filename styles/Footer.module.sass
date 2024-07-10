@@ -108,6 +108,19 @@
         li
           a
             display: block
+            transition: all .5s cubic-bezier(.5,0,.2,0)
+
+            +mq(landscapeDesktop)
+              opacity: .5
+
+              &:hover, &:focus
+                opacity: 1
+
+            +mq(portraitDesktop)
+              opacity: .5
+
+              &:hover, &:focus
+                opacity: 1
 
             span
               +screen-reader-only
