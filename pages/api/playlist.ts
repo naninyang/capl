@@ -19,7 +19,6 @@ export default async function handler(
   } else {
     try {
       const data = await getPlaylistData(id);
-      console.log("data: ", data);
       res.status(200).json(data);
     } catch (error) {
       res.status(500).json({ message: "Server error" });

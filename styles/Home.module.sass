@@ -1,3 +1,21 @@
 @import './designSystem'
 
 .home
+  .content
+    +row
+    margin: 0 rem(-12)
+
+    .item
+      padding: 0 rem(12)
+      width: 50%
+
+      +mq(minMedium)
+        width: 33.33%
+
+      +mq(minLarge)
+        width: 16.66%
+
+      img
+        aspect-ratio: 1 / 1
+        width: 100%
+        height: auto

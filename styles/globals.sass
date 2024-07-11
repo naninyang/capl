@@ -142,16 +142,18 @@ a, button, select, input
           flex-direction: column
           gap: rem(17)
 
-          +mq(minSmall)
+          +mq(minMedium)
             gap: rem(37)
 
           h1
             display: flex
+            align-items: center
             gap: rem(3)
             font-size: rem(20)
+            font-variation-settings: 'wdth' 900, 'wght' 900
             line-height: 1
 
-            +mq(minSmall)
+            +mq(minMedium)
               gap: rem(7)
               font-size: rem(32)
 
@@ -159,6 +161,6 @@ a, button, select, input
               width: rem(24)
               height: rem(24)
 
-              +mq(minSmall)
+              +mq(minMedium)
                 width: rem(36)
                 height: rem(36)
