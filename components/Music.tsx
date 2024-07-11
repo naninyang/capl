@@ -1,6 +1,6 @@
 import styles from "@/styles/Music.module.sass";
 import { MusicIcon } from "./Icons";
-import Anchor from "./Anchor";
+
 export default function Music() {
   return (
     <div className={`${styles.music} ${styles.day}`}>

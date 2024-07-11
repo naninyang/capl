@@ -1,9 +1,15 @@
 import { GetServerSideProps } from "next";
 import Image from "next/image";
-import Header from "@/components/Header";
-import { PlaylistCurrentMenuIcon } from "@/components/Icons";
 import { PlaylistsData } from "@/types";
+import Header from "@/components/Header";
 import styles from "@/styles/Home.module.sass";
+import { PlayMusicIcon, PlaylistCurrentMenuIcon } from "@/components/Icons";
+import {
+  useLandscapeDesktop,
+  useLandscapeMobile,
+  usePortraitDesktop,
+  usePortraitMobile,
+} from "@/components/MediaQuery";
 
 export default function Home({
   playlists,
@@ -14,6 +20,11 @@ export default function Home({
   error: string;
   currentPage: number;
 }) {
+  const isLandscapeMobile = useLandscapeMobile();
+  const isPortraitMobile = usePortraitMobile();
+  const isLandscapeDesktop = useLandscapeDesktop();
+  const isPortraitDesktop = usePortraitDesktop();
+
   return (
     <>
       <main className={`primary ${styles.home}`}>
@@ -35,14 +46,37 @@ export default function Home({
                 <div className={styles.content}>
                   {playlists.map((playlist: PlaylistsData) => (
                     <div className={styles.item} key={playlist.idx}>
-                      <Image
-                        src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
-                        width={272}
-                        height={272}
-                        unoptimized
-                        priority
-                        alt={playlist.title}
-                      />
+                      {(isLandscapeMobile || isPortraitMobile) && (
+                        <button type='button'>
+                          <Image
+                            src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
+                            width={272}
+                            height={272}
+                            unoptimized
+                            priority
+                            alt={playlist.title}
+                          />
+                          <span>플레이리스트 재생</span>
+                        </button>
+                      )}
+                      {(isLandscapeDesktop || isPortraitDesktop) && (
+                        <>
+                          <Image
+                            src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
+                            width={272}
+                            height={272}
+                            unoptimized
+                            priority
+                            alt={playlist.title}
+                          />
+                          <button type='button'>
+                            <i>
+                              <PlayMusicIcon />
+                            </i>
+                            <span>플레이리스트 재생</span>
+                          </button>
+                        </>
+                      )}
                     </div>
                   ))}
                 </div>

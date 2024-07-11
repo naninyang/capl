@@ -1,5 +1,5 @@
-import styles from "@/styles/Footer.module.sass";
 import Anchor from "./Anchor";
+import styles from "@/styles/Footer.module.sass";
 import { GithubSiteIcon, StudioLogo, StudioSiteIcon } from "./Icons";
 
 export default function Footer() {

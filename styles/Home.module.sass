@@ -3,10 +3,10 @@
 .home
   .content
     +row
-    margin: 0 rem(-12)
+    margin: rem(-12)
 
     .item
-      padding: 0 rem(12)
+      padding: rem(12)
       width: 50%
 
       +mq(minMedium)
@@ -14,6 +14,102 @@
 
       +mq(minLarge)
         width: 16.66%
+
+      +mq(landscapeDesktop)
+        position: relative
+
+      +mq(portraitDesktop)
+        position: relative
+
+      &:hover
+        button
+          +mq(landscapeDesktop)
+            opacity: 1
+
+          +mq(portraitDesktop)
+            opacity: 1
+
+      span
+        +screen-reader-only
+
+      button
+        background-color: transparent
+
+        +mq(landscapeDesktop)
+          transition: all .3s cubic-bezier(.5,0,.2,0)
+          display: flex
+          justify-content: center
+          align-items: center
+          position: absolute
+          bottom: rem(12)
+          left: rem(12)
+          width: rem(71)
+          height: rem(71)
+          opacity: 0
+
+          i
+            transition: all .3s cubic-bezier(.5,0,.2,0)
+            display: flex
+            justify-content: center
+            align-items: center
+            background-color: $hex-black
+            border-radius: rem(47)
+            width: rem(47)
+            height: rem(47)
+
+          svg
+            width: rem(32)
+            height: rem(32)
+
+        +mq(portraitDesktop)
+          transition: all .3s cubic-bezier(.5,0,.2,0)
+          display: flex
+          justify-content: center
+          align-items: center
+          position: absolute
+          bottom: rem(12)
+          left: rem(12)
+          width: rem(71)
+          height: rem(71)
+          opacity: 0
+
+          i
+            transition: all .3s cubic-bezier(.5,0,.2,0)
+            display: flex
+            justify-content: center
+            align-items: center
+            background-color: $hex-black
+            border-radius: rem(47)
+            width: rem(47)
+            height: rem(47)
+
+          svg
+            width: rem(32)
+            height: rem(32)
+
+        &:hover
+          i
+            +mq(landscapeDesktop)
+              background-color: $hex-accent
+
+            +mq(portraitDesktop)
+              background-color: $hex-accent
+
+        &:focus
+          +mq(landscapeDesktop)
+            outline: 0
+            opacity: 1
+
+          +mq(portraitDesktop)
+            outline: 0
+            opacity: 1
+
+          i
+            +mq(landscapeDesktop)
+              background-color: $hex-black
+
+            +mq(portraitDesktop)
+              background-color: $hex-black
 
       img
         aspect-ratio: 1 / 1
