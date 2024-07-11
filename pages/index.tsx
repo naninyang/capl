@@ -5,9 +5,9 @@ import styles from "@/styles/Home.module.sass";
 export default function Home() {
   return (
     <>
-      <main className={styles.home}>
+      <main className={`primary ${styles.home}`}>
         <Header />
-        <div className={styles.present}>
+        <div className='present'>
           <h1>
             <PlaylistCurrentMenuIcon /> CAPL 추천 플레이리스트
           </h1>
