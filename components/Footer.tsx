@@ -1,6 +1,7 @@
 import styles from "@/styles/Footer.module.sass";
 import Anchor from "./Anchor";
 import { GithubSiteIcon, StudioLogo, StudioSiteIcon } from "./Icons";
+
 export default function Footer() {
   return (
     <footer className={styles.footer}>

@@ -1,14 +1,14 @@
 import { useState } from "react";
 import Anchor from "./Anchor";
-import { CaplLogo, CloseIcon, SearchIcon } from "./Icons";
-import { useLandscapeMobile, usePortraitMobile } from "./MediaQuery";
 import styles from "@/styles/Header.module.sass";
+import { CaplLogo, CloseIcon, SearchIcon } from "./Icons";
+import { useDesktop, useMobile } from "./MediaQuery";
 
 export default function Header() {
   const [isSearch, setIsSearch] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
-  const isLandscapeMobile = useLandscapeMobile();
-  const isPortraitMobile = usePortraitMobile();
+  const isMobile = useMobile();
+  const isDesktop = useDesktop();
 
   const handleSearchShow = () => {
     setIsSearch(true);
@@ -24,20 +24,32 @@ export default function Header() {
 
   return (
     <header className={styles.header}>
-      {(isLandscapeMobile || isPortraitMobile) && (
-        <Anchor href='/'>
-          <CaplLogo />
-          <span>플레이리스트 페이지로 이동</span>
-        </Anchor>
+      {isMobile && (
+        <>
+          <Anchor href='/'>
+            <CaplLogo />
+            <span>플레이리스트 페이지로 이동</span>
+          </Anchor>
+          <button
+            type='button'
+            className={styles["search-button"]}
+            onClick={handleSearchShow}
+          >
+            <SearchIcon />
+            <span>검색기능 사용하기</span>
+          </button>
+        </>
       )}
-      <button
-        type='button'
-        className={styles["search-button"]}
-        onClick={handleSearchShow}
-      >
-        <SearchIcon />
-        <span>검색기능 사용하기</span>
-      </button>
+      {isDesktop && (
+        <button
+          type='button'
+          className={styles["search-button"]}
+          onClick={handleSearchShow}
+        >
+          <span>노래 검색</span> <SearchIcon />
+          <i>검색기능 사용하기</i>
+        </button>
+      )}
       {isSearch && (
         <form className={isSearchActive ? styles["search-form"] : undefined}>
           <fieldset>

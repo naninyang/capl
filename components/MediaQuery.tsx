@@ -44,3 +44,25 @@ export function usePortraitMobile() {
   }, [portraitMobile]);
   return isPortraitMobile;
 }
+
+export function useDesktop() {
+  const [isDesktop, setIsDesktop] = useState(false);
+  const portraitDesktop = useMediaQuery({
+    query: `(min-width: ${576 / 16}rem)`,
+  });
+  useEffect(() => {
+    setIsDesktop(portraitDesktop);
+  }, [portraitDesktop]);
+  return isDesktop;
+}
+
+export function useMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  const portraitMobile = useMediaQuery({
+    query: `(max-width: ${575 / 16}rem)`,
+  });
+  useEffect(() => {
+    setIsMobile(portraitMobile);
+  }, [portraitMobile]);
+  return isMobile;
+}
