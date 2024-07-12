@@ -1,6 +1,6 @@
-import Anchor from "./Anchor";
-import styles from "@/styles/Footer.module.sass";
-import { GithubSiteIcon, StudioLogo, StudioSiteIcon } from "./Icons";
+import Anchor from './Anchor';
+import styles from '@/styles/Footer.module.sass';
+import { GithubSiteIcon, StudioLogo, StudioSiteIcon } from './Icons';
 
 export default function Footer() {
   return (
@@ -9,13 +9,13 @@ export default function Footer() {
         <div className={styles.misc}>
           <ul>
             <li>
-              <Anchor href='/notice'>공지사항</Anchor>
+              <Anchor href="/notice">공지사항</Anchor>
             </li>
             <li>
-              <Anchor href='/contact'>문의하기</Anchor>
+              <Anchor href="/contact">문의하기</Anchor>
             </li>
             <li>
-              <Anchor href='/licenses'>저작권 안내</Anchor>
+              <Anchor href="/licenses">저작권 안내</Anchor>
             </li>
           </ul>
         </div>
@@ -27,13 +27,13 @@ export default function Footer() {
           </p>
           <ul>
             <li>
-              <Anchor href='https://dev1stud.io'>
+              <Anchor href="https://dev1stud.io">
                 <StudioSiteIcon />
                 <span>DEV1L.studios</span>
               </Anchor>
             </li>
             <li>
-              <Anchor href='https://github.com/naninyang/capl'>
+              <Anchor href="https://github.com/naninyang/capl">
                 <GithubSiteIcon />
                 <span>Github 카플 저장소</span>
               </Anchor>

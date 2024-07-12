@@ -91,6 +91,7 @@ export interface PlaylistsData {
   title: string;
   description: string;
   list: any;
+  tags: any;
 }
 
 export interface PlaylistData {
@@ -100,6 +101,7 @@ export interface PlaylistData {
     title: string;
     description: string;
     list: any;
+    tags: any;
     createdAt: string;
   };
 }

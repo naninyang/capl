@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useMediaQuery } from "react-responsive";
+import { useEffect, useState } from 'react';
+import { useMediaQuery } from 'react-responsive';
 
 export function useLandscapeDesktop() {
   const [isLandscapeDesktop, setIsLandscapeDesktop] = useState(false);

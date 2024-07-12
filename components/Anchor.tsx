@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from 'next/link';
 
 interface AnchorProps {
   href: string;
@@ -11,20 +11,18 @@ const Anchor: React.FC<AnchorProps> = ({ href, ...rest }) => {
   const sameDomain = domainRegex.test(href);
   let h = href;
   if (sameDomain) {
-    h = h.replace(domainRegex, "/");
+    h = h.replace(domainRegex, '/');
   }
 
-  if (href.startsWith("/")) {
+  if (href.startsWith('/')) {
     return <Link href={h} {...rest} />;
   }
 
-  if (!h.startsWith("http")) {
+  if (!h.startsWith('http')) {
     return <a href={h} {...rest} />;
   }
 
-  return (
-    <a href={h} target='_blank' rel='noopener noreferrer nofollow' {...rest} />
-  );
+  return <a href={h} target="_blank" rel="noopener noreferrer nofollow" {...rest} />;
 };
 
 export default Anchor;

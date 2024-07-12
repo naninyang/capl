@@ -123,6 +123,9 @@
       +mq(minSmall)
         width: rem(357)
 
+      &:focus
+        outline: 0
+
       &::-webkit-search-cancel-button
         display: none
 
@@ -156,7 +159,14 @@
       .search-submit
         svg
           path
-            fill: $hex-black
+            transition: all .3s cubic-bezier(.5,0,.2,0)
+            fill: $hex-accent
+
+        &[disabled]
+          svg
+            path
+              opacity: .5
+              fill: $hex-black
 
 @keyframes search-short-show
   0%

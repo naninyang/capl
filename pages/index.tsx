@@ -1,15 +1,15 @@
-import { GetServerSideProps } from "next";
-import Image from "next/image";
-import { PlaylistsData } from "@/types";
-import Header from "@/components/Header";
-import styles from "@/styles/Home.module.sass";
-import { PlayMusicIcon, PlaylistCurrentMenuIcon } from "@/components/Icons";
+import { GetServerSideProps } from 'next';
+import Image from 'next/image';
+import { PlaylistsData } from '@/types';
+import Header from '@/components/Header';
+import styles from '@/styles/Home.module.sass';
+import { PlayMusicIcon, PlaylistCurrentMenuIcon } from '@/components/Icons';
 import {
   useLandscapeDesktop,
   useLandscapeMobile,
   usePortraitDesktop,
   usePortraitMobile,
-} from "@/components/MediaQuery";
+} from '@/components/MediaQuery';
 
 export default function Home({
   playlists,
@@ -29,16 +29,14 @@ export default function Home({
     <>
       <main className={`primary ${styles.home}`}>
         <Header />
-        <div className='present'>
+        <div className="present">
           <h1>
             <PlaylistCurrentMenuIcon /> CAPL 추천 플레이리스트
           </h1>
           {error ? (
-            <div className='error'>
+            <div className="error">
               <p>데이터를 불러오는데 실패했습니다.</p>
-              <button onClick={() => window.location.reload()}>
-                다시 시도
-              </button>
+              <button onClick={() => window.location.reload()}>다시 시도</button>
             </div>
           ) : (
             <>
@@ -47,7 +45,7 @@ export default function Home({
                   {playlists.map((playlist: PlaylistsData) => (
                     <div className={styles.item} key={playlist.idx}>
                       {(isLandscapeMobile || isPortraitMobile) && (
-                        <button type='button'>
+                        <button type="button">
                           <Image
                             src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
                             width={272}
@@ -69,7 +67,7 @@ export default function Home({
                             priority
                             alt={playlist.title}
                           />
-                          <button type='button'>
+                          <button type="button">
                             <i>
                               <PlayMusicIcon />
                             </i>
@@ -95,15 +93,13 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   let error = null;
 
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/api/playlist?page=${currentPage}&pageSize=6`
-    );
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/playlist?page=${currentPage}&pageSize=6`);
     if (!response.ok) {
-      throw new Error("Network response was not ok");
+      throw new Error('Network response was not ok');
     }
     playlists = await response.json();
   } catch (err) {
-    error = err instanceof Error ? err.message : "An unknown error occurred";
+    error = err instanceof Error ? err.message : 'An unknown error occurred';
   }
 
   return {

@@ -1,14 +1,14 @@
-import styles from "@/styles/Music.module.sass";
-import { MusicIcon } from "./Icons";
+import styles from '@/styles/Music.module.sass';
+import { MusicIcon } from './Icons';
 
 export default function Music() {
   return (
     <div className={`${styles.music} ${styles.day}`}>
-      <div className={styles["music-player"]}>뮤직 플레이어</div>
-      <div className={styles["music-bar"]}>
+      <div className={styles['music-player']}>뮤직 플레이어</div>
+      <div className={styles['music-bar']}>
         <div className={styles.started}>
-          <button type='button'>
-            <div className={styles["music-info"]}>
+          <button type="button">
+            <div className={styles['music-info']}>
               <div className={styles.thumbnail}>
                 <MusicIcon />
               </div>

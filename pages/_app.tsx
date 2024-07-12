@@ -1,22 +1,22 @@
-import type { AppProps } from "next/app";
-import localFont from "next/font/local";
-import { RecoilRoot } from "recoil";
-import Music from "@/components/Music";
-import Navigation from "@/components/Navigation";
-import Footer from "@/components/Footer";
-import "@/styles/globals.sass";
+import type { AppProps } from 'next/app';
+import localFont from 'next/font/local';
+import { RecoilRoot } from 'recoil';
+import Music from '@/components/Music';
+import Navigation from '@/components/Navigation';
+import Footer from '@/components/Footer';
+import '@/styles/globals.sass';
 import {
   useLandscapeDesktop,
   useLandscapeMobile,
   usePortraitDesktop,
   usePortraitMobile,
-} from "@/components/MediaQuery";
+} from '@/components/MediaQuery';
 
 const Happiness = localFont({
   src: [
     {
-      path: "../fonts/HappinessSansVF.woff2",
-      style: "normal",
+      path: '../fonts/HappinessSansVF.woff2',
+      style: 'normal',
     },
   ],
 });
@@ -40,9 +40,9 @@ export default function App({ Component, pageProps }: AppProps) {
           }
         `}
       </style>
-      <div className='body'>
+      <div className="body">
         {(isLandscapeDesktop || isPortraitDesktop) && <Navigation />}
-        <div className='content'>
+        <div className="content">
           <Component {...pageProps} />
           <Footer />
         </div>
