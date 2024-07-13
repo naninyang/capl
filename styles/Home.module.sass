@@ -23,95 +23,51 @@
 
       &:hover
         button
-          +mq(landscapeDesktop)
-            opacity: 1
-
-          +mq(portraitDesktop)
-            opacity: 1
+          opacity: 1
 
       span
         +screen-reader-only
 
       button
         background-color: transparent
+        transition: all .3s cubic-bezier(.5,0,.2,0)
+        display: flex
+        justify-content: center
+        align-items: center
+        position: absolute
+        bottom: rem(12)
+        left: rem(12)
+        width: rem(71)
+        height: rem(71)
+        opacity: 0
 
-        +mq(landscapeDesktop)
+        i
           transition: all .3s cubic-bezier(.5,0,.2,0)
           display: flex
           justify-content: center
           align-items: center
-          position: absolute
-          bottom: rem(12)
-          left: rem(12)
-          width: rem(71)
-          height: rem(71)
-          opacity: 0
+          background-color: $hex-black
+          border-radius: rem(47)
+          width: rem(47)
+          height: rem(47)
 
-          i
-            transition: all .3s cubic-bezier(.5,0,.2,0)
-            display: flex
-            justify-content: center
-            align-items: center
-            background-color: $hex-black
-            border-radius: rem(47)
-            width: rem(47)
-            height: rem(47)
-
-          svg
-            width: rem(32)
-            height: rem(32)
-
-        +mq(portraitDesktop)
-          transition: all .3s cubic-bezier(.5,0,.2,0)
-          display: flex
-          justify-content: center
-          align-items: center
-          position: absolute
-          bottom: rem(12)
-          left: rem(12)
-          width: rem(71)
-          height: rem(71)
-          opacity: 0
-
-          i
-            transition: all .3s cubic-bezier(.5,0,.2,0)
-            display: flex
-            justify-content: center
-            align-items: center
-            background-color: $hex-black
-            border-radius: rem(47)
-            width: rem(47)
-            height: rem(47)
-
-          svg
-            width: rem(32)
-            height: rem(32)
+        svg
+          width: rem(32)
+          height: rem(32)
 
         &:hover
           i
-            +mq(landscapeDesktop)
-              background-color: $hex-accent
-
-            +mq(portraitDesktop)
-              background-color: $hex-accent
+            background-color: $hex-accent
 
         &:focus
-          +mq(landscapeDesktop)
-            outline: 0
-            opacity: 1
-
-          +mq(portraitDesktop)
-            outline: 0
-            opacity: 1
+          outline: 0
+          opacity: 1
 
           i
-            +mq(landscapeDesktop)
-              background-color: $hex-black
-
-            +mq(portraitDesktop)
-              background-color: $hex-black
+            background-color: $hex-black
 
       img
+        display: block
         aspect-ratio: 1 / 1
         width: 100%
         height: auto

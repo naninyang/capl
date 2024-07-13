@@ -10,6 +10,7 @@ import {
   usePortraitDesktop,
   usePortraitMobile,
 } from '@/components/MediaQuery';
+import Anchor from '@/components/Anchor';
 
 export default function Home({
   playlists,
@@ -20,8 +21,6 @@ export default function Home({
   error: string;
   currentPage: number;
 }) {
-  const isLandscapeMobile = useLandscapeMobile();
-  const isPortraitMobile = usePortraitMobile();
   const isLandscapeDesktop = useLandscapeDesktop();
   const isPortraitDesktop = usePortraitDesktop();
 
@@ -44,36 +43,24 @@ export default function Home({
                 <div className={styles.content}>
                   {playlists.map((playlist: PlaylistsData) => (
                     <div className={styles.item} key={playlist.idx}>
-                      {(isLandscapeMobile || isPortraitMobile) && (
+                      <Anchor href="/">
+                        <Image
+                          src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
+                          width={272}
+                          height={272}
+                          unoptimized
+                          priority
+                          alt={playlist.title}
+                        />
+                        <span>플레이리스트 재생</span>
+                      </Anchor>
+                      {(isLandscapeDesktop || isPortraitDesktop) && (
                         <button type="button">
-                          <Image
-                            src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
-                            width={272}
-                            height={272}
-                            unoptimized
-                            priority
-                            alt={playlist.title}
-                          />
+                          <i>
+                            <PlayMusicIcon />
+                          </i>
                           <span>플레이리스트 재생</span>
                         </button>
-                      )}
-                      {(isLandscapeDesktop || isPortraitDesktop) && (
-                        <>
-                          <Image
-                            src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
-                            width={272}
-                            height={272}
-                            unoptimized
-                            priority
-                            alt={playlist.title}
-                          />
-                          <button type="button">
-                            <i>
-                              <PlayMusicIcon />
-                            </i>
-                            <span>플레이리스트 재생</span>
-                          </button>
-                        </>
                       )}
                     </div>
                   ))}
