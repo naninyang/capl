@@ -31,12 +31,10 @@ export default function Search() {
       const response = await fetch(`/api/search?keyword=${keyword}&search=${s}`);
       const result: SearchResult = await response.json();
       setData(result);
-      console.log('result: ', result);
     } else {
       const response = await fetch(`/api/search?keyword=${keyword}`);
       const result: SearchResult = await response.json();
       setData(result);
-      console.log('result: ', result);
     }
   };
 

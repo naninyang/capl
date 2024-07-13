@@ -6,36 +6,43 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
   const [data, setData] = useState<AlbumsData | null>(null);
   const [artistNames, setArtistNames] = useState<string[]>([]);
 
-  useEffect(() => {
-    fetchData(albumId);
-  }, [albumId]);
-
   const buttonRef = useRef<HTMLButtonElement | null>(null);
   const popoverRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    fetchData(albumId);
     if ('popover' in HTMLElement.prototype) {
       const button = buttonRef.current;
       const popover = popoverRef.current;
 
-      if (button && popover) {
-        button.addEventListener('click', () => {
-          console.log(popover.hasAttribute('popover-open'));
-          if (popover.hasAttribute('popover-open')) {
-            popover.removeAttribute('popover-open');
-          } else {
-            popover.setAttribute('popover-open', '');
-          }
-        });
+      const handleButtonClick = () => {
+        if (popover?.hasAttribute('popover-open')) {
+          popover.removeAttribute('popover-open');
+        } else {
+          popover?.setAttribute('popover-open', '');
+        }
+      };
 
-        document.addEventListener('click', (event) => {
-          if (button && popover && !button.contains(event.target as Node) && !popover.contains(event.target as Node)) {
-            popover.removeAttribute('popover-open');
-          }
-        });
+      const handleClickOutside = (event: MouseEvent) => {
+        if (button && popover && !button.contains(event.target as Node) && !popover.contains(event.target as Node)) {
+          popover.removeAttribute('popover-open');
+        }
+      };
+
+      if (button && popover) {
+        button.addEventListener('click', handleButtonClick);
+        document.addEventListener('click', handleClickOutside);
       }
+
+      // Clean-up function
+      return () => {
+        if (button && popover) {
+          button.removeEventListener('click', handleButtonClick);
+          document.removeEventListener('click', handleClickOutside);
+        }
+      };
     }
-  }, []);
+  }, [albumId]);
 
   const fetchData = async (id: number) => {
     const response = await fetch(`/api/album?id=${id}`);

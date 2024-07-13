@@ -16,7 +16,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   } else {
     try {
       const data = await getAlbumData(id);
-      console.log('data: ', data);
       res.status(200).json(data);
     } catch (error) {
       res.status(500).json({ message: 'Server error' });
