@@ -168,3 +168,50 @@ a, button, select, input
               +mq(minMedium)
                 width: rem(36)
                 height: rem(36)
+
+.popover-button
+  display: flex
+  align-items: center
+  width: rem(28)!important
+
+  button
+    opacity: .5
+
+    &:hover, &:focus
+      opacity: 1
+
+  svg
+    width: rem(28)
+    height: rem(27)
+
+  span
+    +screen-reader-only
+
+.popover-content
+  position: absolute
+  top: 0
+  right: rem(42)
+  bottom: 0
+  left: 0
+  background-color: $hex-gray
+  display: flex
+  flex-direction: column
+  align-items: flex-end
+  gap: rem(5)
+  width: auto!important
+  border-radius: rem(3)
+  padding: rem(12)
+
+  &:not([popover-open])
+    display: none
+
+  strong, cite
+    line-height: 1
+
+  strong
+    font-size: rem(14)
+    color: $hex-white
+
+  cite
+    font-size: rem(12)
+    color: rgba($hex-white, .7)

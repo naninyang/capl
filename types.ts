@@ -105,3 +105,18 @@ export interface PlaylistData {
     createdAt: string;
   };
 }
+
+export interface SearchResult {
+  albumData: AlbumsData[];
+  artistData: ArtistsData[];
+  musicData: MusicsData[];
+  playlistData: PlaylistsData[];
+}
+
+export interface AlbumInfoProps {
+  albumId: number;
+}
+
+export interface ArtistNameProps {
+  artistId: any;
+}

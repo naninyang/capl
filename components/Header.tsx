@@ -1,14 +1,18 @@
-import { useState } from "react";
-import Anchor from "./Anchor";
-import styles from "@/styles/Header.module.sass";
-import { CaplLogo, CloseIcon, SearchIcon } from "./Icons";
-import { useDesktop, useMobile } from "./MediaQuery";
+import { FormEvent, useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import Anchor from './Anchor';
+import styles from '@/styles/Header.module.sass';
+import { CaplLogo, CloseIcon, SearchIcon } from './Icons';
+import { useDesktop, useMobile } from './MediaQuery';
 
 export default function Header() {
-  const [isSearch, setIsSearch] = useState(false);
-  const [isSearchActive, setIsSearchActive] = useState(false);
+  const router = useRouter();
   const isMobile = useMobile();
   const isDesktop = useDesktop();
+  const [isSearch, setIsSearch] = useState<boolean>(false);
+  const [isSearchActive, setIsSearchActive] = useState<boolean>(false);
+  const [query, setQuery] = useState<string>('');
+  const { q } = router.query;
 
   const handleSearchShow = () => {
     setIsSearch(true);
@@ -22,52 +26,78 @@ export default function Header() {
     }, 300);
   };
 
+  const handleCancel = () => {
+    setQuery('');
+  };
+
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    if (query.length >= 2) {
+      router.push(`/search?q=${query}`);
+    }
+  };
+
+  useEffect(() => {
+    if (q) {
+      setQuery(`${q}`);
+    }
+  }, [q]);
+
   return (
     <header className={styles.header}>
-      {isMobile && (
+      {router.pathname !== '/search' && (
         <>
-          <Anchor href='/'>
-            <CaplLogo />
-            <span>플레이리스트 페이지로 이동</span>
-          </Anchor>
-          <button
-            type='button'
-            className={styles["search-button"]}
-            onClick={handleSearchShow}
-          >
-            <SearchIcon />
-            <span>검색기능 사용하기</span>
-          </button>
+          {isMobile && (
+            <>
+              <Anchor href="/">
+                <CaplLogo />
+                <span>플레이리스트 페이지로 이동</span>
+              </Anchor>
+              <button type="button" className={styles['search-button']} onClick={handleSearchShow}>
+                <SearchIcon />
+                <span>검색기능 사용하기</span>
+              </button>
+            </>
+          )}
+          {isDesktop && (
+            <button type="button" className={styles['search-button']} onClick={handleSearchShow}>
+              <span>노래 검색</span> <SearchIcon />
+              <i>검색기능 사용하기</i>
+            </button>
+          )}
         </>
       )}
-      {isDesktop && (
-        <button
-          type='button'
-          className={styles["search-button"]}
-          onClick={handleSearchShow}
+      {(router.pathname === '/search' || isSearch) && (
+        <form
+          className={router.pathname === '/search' || isSearchActive ? styles['search-form'] : undefined}
+          onSubmit={handleSubmit}
         >
-          <span>노래 검색</span> <SearchIcon />
-          <i>검색기능 사용하기</i>
-        </button>
-      )}
-      {isSearch && (
-        <form className={isSearchActive ? styles["search-form"] : undefined}>
           <fieldset>
             <legend>검색 폼</legend>
             <input
-              type='search'
-              placeholder='찾으려는 앨범명, 가수명, 곡명을 입력하세요'
+              type="search"
+              placeholder="찾으려는 앨범명, 가수명, 곡명을 입력하세요"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
             />
-            <div className={styles["button-group"]}>
-              <button
-                type='button'
-                className={styles["search-cancel"]}
-                onClick={handleSearchHidden}
-              >
-                <CloseIcon />
-                <span>검색취소</span>
-              </button>
-              <button type='submit' className={styles["search-submit"]}>
+            <div className={styles['button-group']}>
+              {router.pathname !== '/search' ? (
+                <button type="button" className={styles['search-cancel']} onClick={handleSearchHidden}>
+                  <CloseIcon />
+                  <span>검색취소</span>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className={styles['search-cancel']}
+                  disabled={query.length < 2}
+                  onClick={handleCancel}
+                >
+                  <CloseIcon />
+                  <span>키워드 삭제</span>
+                </button>
+              )}
+              <button type="submit" className={styles['search-submit']} disabled={query.length < 2}>
                 <SearchIcon />
                 <span>검색하기</span>
               </button>
