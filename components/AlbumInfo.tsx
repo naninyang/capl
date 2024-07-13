@@ -17,8 +17,10 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
 
       const handleButtonClick = () => {
         if (popover?.hasAttribute('popover-open')) {
+          button?.classList.remove('popover');
           popover.removeAttribute('popover-open');
         } else {
+          button?.classList.add('popover');
           popover?.setAttribute('popover-open', '');
         }
       };
@@ -34,7 +36,6 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
         document.addEventListener('click', handleClickOutside);
       }
 
-      // Clean-up function
       return () => {
         if (button && popover) {
           button.removeEventListener('click', handleButtonClick);
