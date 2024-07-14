@@ -1,0 +1,233 @@
+@import './designSystem'
+
+.music-content
+  display: flex
+  flex-direction: column
+  gap: rem(10)
+
+  .controller
+    +row
+    gap: rem(7)
+
+    button
+      display: flex
+      justify-content: center
+      align-items: center
+      gap: rem(3)
+      background-color: $hex-accent
+      border-radius: rem(3)
+      height: rem(30)
+      font-size: rem(14)
+      font-variation-settings: $fw-500
+      line-height: 1
+      color: $hex-white
+
+      +mq(maxExtraSmall)
+        +col
+
+      +mq(minSmall)
+        display: inline-flex
+        gap: rem(3)
+        width: auto
+        padding: 0 rem(24) 0 rem(17)
+        height: rem(37)
+        font-size: rem(16)
+        font-variation-settings: $fw-500
+
+      &:disabled
+        background-color: rgba($hex-white, .2)
+        color: rgba($hex-white, .5)
+
+        svg
+          path
+            fill: rgba($hex-white, .5)
+
+      svg
+        width: rem(20)
+        height: rem(20)
+
+        path
+          fill: $hex-white
+
+  .musics
+    button
+      background-color: transparent
+
+    .checkbox-status
+      display: flex
+      gap: rem(12)
+      padding: rem(7)
+
+      .checkbox
+        width: rem(24)
+        height: rem(24)
+
+        button
+          width: rem(24)
+          height: rem(24)
+
+          svg
+            width: rem(24)
+            height: rem(24)
+
+          span
+            +screen-reader-only
+
+      .count
+        display: flex
+        align-items: center
+        font-size: rem(14)
+        line-height: 1
+
+        strong
+          font-variation-settings: $fw-900
+
+    .music-items
+      .item
+        +row
+        align-items: center
+        gap: rem(10)
+        position: relative
+        padding: rem(7)
+
+        &:hover
+          button
+            i
+              +mq(landscapeDesktop)
+                opacity: 1
+
+              +mq(portraitDesktop)
+                opacity: 1
+
+        .checkbox
+          width: rem(24)
+          height: rem(24)
+
+          button
+            width: rem(24)
+            height: rem(24)
+
+            svg
+              width: rem(24)
+              height: rem(24)
+
+            span
+              +screen-reader-only
+
+        > button
+          position: relative
+          background-color: transparent
+          width: rem(43)
+          height: rem(43)
+
+          &:focus
+            i
+              +mq(landscapeDesktop)
+                opacity: 1
+
+              +mq(portraitDesktop)
+                opacity: 1
+
+          img
+            aspect-ratio: 1 / 1
+            width: 100%
+            height: auto
+
+          i
+            +mq(landscapeMobile)
+              display: none
+
+            +mq(portraitMobile)
+              display: none
+
+            +mq(landscapeDesktop)
+              position: absolute
+              display: flex
+              justify-content: center
+              align-items: center
+              background-color: rgba($hex-black, .5)
+              top: 0
+              left: 0
+              width: 100%
+              height: 100%
+              opacity: 0
+              transition: all .3s cubic-bezier(.5,0,.2,0)
+
+              svg
+                width: rem(32)
+                height: rem(32)
+
+            +mq(portraitDesktop)
+              position: absolute
+              display: flex
+              justify-content: center
+              align-items: center
+              background-color: rgba($hex-black, .5)
+              top: 0
+              left: 0
+              width: 100%
+              height: 100%
+              opacity: 0
+              transition: all .3s cubic-bezier(.5,0,.2,0)
+
+              svg
+                width: rem(32)
+                height: rem(32)
+
+        .info
+          display: flex
+          flex-direction: column
+          justify-content: center
+          gap: rem(5)
+          +col
+          overflow: hidden
+
+          strong, cite
+            width: 100%
+            display: inline-block
+            line-height: 1
+            +ellipsis
+
+          strong
+            font-size: rem(14)
+            color: $hex-white
+
+            +mq(minSmall)
+              font-size: rem(16)
+
+          cite
+            font-size: rem(12)
+            color: rgba($hex-white, .5)
+
+            +mq(minSmall)
+              font-size: rem(14)
+
+        dl
+          +row
+          +col
+
+          div
+            +col
+
+            dt
+              +screen-reader-only
+
+            dd
+              display: block
+              width: 100%
+              overflow: hidden
+              font-size: rem(16)
+              line-height: 1
+
+              cite, span
+                a
+                  font-size: rem(14)
+                  color: rgba($hex-white, .5)
+
+                  &:hover, &:focus
+                    text-decoration: underline
+
+              span
+                & + div
+                  +mq(minSmall)
+                    display: none

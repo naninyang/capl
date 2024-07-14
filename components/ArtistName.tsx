@@ -1,8 +1,11 @@
-import { ArtistData, ArtistNameProps } from '@/types';
 import { useEffect, useState } from 'react';
+import { ArtistNameProps } from '@/types';
+import Anchor from './Anchor';
+import { useTablet } from './MediaQuery';
 
 const ArtistName = ({ artistId }: ArtistNameProps) => {
-  const [artistNames, setArtistNames] = useState<string[]>([]);
+  const [artistData, setArtistData] = useState<{ name: string; idx: number }[]>([]);
+  const isTablet = useTablet();
 
   useEffect(() => {
     fetchData();
@@ -13,14 +16,32 @@ const ArtistName = ({ artistId }: ArtistNameProps) => {
     const artistPromises = artistIds.map(async (artistId: any) => {
       const artistResponse = await fetch(`/api/artist?id=${artistId}`);
       const artistResult = await artistResponse.json();
-      return artistResult.name;
+      return { name: artistResult.name, idx: artistResult.idx };
     });
 
-    const artistNames = await Promise.all(artistPromises);
-    setArtistNames(artistNames);
+    const artistData = await Promise.all(artistPromises);
+    setArtistData(artistData);
   };
 
-  return <cite>{artistNames.join(', ')}</cite>;
+  return (
+    <cite>
+      {artistData.map((artist, index) => (
+        <span key={artist.idx}>
+          {isTablet ? (
+            <>
+              <Anchor href={`/artist/${artist.idx}`}>{artist.name}</Anchor>
+              {index < artistData.length - 1 && ', '}
+            </>
+          ) : (
+            <cite>
+              {artist.name}
+              {index < artistData.length - 1 && ', '}
+            </cite>
+          )}
+        </span>
+      ))}
+    </cite>
+  );
 };
 
 export default ArtistName;

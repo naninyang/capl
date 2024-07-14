@@ -4,12 +4,7 @@ import { PlaylistsData } from '@/types';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.sass';
 import { PlayMusicIcon, PlaylistCurrentMenuIcon } from '@/components/Icons';
-import {
-  useLandscapeDesktop,
-  useLandscapeMobile,
-  usePortraitDesktop,
-  usePortraitMobile,
-} from '@/components/MediaQuery';
+import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import Anchor from '@/components/Anchor';
 
 export default function Home({

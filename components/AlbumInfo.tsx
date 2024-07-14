@@ -1,8 +1,11 @@
-import { AlbumData, AlbumInfoProps, AlbumsData } from '@/types';
 import { useEffect, useRef, useState } from 'react';
+import { AlbumInfoProps, AlbumsData } from '@/types';
 import { MoreInfoIcon } from './Icons';
+import { useTablet } from './MediaQuery';
+import Anchor from './Anchor';
 
 const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
+  const isTablet = useTablet();
   const [data, setData] = useState<AlbumsData | null>(null);
   const [artistNames, setArtistNames] = useState<string[]>([]);
 
@@ -63,6 +66,13 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
 
   return (
     <>
+      {isTablet && (
+        <span>
+          <Anchor href={`/album/${data?.idx}`}>
+            {data?.title} ({data?.release})
+          </Anchor>
+        </span>
+      )}
       <div className="popover-button">
         <button type="button" popover-target="popover" ref={buttonRef}>
           <MoreInfoIcon />

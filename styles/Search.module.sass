@@ -137,15 +137,19 @@
                 width: rem(32)
                 height: rem(32)
 
-        a
+        .info
           display: flex
           flex-direction: column
           justify-content: center
           gap: rem(5)
           +col
+          overflow: hidden
 
           strong, cite
+            width: 100%
+            display: inline-block
             line-height: 1
+            +ellipsis
 
           strong
             font-size: rem(14)
@@ -160,6 +164,13 @@
 
             +mq(minSmall)
               font-size: rem(14)
+
+              a
+                color: rgba($hex-white, .5)
+
+        > span
+          +mq(minSmall)
+            display: none
 
     .album-items
       display: flex
