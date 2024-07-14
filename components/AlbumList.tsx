@@ -23,7 +23,7 @@ const AlbumList = ({ albumData }: Props) => {
           <div className={styles['album-items']}>
             {albumData.map((album: AlbumsData) => (
               <div className={styles.item} key={album.idx}>
-                <Anchor href="/">
+                <Anchor href={`/album/${album.idx}`}>
                   <Image
                     src={`https://cdn.dev1stud.io/capl/album/thm-${album.id}.webp`}
                     width={260}

@@ -111,7 +111,7 @@ export default function Search() {
                         <div className={styles['album-items']}>
                           {data.albumData.map((album: AlbumsData) => (
                             <div className={styles.item} key={album.idx}>
-                              <Anchor href="/">
+                              <Anchor href={`/album/${album.idx}`}>
                                 <Image
                                   src={`https://cdn.dev1stud.io/capl/album/thm-${album.id}.webp`}
                                   width={260}
@@ -143,19 +143,19 @@ export default function Search() {
                     <section>
                       <div className={styles.headline}>
                         <h2>
-                          <Anchor href="">
+                          <Anchor href={`/search?q=${query}&s=artist`}>
                             아티스트 <MoreLinkIcon />
                           </Anchor>
                         </h2>
                         <div className={styles.more}>
-                          <Anchor href="">더보기</Anchor>
+                          <Anchor href={`/search?q=${query}&s=artist`}>더보기</Anchor>
                         </div>
                       </div>
                       {Array.isArray(data.artistData) && (
                         <div className={styles['artist-items']}>
                           {data.artistData.map((artist: ArtistsData) => (
                             <div className={styles.item} key={artist.idx}>
-                              <Anchor href="/">
+                              <Anchor href={`/artist/${artist.idx}`}>
                                 <Image
                                   src={`https://cdn.dev1stud.io/capl/artist/${artist.id}.webp`}
                                   width={260}
@@ -178,19 +178,19 @@ export default function Search() {
                     <section>
                       <div className={styles.headline}>
                         <h2>
-                          <Anchor href="">
+                          <Anchor href={`/search?q=${query}&s=playlist`}>
                             플레이리스트 <MoreLinkIcon />
                           </Anchor>
                         </h2>
                         <div className={styles.more}>
-                          <Anchor href="">더보기</Anchor>
+                          <Anchor href={`/search?q=${query}&s=playlist`}>더보기</Anchor>
                         </div>
                       </div>
                       {Array.isArray(data.playlistData) && (
                         <div className={styles['artist-items']}>
                           {data.playlistData.map((playlist: PlaylistsData) => (
                             <div className={styles.item} key={playlist.idx}>
-                              <Anchor href="/">
+                              <Anchor href={`/playlist/${playlist.idx}`}>
                                 <Image
                                   src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
                                   width={260}
