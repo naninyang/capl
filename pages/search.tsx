@@ -8,6 +8,7 @@ import AlbumInfo from '@/components/AlbumInfo';
 import ArtistName from '@/components/ArtistName';
 import MusicList from '@/components/MusicList';
 import AlbumList from '@/components/AlbumList';
+import ArtistList from '@/components/ArtistList';
 import styles from '@/styles/Search.module.sass';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
@@ -211,6 +212,7 @@ export default function Search() {
                 <>
                   {s === 'music' && <MusicList musicData={data.musicData} />}
                   {s === 'album' && <AlbumList albumData={data.albumData} />}
+                  {s === 'artist' && <ArtistList artistData={data.artistData} />}
                 </>
               )}
             </>

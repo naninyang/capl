@@ -5,6 +5,7 @@
     display: flex
     flex-direction: column
     gap: rem(23)
+    padding-top: rem(27)
 
     +mq(minSmall)
       gap: rem(37)
@@ -258,10 +259,10 @@
       display: flex
       flex-wrap: wrap
       +row
-      margin: rem(0) rem(-12)
+      margin: rem(0) rem(-13)
 
       .item
-        padding: rem(7) rem(12)
+        padding: rem(13)
         position: relative
         width: 50%
 
@@ -277,10 +278,24 @@
           gap: rem(12)
 
           img
+            overflow: hidden
             display: block
             aspect-ratio: 1 / 1
+            border-radius: 100%
             width: 100%
             height: auto
+
+          .info
+            display: block
+            overflow: hidden
+            text-align: center
+
+          cite
+            +ellipsis
+            display: inline-block
+            font-size: rem(14)
+            line-height: 1
+            color: $hex-white
 
     .music-items
       .item
