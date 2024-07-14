@@ -2,11 +2,12 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { AlbumsData, ArtistsData, MusicsData, PlaylistsData, SearchResult } from '@/types';
-import Header from '@/components/Header';
 import Anchor from '@/components/Anchor';
+import Header from '@/components/Header';
 import AlbumInfo from '@/components/AlbumInfo';
 import ArtistName from '@/components/ArtistName';
 import MusicList from '@/components/MusicList';
+import AlbumList from '@/components/AlbumList';
 import styles from '@/styles/Search.module.sass';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
@@ -207,7 +208,10 @@ export default function Search() {
                   )}
                 </div>
               ) : (
-                <>{s === 'music' && <MusicList musicData={data.musicData} />}</>
+                <>
+                  {s === 'music' && <MusicList musicData={data.musicData} />}
+                  {s === 'album' && <AlbumList albumData={data.albumData} />}
+                </>
               )}
             </>
           )}

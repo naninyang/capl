@@ -4,8 +4,8 @@ import { MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
 import styles from '@/styles/List.module.sass';
-import { CheckedCheckboxIcon, EndListIcon, PlayMusicIcon, StartListIcon, UncheckedCheckboxIcon } from './Icons';
 import { useTablet } from './MediaQuery';
+import { CheckedCheckboxIcon, EndListIcon, PlayMusicIcon, StartListIcon, UncheckedCheckboxIcon } from './Icons';
 
 type Props = {
   musicData: MusicsData[];

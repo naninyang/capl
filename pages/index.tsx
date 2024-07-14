@@ -1,11 +1,11 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { PlaylistsData } from '@/types';
+import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.sass';
-import { PlayMusicIcon, PlaylistCurrentMenuIcon } from '@/components/Icons';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
-import Anchor from '@/components/Anchor';
+import { PlayMusicIcon, PlaylistCurrentMenuIcon } from '@/components/Icons';
 
 export default function Home({
   playlists,

@@ -2,8 +2,8 @@ import { FormEvent, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Anchor from './Anchor';
 import styles from '@/styles/Header.module.sass';
-import { CaplLogo, CloseIcon, SearchIcon } from './Icons';
 import { useDesktop, useMobile } from './MediaQuery';
+import { CaplLogo, CloseIcon, SearchIcon } from './Icons';
 
 export default function Header() {
   const router = useRouter();

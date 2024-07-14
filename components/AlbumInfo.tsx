@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { AlbumInfoProps, AlbumsData } from '@/types';
-import { MoreInfoIcon } from './Icons';
-import { useTablet } from './MediaQuery';
 import Anchor from './Anchor';
+import { useTablet } from './MediaQuery';
+import { MoreInfoIcon } from './Icons';
 
 const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
   const isTablet = useTablet();
