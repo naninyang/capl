@@ -54,7 +54,7 @@
             +mq(minMedium)
               font-size: rem(16)
 
-    .music-items, .playlist-items
+    .music-items
       display: flex
       flex-direction: column
       width: 100%
@@ -173,7 +173,7 @@
           +mq(minSmall)
             display: none
 
-    .album-items
+    .album-items, .artist-items, .playlist-items
       display: flex
       flex-wrap: wrap
       +row
@@ -190,6 +190,15 @@
         +mq(minLarge)
           width: 16.66%
 
+        a
+          img
+            display: block
+            aspect-ratio: 1 / 1
+            width: 100%
+            height: auto
+
+    .album-items
+      .item
         &:hover
           button
             opacity: 1
@@ -198,12 +207,6 @@
           display: flex
           flex-direction: column
           gap: rem(12)
-
-          img
-            display: block
-            aspect-ratio: 1 / 1
-            width: 100%
-            height: auto
 
           .info
             display: flex
@@ -256,22 +259,7 @@
               background-color: $hex-accent
 
     .artist-items
-      display: flex
-      flex-wrap: wrap
-      +row
-      margin: rem(0) rem(-13)
-
       .item
-        padding: rem(13)
-        position: relative
-        width: 50%
-
-        +mq(minMedium)
-          width: 33.33%
-
-        +mq(minLarge)
-          width: 16.66%
-
         a
           display: flex
           flex-direction: column
@@ -279,11 +267,7 @@
 
           img
             overflow: hidden
-            display: block
-            aspect-ratio: 1 / 1
             border-radius: 100%
-            width: 100%
-            height: auto
 
           .info
             display: block
@@ -296,24 +280,3 @@
             font-size: rem(14)
             line-height: 1
             color: $hex-white
-
-    .music-items
-      .item
-        a
-          img
-            overflow: hidden
-            border-radius: 100%
-
-          .info
-            display: flex
-            flex-direction: column
-            gap: rem(7)
-
-            cite
-              font-size: rem(14)
-              color: $hex-white
-              line-height: 1
-              text-align: center
-
-              +mq(minMedium)
-                font-size: rem(16)

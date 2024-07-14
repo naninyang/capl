@@ -12,6 +12,7 @@ import ArtistList from '@/components/ArtistList';
 import styles from '@/styles/Search.module.sass';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
+import PlaylistList from '@/components/PlaylistList';
 
 export default function Search() {
   const router = useRouter();
@@ -188,7 +189,7 @@ export default function Search() {
                         </div>
                       </div>
                       {Array.isArray(data.playlistData) && (
-                        <div className={styles['artist-items']}>
+                        <div className={styles['playlist-items']}>
                           {data.playlistData.map((playlist: PlaylistsData) => (
                             <div className={styles.item} key={playlist.idx}>
                               <Anchor href={`/playlist/${playlist.idx}`}>
@@ -213,6 +214,7 @@ export default function Search() {
                   {s === 'music' && <MusicList musicData={data.musicData} />}
                   {s === 'album' && <AlbumList albumData={data.albumData} />}
                   {s === 'artist' && <ArtistList artistData={data.artistData} />}
+                  {s === 'playlist' && <PlaylistList playlistData={data.playlistData} />}
                 </>
               )}
             </>

@@ -381,3 +381,44 @@
             font-size: rem(14)
             line-height: 1
             color: $hex-white
+
+.playlist-content
+  .playlists
+    display: flex
+    flex-direction: column
+
+    .count
+      padding-bottom: rem(7)
+      font-size: rem(14)
+      line-height: 1
+
+      strong
+        font-variation-settings: $fw-900
+
+    .playlist-items
+      display: flex
+      flex-wrap: wrap
+      +row
+      margin: 0 rem(-12)
+
+      .item
+        padding: rem(7) rem(12)
+        position: relative
+        width: 50%
+
+        +mq(minMedium)
+          width: 33.33%
+
+        +mq(minLarge)
+          width: 16.66%
+
+        a
+          display: flex
+          flex-direction: column
+          gap: rem(12)
+
+          img
+            display: block
+            aspect-ratio: 1 / 1
+            width: 100%
+            height: auto

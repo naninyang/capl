@@ -120,3 +120,7 @@ export interface AlbumInfoProps {
 export interface ArtistNameProps {
   artistId: any;
 }
+
+export interface PlaylistNameProps {
+  playlistId: any;
+}
