@@ -6,6 +6,8 @@ export interface AlbumsData {
   artist: any;
   relationArtists: any;
   credit: any;
+  list: any;
+  createdAt: string;
 }
 
 export interface AlbumData {

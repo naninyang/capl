@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useRouter } from 'next/router';
 import { MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
@@ -54,6 +55,8 @@ const MusicList = ({ musicData }: Props) => {
   const handlePlayNextOrEnd = () => {
     console.log(selectedMusicIds);
   };
+
+  const router = useRouter();
 
   return (
     <div className={styles['music-content']}>
@@ -130,12 +133,14 @@ const MusicList = ({ musicData }: Props) => {
                         <ArtistName artistId={music.artist} />
                       </dd>
                     </div>
-                    <div>
-                      <dt>앨범명</dt>
-                      <dd>
-                        <AlbumInfo albumId={music.album} />
-                      </dd>
-                    </div>
+                    {router.pathname !== '/album/[albumId]' && (
+                      <div>
+                        <dt>앨범명</dt>
+                        <dd>
+                          <AlbumInfo albumId={music.album} />
+                        </dd>
+                      </div>
+                    )}
                   </dl>
                 ) : (
                   <>

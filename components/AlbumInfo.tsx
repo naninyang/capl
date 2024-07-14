@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useRouter } from 'next/router';
 import { AlbumInfoProps, AlbumsData } from '@/types';
 import Anchor from './Anchor';
 import { useTablet } from './MediaQuery';
@@ -64,6 +65,8 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
     setArtistNames(artistNames);
   };
 
+  const router = useRouter();
+
   return (
     <>
       {isTablet && (
@@ -73,18 +76,22 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
           </Anchor>
         </span>
       )}
-      <div className="popover-button">
-        <button type="button" popover-target="popover" ref={buttonRef}>
-          <MoreInfoIcon />
-          <span>앨범 정보보기</span>
-        </button>
-      </div>
-      <div className="popover-content" ref={popoverRef}>
-        <strong>
-          {data?.title} ({data?.release})
-        </strong>
-        <cite>{artistNames.join(', ')}</cite>
-      </div>
+      {router.pathname !== '/album/[albumId]' && (
+        <>
+          <div className="popover-button">
+            <button type="button" popover-target="popover" ref={buttonRef}>
+              <MoreInfoIcon />
+              <span>앨범 정보보기</span>
+            </button>
+          </div>
+          <div className="popover-content" ref={popoverRef}>
+            <strong>
+              {data?.title} ({data?.release})
+            </strong>
+            <cite>{artistNames.join(', ')}</cite>
+          </div>
+        </>
+      )}
     </>
   );
 };

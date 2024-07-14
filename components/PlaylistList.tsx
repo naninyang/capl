@@ -1,7 +1,7 @@
+import Image from 'next/image';
 import { PlaylistsData } from '@/types';
 import Anchor from './Anchor';
 import styles from '@/styles/List.module.sass';
-import Image from 'next/image';
 
 type Props = {
   playlistData: PlaylistsData[];
