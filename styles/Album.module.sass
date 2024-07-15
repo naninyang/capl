@@ -89,7 +89,6 @@
           +screen-reader-only
 
         dd
-          line-height: 1
           color: $hex-white
 
           strong
@@ -112,6 +111,29 @@
 
             &:focus, &:hover
               text-decoration: underline
+
+      .secondary
+        display: flex
+        flex-direction: column
+
+        div
+          display: flex
+          +row
+
+          dt, dd
+            line-height: 1.42857143
+            color: $hex-white
+
+          dt
+            width: rem(100)
+            font-size: rem(14)
+            opacity: .5
+
+          dd
+            +col
+
+            a
+              color: $hex-white
 
   .content
     padding: 0 rem(23)

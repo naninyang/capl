@@ -11,11 +11,13 @@ export default function AlbumDetail({
   albumNumber,
   albumData,
   artistData,
+  relationArtistData,
   musicData,
 }: {
   albumNumber: number;
   albumData: AlbumsData;
   artistData: ArtistsData[];
+  relationArtistData: ArtistsData[];
   musicData: MusicsData[];
 }) {
   return (
@@ -55,11 +57,29 @@ export default function AlbumDetail({
               {Array.isArray(artistData) &&
                 artistData.map((artists: ArtistsData, index: number) => (
                   <React.Fragment key={artists.id}>
-                    <Anchor href={`/artist/${artists.idx}`}>{artists.name}</Anchor>
+                    <Anchor href={`/artist/${artists.idx}`}>
+                      {artists.name} {artists.otherName && `(${artists.otherName})`}
+                    </Anchor>
                     {index < artistData.length - 1 && ', '}
                   </React.Fragment>
                 ))}
             </dd>
+          </dl>
+          <dl className={styles.secondary}>
+            <div>
+              <dt>참여 멤버</dt>
+              <dd>
+                {Array.isArray(relationArtistData) &&
+                  relationArtistData.map((artists: ArtistsData, index: number) => (
+                    <React.Fragment key={artists.id}>
+                      <Anchor href={`/artist/${artists.idx}`}>
+                        {artists.name} {artists.otherName && `(${artists.otherName})`}
+                      </Anchor>
+                      {index < relationArtistData.length - 1 && ', '}
+                    </React.Fragment>
+                  ))}
+              </dd>
+            </div>
           </dl>
         </div>
       </div>
@@ -76,6 +96,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let albumNumber = null;
   let musicData = [];
   let artistData = [];
+  let relationArtistData = [];
 
   if (albumId && typeof albumId === 'string') {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/album?id=${albumId.substring(14)}`);
@@ -105,6 +126,16 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
         artistData = await Promise.all(artistPromises);
       }
+
+      if (albumResponse.relationArtists && Array.isArray(albumResponse.relationArtists)) {
+        const relationArtistPromises = albumResponse.relationArtists.map(async (id: number) => {
+          const relationArtistResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/artist?id=${id}`);
+          const relationArtistData = await relationArtistResponse.json();
+          return relationArtistData;
+        });
+
+        relationArtistData = await Promise.all(relationArtistPromises);
+      }
     }
   }
 
@@ -115,6 +146,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
         albumData: null,
         musicData: [],
         artistData: [],
+        relationArtistData: [],
       },
     };
   }
@@ -125,6 +157,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
       albumData,
       musicData,
       artistData,
+      relationArtistData,
     },
     revalidate: 1,
   };
