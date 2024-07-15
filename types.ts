@@ -5,6 +5,7 @@ export interface AlbumsData {
   release: number;
   artist: any;
   relationArtists: any;
+  relationStaffs: any;
   credit: any;
   list: any;
   createdAt: string;
@@ -18,6 +19,7 @@ export interface AlbumData {
     release: number;
     artist: any;
     relationArtists: any;
+    relationStaffs: any;
     credit: any;
     createdAt: string;
   };
@@ -34,6 +36,8 @@ export interface ArtistsData {
   group: any;
   abbr: any;
   isSolo: boolean;
+  agency: string;
+  createdAt: string;
 }
 
 export interface ArtistData {

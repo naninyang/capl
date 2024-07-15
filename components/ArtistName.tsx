@@ -4,7 +4,7 @@ import Anchor from './Anchor';
 import { useTablet } from './MediaQuery';
 
 const ArtistName = ({ artistId }: ArtistNameProps) => {
-  const [artistData, setArtistData] = useState<{ name: string; idx: number }[]>([]);
+  const [artistData, setArtistData] = useState<{ name: string; idx: number; otherName: string }[]>([]);
   const isTablet = useTablet();
 
   useEffect(() => {
@@ -16,7 +16,7 @@ const ArtistName = ({ artistId }: ArtistNameProps) => {
     const artistPromises = artistIds.map(async (artistId: any) => {
       const artistResponse = await fetch(`/api/artist?id=${artistId}`);
       const artistResult = await artistResponse.json();
-      return { name: artistResult.name, idx: artistResult.idx };
+      return { name: artistResult.name, idx: artistResult.idx, otherName: artistResult.otherName };
     });
 
     const artistData = await Promise.all(artistPromises);
@@ -29,7 +29,9 @@ const ArtistName = ({ artistId }: ArtistNameProps) => {
         <span key={artist.idx}>
           {isTablet ? (
             <>
-              <Anchor href={`/artist/${artist.idx}`}>{artist.name}</Anchor>
+              <Anchor href={`/artist/${artist.idx}`}>
+                {artist.name} ({artist.otherName})
+              </Anchor>
               {index < artistData.length - 1 && ', '}
             </>
           ) : (

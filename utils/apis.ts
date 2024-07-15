@@ -21,6 +21,12 @@ export const formatDate = (datetime: string) => {
   return `${year}${month}${day}${hours}${minutes}${seconds}`;
 };
 
+export const formatDateInfo = (dateinfo: string) => {
+  const date = new Date(dateinfo);
+  const options: Intl.DateTimeFormatOptions = { year: 'numeric', month: 'numeric', day: 'numeric' };
+  return date.toLocaleDateString('ko-KR', options);
+};
+
 export async function getAlbumsData(page?: number, pageSize?: number) {
   const response = await fetch(
     `${process.env.STRAPI_URL}/api/capl-albums?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
@@ -62,6 +68,7 @@ export async function getAlbumData(albumId: number) {
     release: albumData.attributes.release,
     artist: albumData.attributes.artist,
     relationArtists: albumData.attributes.relationArtists,
+    relationStaffs: albumData.attributes.relationStaffs,
     credit: albumData.attributes.credit,
     list: albumData.attributes.list,
     createdAt: albumData.attributes.createdAt,
@@ -112,8 +119,8 @@ export async function getArtistsData(page?: number, pageSize?: number) {
     idx: `${formatDate(data.attributes.createdAt)}${data.id}`,
     name: data.attributes.name,
     otherName: data.attributes.otherName,
-    debut: data.attributes.debut,
-    birth: data.attributes.birth,
+    debut: formatDateInfo(data.attributes.debut),
+    birth: formatDateInfo(data.attributes.birth),
     member: data.attributes.member,
     group: data.attributes.group,
     abbr: data.attributes.abbr,
@@ -132,17 +139,20 @@ export async function getArtistData(artistId: number) {
   });
   const artistResponse = await response.json();
   const artistData = artistResponse.data;
+  console.log('artistData: ', artistData);
   const artist: ArtistsData = {
     id: artistData.id,
     idx: `${formatDate(artistData.attributes.createdAt)}${artistData.id}`,
     name: artistData.attributes.name,
+    agency: artistData.attributes.agency,
     otherName: artistData.attributes.otherName,
-    debut: artistData.attributes.debut,
-    birth: artistData.attributes.birth,
+    debut: formatDateInfo(artistData.attributes.debut),
+    birth: formatDateInfo(artistData.attributes.birth),
     member: artistData.attributes.member,
     group: artistData.attributes.group,
     abbr: artistData.attributes.abbr,
     isSolo: artistData.attributes.isSolo,
+    createdAt: artistData.attributes.createdAt,
   };
 
   return artist;
@@ -165,8 +175,8 @@ export async function getArtistsSearchData(page?: number, pageSize?: number, art
     idx: `${formatDate(data.attributes.createdAt)}${data.id}`,
     name: data.attributes.name,
     otherName: data.attributes.otherName,
-    debut: data.attributes.debut,
-    birth: data.attributes.birth,
+    debut: formatDateInfo(data.attributes.debut),
+    birth: formatDateInfo(data.attributes.birth),
     member: data.attributes.member,
     group: data.attributes.group,
     abbr: data.attributes.abbr,
