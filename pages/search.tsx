@@ -15,6 +15,11 @@ import PlaylistList from '@/components/PlaylistList';
 import styles from '@/styles/Search.module.sass';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
+import MusicSearch from '@/components/MusicSearch';
+import VideoSearch from '@/components/VideoSearch';
+import AlbumSearch from '@/components/AlbumSearch';
+import PlaylistSearch from '@/components/PlaylistSearch';
+import ArtistSearch from '@/components/ArtistSearch';
 
 export default function Search() {
   const router = useRouter();
@@ -72,32 +77,7 @@ export default function Search() {
                           <Anchor href={`/search?q=${query}&s=music`}>더보기</Anchor>
                         </div>
                       </div>
-                      {Array.isArray(data.musicData) && (
-                        <div className={styles['music-items']}>
-                          {data.musicData.map((music: MusicsData) => (
-                            <div className={styles.item} key={music.idx}>
-                              <button type="button">
-                                <Image
-                                  src={`https://cdn.dev1stud.io/capl/album/thm-${music.album}.webp`}
-                                  width={47}
-                                  height={47}
-                                  unoptimized
-                                  priority
-                                  alt=""
-                                />
-                                <i>
-                                  <PlayMusicIcon />
-                                </i>
-                              </button>
-                              <div className={styles.info}>
-                                <strong>{music.title}</strong>
-                                <ArtistName artistId={music.artist} />
-                              </div>
-                              <AlbumInfo albumId={music.album} />
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <MusicSearch musicData={data.musicData} />
                     </section>
                   )}
                   {data.videoData.length > 0 && (
@@ -112,27 +92,7 @@ export default function Search() {
                           <Anchor href={`/search?q=${query}&s=video`}>더보기</Anchor>
                         </div>
                       </div>
-                      {Array.isArray(data.videoData) && (
-                        <div className={styles['video-items']}>
-                          {data.videoData.map((video: MusicsData) => (
-                            <div className={styles.item} key={video.idx}>
-                              <button type="button">
-                                <ImageRender imageUrl={`${video.videoId}`} width={260} height={145} type="video" />
-                                <i>
-                                  <s>
-                                    <PlayMusicIcon />
-                                  </s>
-                                  <span>영상 재생하기</span>
-                                </i>
-                                <div className={styles.info}>
-                                  <strong>{video.title}</strong>
-                                  <ArtistName artistId={video.artist} />
-                                </div>
-                              </button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <VideoSearch videoData={data.videoData} />
                     </section>
                   )}
                   {data.albumData.length > 0 && (
@@ -147,36 +107,7 @@ export default function Search() {
                           <Anchor href={`/search?q=${query}&s=album`}>더보기</Anchor>
                         </div>
                       </div>
-                      {Array.isArray(data.albumData) && (
-                        <div className={styles['album-items']}>
-                          {data.albumData.map((album: AlbumsData) => (
-                            <div className={styles.item} key={album.idx}>
-                              <Anchor href={`/album/${album.idx}`}>
-                                <Image
-                                  src={`https://cdn.dev1stud.io/capl/album/thm-${album.id}.webp`}
-                                  width={260}
-                                  height={260}
-                                  unoptimized
-                                  priority
-                                  alt=""
-                                />
-                                <div className={styles.info}>
-                                  <strong>{album.title}</strong>
-                                  <ArtistName artistId={album.artist} />
-                                </div>
-                              </Anchor>
-                              {(isLandscapeDesktop || isPortraitDesktop) && (
-                                <button type="button">
-                                  <i>
-                                    <PlayMusicIcon />
-                                  </i>
-                                  <span>앨범 전곡 재생</span>
-                                </button>
-                              )}
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <AlbumSearch albumData={data.albumData} />
                     </section>
                   )}
                   {data.artistData.length > 0 && (
@@ -191,25 +122,7 @@ export default function Search() {
                           <Anchor href={`/search?q=${query}&s=artist`}>더보기</Anchor>
                         </div>
                       </div>
-                      {Array.isArray(data.artistData) && (
-                        <div className={styles['artist-items']}>
-                          {data.artistData.map((artist: ArtistsData) => (
-                            <div className={styles.item} key={artist.idx}>
-                              <Anchor href={`/artist/${artist.idx}`}>
-                                <ImageRender
-                                  imageUrl={`https://cdn.dev1stud.io/capl/artist/${artist.id}.webp`}
-                                  width={260}
-                                  height={260}
-                                  type="artist"
-                                />
-                                <div className={styles.info}>
-                                  <cite>{artist.name}</cite>
-                                </div>
-                              </Anchor>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <ArtistSearch artistData={data.artistData} />
                     </section>
                   )}
                   {data.playlistData.length > 0 && (
@@ -224,24 +137,7 @@ export default function Search() {
                           <Anchor href={`/search?q=${query}&s=playlist`}>더보기</Anchor>
                         </div>
                       </div>
-                      {Array.isArray(data.playlistData) && (
-                        <div className={styles['playlist-items']}>
-                          {data.playlistData.map((playlist: PlaylistsData) => (
-                            <div className={styles.item} key={playlist.idx}>
-                              <Anchor href={`/playlist/${playlist.idx}`}>
-                                <Image
-                                  src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
-                                  width={260}
-                                  height={260}
-                                  unoptimized
-                                  priority
-                                  alt=""
-                                />
-                              </Anchor>
-                            </div>
-                          ))}
-                        </div>
-                      )}
+                      <PlaylistSearch playlistData={data.playlistData} />
                     </section>
                   )}
                 </div>
