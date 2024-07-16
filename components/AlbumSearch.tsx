@@ -16,7 +16,7 @@ const AlbumSearch = ({ albumData }: Props) => {
   return (
     <>
       {Array.isArray(albumData) && (
-        <div className={styles['album-items']}>
+        <div className={styles['search-album-items']}>
           {albumData.map((album: AlbumsData) => (
             <div className={styles.item} key={album.idx}>
               <Anchor href={`/album/${album.idx}`}>

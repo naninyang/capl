@@ -12,7 +12,7 @@ const VideoSearch = ({ videoData }: Props) => {
   return (
     <>
       {Array.isArray(videoData) && (
-        <div className={styles['video-items']}>
+        <div className={styles['search-video-items']}>
           {videoData.map((video: MusicsData) => (
             <div className={styles.item} key={video.idx}>
               <button type="button">

@@ -11,7 +11,7 @@ const ArtistSearch = ({ artistData }: Props) => {
   return (
     <>
       {Array.isArray(artistData) && (
-        <div className={styles['artist-items']}>
+        <div className={styles['search-artist-items']}>
           {artistData.map((artist: ArtistsData) => (
             <div className={styles.item} key={artist.idx}>
               <Anchor href={`/artist/${artist.idx}`}>

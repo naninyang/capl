@@ -13,7 +13,7 @@ const MusicSearch = ({ musicData }: Props) => {
   return (
     <>
       {Array.isArray(musicData) && (
-        <div className={styles['music-items']}>
+        <div className={styles['search-music-items']}>
           {musicData.map((music: MusicsData) => (
             <div className={styles.item} key={music.idx}>
               <button type="button">

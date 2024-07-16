@@ -7,11 +7,11 @@ type Props = {
   playlistData: PlaylistsData[];
 };
 
-const PlaylistSearch = ({ playlistData }: Props) => {
+const PlaylistList = ({ playlistData }: Props) => {
   return (
     <>
       {Array.isArray(playlistData) && (
-        <div className={styles['playlist-items']}>
+        <div className={styles['search-playlist-items']}>
           {playlistData.map((playlist: PlaylistsData) => (
             <div className={styles.item} key={playlist.idx}>
               <Anchor href={`/playlist/${playlist.idx}`}>
@@ -32,4 +32,4 @@ const PlaylistSearch = ({ playlistData }: Props) => {
   );
 };
 
-export default PlaylistSearch;
+export default PlaylistList;

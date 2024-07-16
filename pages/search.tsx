@@ -1,25 +1,20 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-import { AlbumsData, ArtistsData, MusicsData, PlaylistsData, SearchResult } from '@/types';
+import { SearchResult } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
-import ImageRender from '@/components/ImageRender';
-import AlbumInfo from '@/components/AlbumInfo';
-import ArtistName from '@/components/ArtistName';
+import MusicSearch from '@/components/MusicSearch';
+import VideoSearch from '@/components/VideoSearch';
+import AlbumSearch from '@/components/AlbumSearch';
+import PlaylistSearch from '@/components/PlaylistSearch';
+import ArtistSearch from '@/components/ArtistSearch';
 import MusicList from '@/components/MusicList';
 import VideoList from '@/components/VideoList';
 import AlbumList from '@/components/AlbumList';
 import ArtistList from '@/components/ArtistList';
 import PlaylistList from '@/components/PlaylistList';
 import styles from '@/styles/Search.module.sass';
-import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
-import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
-import MusicSearch from '@/components/MusicSearch';
-import VideoSearch from '@/components/VideoSearch';
-import AlbumSearch from '@/components/AlbumSearch';
-import PlaylistSearch from '@/components/PlaylistSearch';
-import ArtistSearch from '@/components/ArtistSearch';
+import { MoreLinkIcon, SearchIcon } from '@/components/Icons';
 
 export default function Search() {
   const router = useRouter();
@@ -27,8 +22,6 @@ export default function Search() {
   const { s } = router.query;
   const [query, setQuery] = useState<string>('');
   const [data, setData] = useState<SearchResult | null>(null);
-  const isLandscapeDesktop = useLandscapeDesktop();
-  const isPortraitDesktop = usePortraitDesktop();
 
   useEffect(() => {
     if (q) {
