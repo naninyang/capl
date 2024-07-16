@@ -116,6 +116,7 @@ export interface SearchResult {
   albumData: AlbumsData[];
   artistData: ArtistsData[];
   musicData: MusicsData[];
+  videoData: MusicsData[];
   playlistData: PlaylistsData[];
 }
 

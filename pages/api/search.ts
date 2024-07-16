@@ -13,26 +13,31 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     if (!search) {
       const albumData = await getAlbumsSearchData(1, 6, keyword);
       const artistData = await getArtistsSearchData(1, 6, keyword);
-      const musicData = await getMusicsSearchData(1, 3, keyword);
+      const musicData = await getMusicsSearchData(1, 3, keyword, 'music');
+      const videoData = await getMusicsSearchData(1, 6, keyword, 'video');
       const playlistData = await getPlaylistsSearchData(1, 6, keyword);
-      res.status(200).json({ albumData, artistData, musicData, playlistData });
+      res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
     } else {
       let albumData: AlbumsData[] = [];
       let artistData: ArtistsData[] = [];
       let musicData: MusicsData[] = [];
+      let videoData: MusicsData[] = [];
       let playlistData: PlaylistsData[] = [];
       if (search === 'album') {
         albumData = await getAlbumsSearchData(1, 100, keyword);
-        res.status(200).json({ albumData, artistData, musicData, playlistData });
+        res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
       } else if (search === 'artist') {
         artistData = await getArtistsSearchData(1, 100, keyword);
-        res.status(200).json({ albumData, artistData, musicData, playlistData });
+        res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
       } else if (search === 'music') {
-        musicData = await getMusicsSearchData(1, 100, keyword);
-        res.status(200).json({ albumData, artistData, musicData, playlistData });
+        musicData = await getMusicsSearchData(1, 100, keyword, 'music');
+        res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
+      } else if (search === 'video') {
+        videoData = await getMusicsSearchData(1, 100, keyword, 'video');
+        res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
       } else if (search === 'playlist') {
         playlistData = await getPlaylistsSearchData(1, 100, keyword);
-        res.status(200).json({ albumData, artistData, musicData, playlistData });
+        res.status(200).json({ albumData, artistData, musicData, videoData, playlistData });
       }
     }
   } catch (error) {

@@ -4,15 +4,17 @@ import Image from 'next/image';
 import { AlbumsData, ArtistsData, MusicsData, PlaylistsData, SearchResult } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
+import ImageRender from '@/components/ImageRender';
 import AlbumInfo from '@/components/AlbumInfo';
 import ArtistName from '@/components/ArtistName';
 import MusicList from '@/components/MusicList';
+import VideoList from '@/components/VideoList';
 import AlbumList from '@/components/AlbumList';
 import ArtistList from '@/components/ArtistList';
+import PlaylistList from '@/components/PlaylistList';
 import styles from '@/styles/Search.module.sass';
 import { useLandscapeDesktop, usePortraitDesktop } from '@/components/MediaQuery';
 import { MoreLinkIcon, PlayMusicIcon, SearchIcon } from '@/components/Icons';
-import PlaylistList from '@/components/PlaylistList';
 
 export default function Search() {
   const router = useRouter();
@@ -49,6 +51,7 @@ export default function Search() {
         <div className="present">
           <h1>
             <SearchIcon /> ‘{query}’ {s === 'music' && '노래'}
+            {s === 'video' && '영상'}
             {s === 'album' && '앨범'}
             {s === 'artist' && '아티스트'}
             {s === 'playlist' && '플레이리스트'} 검색 결과
@@ -91,6 +94,41 @@ export default function Search() {
                                 <ArtistName artistId={music.artist} />
                               </div>
                               <AlbumInfo albumId={music.album} />
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </section>
+                  )}
+                  {data.videoData.length > 0 && (
+                    <section>
+                      <div className={styles.headline}>
+                        <h2>
+                          <Anchor href={`/search?q=${query}&s=video`}>
+                            영상 <MoreLinkIcon />
+                          </Anchor>
+                        </h2>
+                        <div className={styles.more}>
+                          <Anchor href={`/search?q=${query}&s=video`}>더보기</Anchor>
+                        </div>
+                      </div>
+                      {Array.isArray(data.videoData) && (
+                        <div className={styles['video-items']}>
+                          {data.videoData.map((video: MusicsData) => (
+                            <div className={styles.item} key={video.idx}>
+                              <button type="button">
+                                <ImageRender imageUrl={`${video.videoId}`} width={260} height={145} type="video" />
+                                <i>
+                                  <s>
+                                    <PlayMusicIcon />
+                                  </s>
+                                  <span>영상 재생하기</span>
+                                </i>
+                                <div className={styles.info}>
+                                  <strong>{video.title}</strong>
+                                  <ArtistName artistId={video.artist} />
+                                </div>
+                              </button>
                             </div>
                           ))}
                         </div>
@@ -158,13 +196,11 @@ export default function Search() {
                           {data.artistData.map((artist: ArtistsData) => (
                             <div className={styles.item} key={artist.idx}>
                               <Anchor href={`/artist/${artist.idx}`}>
-                                <Image
-                                  src={`https://cdn.dev1stud.io/capl/artist/${artist.id}.webp`}
+                                <ImageRender
+                                  imageUrl={`https://cdn.dev1stud.io/capl/artist/${artist.id}.webp`}
                                   width={260}
                                   height={260}
-                                  unoptimized
-                                  priority
-                                  alt=""
+                                  type="artist"
                                 />
                                 <div className={styles.info}>
                                   <cite>{artist.name}</cite>
@@ -212,6 +248,7 @@ export default function Search() {
               ) : (
                 <>
                   {s === 'music' && <MusicList musicData={data.musicData} />}
+                  {s === 'video' && <VideoList videoData={data.videoData} />}
                   {s === 'album' && <AlbumList albumData={data.albumData} />}
                   {s === 'artist' && <ArtistList artistData={data.artistData} />}
                   {s === 'playlist' && <PlaylistList playlistData={data.playlistData} />}

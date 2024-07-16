@@ -232,6 +232,118 @@
                   +mq(minSmall)
                     display: none
 
+.video-content
+  .videos
+    display: flex
+    flex-direction: column
+
+    .count
+      padding-bottom: rem(7)
+      font-size: rem(14)
+      line-height: 1
+
+      strong
+        font-variation-settings: $fw-900
+
+    .video-items
+      display: flex
+      flex-wrap: wrap
+      +row
+      margin: 0 rem(-12)
+
+      .item
+        padding: rem(7) rem(12)
+        position: relative
+        width: 50%
+
+        +mq(minMedium)
+          width: 33.33%
+
+        +mq(minLarge)
+          width: 16.66%
+
+        button
+          background-color: transparent
+          display: flex
+          flex-direction: column
+          position: relative
+          gap: rem(12)
+          overflow: hidden
+          width: 100%
+          text-align: left
+
+          &:hover, &:focus
+            i
+              s
+                background-color: $hex-accent
+
+          img
+            display: block
+            width: 100%
+            height: auto
+            aspect-ratio: 1980 / 1080!important
+
+          i
+            position: absolute
+            top: 0
+            left: 0
+            width: 100%
+            aspect-ratio: 1920 / 1080
+            display: flex
+            justify-content: center
+            align-items: center
+
+            s
+              display: flex
+              justify-content: center
+              align-items: center
+              background-color: $hex-black
+              border-radius: rem(38)
+              width: rem(38)
+              height: rem(38)
+
+            svg
+              width: rem(32)
+              height: rem(32)
+
+              path
+                fill: $hex-white
+
+            span
+              +screen-reader-only
+
+          .info
+            display: flex
+            flex-direction: column
+            justify-content: center
+            gap: rem(5)
+            +col
+            overflow: hidden
+            width: 100%
+
+            strong, cite
+              width: 100%
+              display: inline-block
+              line-height: 1
+              +ellipsis
+
+            strong
+              font-size: rem(14)
+              color: $hex-white
+
+              +mq(minSmall)
+                font-size: rem(16)
+
+            cite
+              font-size: rem(12)
+              color: rgba($hex-white, .5)
+
+              +mq(minSmall)
+                font-size: rem(14)
+
+                a
+                  color: rgba($hex-white, .5)
+
 .album-content
   .albums
     display: flex

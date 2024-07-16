@@ -139,7 +139,6 @@ export async function getArtistData(artistId: number) {
   });
   const artistResponse = await response.json();
   const artistData = artistResponse.data;
-  console.log('artistData: ', artistData);
   const artist: ArtistsData = {
     id: artistData.id,
     idx: `${formatDate(artistData.attributes.createdAt)}${artistData.id}`,
@@ -245,9 +244,9 @@ export async function getMusicData(musicId: number) {
   return music;
 }
 
-export async function getMusicsSearchData(page?: number, pageSize?: number, musicTitle?: string) {
+export async function getMusicsSearchData(page?: number, pageSize?: number, musicTitle?: string, type?: string) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[title][$contains]=${musicTitle}`,
+    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[$and][0][title][$contains]=${musicTitle}&filters[$and][1][${type}Id][$null]=false`,
     {
       method: 'GET',
       headers: {
