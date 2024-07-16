@@ -142,4 +142,54 @@
                 text-decoration: underline
 
   .content
+    display: flex
+    flex-direction: column
+    gap: rem(23)
     padding: 0 rem(23)
+
+    +mq(minSmall)
+      gap: rem(37)
+
+    section
+      display: flex
+      flex-direction: column
+      gap: rem(7)
+
+      .headline
+        display: flex
+        justify-content: space-between
+        align-items: center
+
+        h2, .more
+          display: inline-flex
+
+        h2
+          a
+            display: inline-flex
+            align-items: center
+            font-size: rem(16)
+            line-height: 1
+            color: $hex-white
+
+            +mq(minMedium)
+              font-size: rem(24)
+
+            svg
+              width: rem(20)
+              height: rem(20)
+
+              +mq(minMedium)
+                width: rem(24)
+                height: rem(24)
+
+              path
+                fill: $hex-accent
+
+        .more
+          a
+            font-size: rem(14)
+            line-height: 1
+            color: rgba($hex-white, .7)
+
+            +mq(minMedium)
+              font-size: rem(16)

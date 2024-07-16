@@ -2,23 +2,31 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 import { formatDate } from '@/utils/apis';
-import { ArtistsData, MusicsData } from '@/types';
+import { AlbumsData, ArtistsData, MusicsData } from '@/types';
 import Anchor from '@/components/Anchor';
-import MusicList from '@/components/MusicList';
+import MusicSearch from '@/components/MusicSearch';
+import VideoSearch from '@/components/VideoSearch';
+import AlbumSearch from '@/components/AlbumSearch';
+import ArtistSearch from '@/components/ArtistSearch';
 import styles from '@/styles/Artist.module.sass';
+import { MoreLinkIcon } from '@/components/Icons';
 
 export default function ArtistDetail({
+  artistId,
   artistNumber,
   artistData,
   musicData,
+  videoData,
   albumData,
   memberData,
   groupData,
 }: {
+  artistId: number;
   artistNumber: number;
   artistData: ArtistsData;
   musicData: MusicsData[];
-  albumData: MusicsData[];
+  videoData: MusicsData[];
+  albumData: AlbumsData[];
   memberData: ArtistsData[];
   groupData: ArtistsData[];
 }) {
@@ -117,7 +125,81 @@ export default function ArtistDetail({
         </div>
       </div>
       <div className={styles.content}>
-        <MusicList musicData={musicData} />
+        {musicData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/aritst/${artistId}/?s=music`}>
+                  노래 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/aritst/${artistId}/?s=music`}>더보기</Anchor>
+              </div>
+            </div>
+            <MusicSearch musicData={musicData} />
+          </section>
+        )}
+        {videoData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/aritst/${artistId}/?s=video`}>
+                  영상 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/aritst/${artistId}/?s=music`}>더보기</Anchor>
+              </div>
+            </div>
+            <VideoSearch videoData={videoData} />
+          </section>
+        )}
+        {albumData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/aritst/${artistId}/?s=album`}>
+                  앨범 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/aritst/${artistId}/?s=album`}>더보기</Anchor>
+              </div>
+            </div>
+            <AlbumSearch albumData={albumData} />
+          </section>
+        )}
+        {memberData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/aritst/${artistId}/?s=artist`}>
+                  멤버 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/aritst/${artistId}/?s=artist`}>더보기</Anchor>
+              </div>
+            </div>
+            <ArtistSearch artistData={memberData} />
+          </section>
+        )}
+        {groupData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/aritst/${artistId}/?s=artist`}>
+                  소속 그룹 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/aritst/${artistId}/?s=artist`}>더보기</Anchor>
+              </div>
+            </div>
+            <ArtistSearch artistData={groupData} />
+          </section>
+        )}
       </div>
     </main>
   );
@@ -128,6 +210,7 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let artistData = null;
   let artistNumber = null;
   let musicData = [];
+  let videoData = [];
   let albumData = [];
   let memberData = [];
   let groupData = [];
@@ -141,14 +224,24 @@ export const getStaticProps: GetStaticProps = async (context) => {
       artistNumber = artistResponse.id;
       artistData = artistResponse;
 
-      if (artistResponse.list && Array.isArray(artistResponse.list)) {
-        const musicPromises = artistResponse.list.map(async (id: number) => {
-          const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}`);
+      if (artistResponse.music && Array.isArray(artistResponse.music)) {
+        const musicPromises = artistResponse.music.map(async (id: number) => {
+          const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}&type=music`);
           const musicData = await musicResponse.json();
           return musicData;
         });
 
         musicData = await Promise.all(musicPromises);
+      }
+
+      if (artistResponse.music && Array.isArray(artistResponse.music)) {
+        const musicPromises = artistResponse.music.map(async (id: number) => {
+          const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}&type=video`);
+          const videoData = await musicResponse.json();
+          return videoData;
+        });
+
+        videoData = await Promise.all(musicPromises);
       }
 
       if (artistResponse.album && Array.isArray(artistResponse.album)) {
@@ -186,9 +279,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (!artistData) {
     return {
       props: {
+        artistId: null,
         artistNumber: null,
         artistData: null,
         musicData: [],
+        videoData: [],
         albumData: [],
         memberData: [],
         groupData: [],
@@ -198,9 +293,11 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
   return {
     props: {
+      artistId,
       artistNumber,
       artistData,
       musicData,
+      videoData,
       albumData,
       memberData,
       groupData,

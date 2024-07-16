@@ -151,6 +151,8 @@ export async function getArtistData(artistId: number) {
     group: artistData.attributes.group,
     abbr: artistData.attributes.abbr,
     isSolo: artistData.attributes.isSolo,
+    album: artistData.attributes.album,
+    music: artistData.attributes.music,
     createdAt: artistData.attributes.createdAt,
   };
 
@@ -179,6 +181,7 @@ export async function getArtistsSearchData(page?: number, pageSize?: number, art
     member: data.attributes.member,
     group: data.attributes.group,
     abbr: data.attributes.abbr,
+    album: data.attributes.album,
     isSolo: data.attributes.isSolo,
   }));
 
@@ -218,6 +221,40 @@ export async function getMusicsData(page?: number, pageSize?: number) {
 
 export async function getMusicData(musicId: number) {
   const response = await fetch(`${process.env.STRAPI_URL}/api/capl-musics/${musicId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
+    },
+  });
+  const musicResponse = await response.json();
+  const musicData = musicResponse.data;
+  const music: MusicsData = {
+    id: musicData.id,
+    idx: `${formatDate(musicData.attributes.createdAt)}${musicData.id}`,
+    title: musicData.attributes.title,
+    album: musicData.attributes.album,
+    originMusic: musicData.attributes.originMusic,
+    originAlbum: musicData.attributes.originAlbum,
+    artist: musicData.attributes.artist,
+    relationArtists: musicData.attributes.relationArtists,
+    cover: musicData.attributes.cover,
+    composer: musicData.attributes.composer,
+    lyricist: musicData.attributes.lyricist,
+    musicId: musicData.attributes.musicId,
+    videoId: musicData.attributes.videoId,
+  };
+
+  return music;
+}
+
+export async function getMusicsTypeData(musicId?: number, type?: string) {
+  let filterQuery = `${process.env.STRAPI_URL}/api/capl-musics`;
+  if (type !== null) {
+    filterQuery += `/${musicId}?filters[$and][0][id][$eq]=${musicId}&filters[$and][1][${type}Id][$null]=false`;
+  } else {
+    filterQuery += `/${musicId}`;
+  }
+  const response = await fetch(filterQuery, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,

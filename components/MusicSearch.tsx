@@ -31,7 +31,6 @@ const MusicSearch = ({ musicData }: Props) => {
               </button>
               <div className={styles.info}>
                 <strong>{music.title}</strong>
-                <ArtistName artistId={music.artist} />
               </div>
               <AlbumInfo albumId={music.album} />
             </div>

@@ -37,6 +37,8 @@ export interface ArtistsData {
   abbr: any;
   isSolo: boolean;
   agency: string;
+  album: any;
+  music: any;
   createdAt: string;
 }
 
@@ -51,6 +53,7 @@ export interface ArtistData {
     member: any;
     group: any;
     abbr: any;
+    album: any;
     isSolo: boolean;
     createdAt: string;
   };
