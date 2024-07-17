@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 import { formatDate } from '@/utils/apis';
@@ -6,6 +6,7 @@ import { AlbumsData, ArtistsData, MusicsData } from '@/types';
 import Anchor from '@/components/Anchor';
 import MusicList from '@/components/MusicList';
 import styles from '@/styles/Album.module.sass';
+import { MoreLinkIcon } from '@/components/Icons';
 
 export default function AlbumDetail({
   albumData,
@@ -18,6 +19,9 @@ export default function AlbumDetail({
   relationArtistData: ArtistsData[];
   musicData: MusicsData[];
 }) {
+  const [showAll, setShowAll] = useState(false);
+  const creditItems = albumData.credit;
+  const displayItems = showAll ? creditItems : creditItems.slice(0, 2);
   return (
     <main className={styles.album}>
       <div className={styles.cover}>
@@ -89,7 +93,25 @@ export default function AlbumDetail({
                 </dd>
               </div>
             )}
+            {displayItems.map((credit: any, index: number) => {
+              const key = Object.keys(credit)[0];
+              const value = credit[key];
+              return (
+                <div key={index}>
+                  <dt>{key}</dt>
+                  <dd>{value}</dd>
+                </div>
+              );
+            })}
           </dl>
+          {creditItems.length > 2 && (
+            <div className={styles.button}>
+              <button type="button" onClick={() => setShowAll(!showAll)}>
+                {showAll ? '접기' : '더보기'}
+                <MoreLinkIcon />
+              </button>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.content}>

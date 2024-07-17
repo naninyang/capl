@@ -115,18 +115,19 @@
       .secondary
         display: flex
         flex-direction: column
+        gap: rem(5)
 
         div
           display: flex
           +row
 
           dt, dd
+            font-size: rem(14)
             line-height: 1.42857143
             color: $hex-white
 
           dt
             width: rem(100)
-            font-size: rem(14)
             opacity: .5
 
           dd
@@ -134,6 +135,19 @@
 
             a
               color: $hex-white
+
+      .button
+        button
+          display: flex
+          align-items: center
+          background-color: transparent
+          font-size: rem(14)
+          line-height: 1
+          color: $hex-white
+
+          svg
+            width: rem(20)
+            height: rem(20)
 
   .content
     padding: 0 rem(23)
