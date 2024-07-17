@@ -8,6 +8,7 @@ export interface AlbumsData {
   relationStaffs: any;
   credit: any;
   list: any;
+  genre: any;
   createdAt: string;
 }
 
@@ -21,6 +22,7 @@ export interface AlbumData {
     relationArtists: any;
     relationStaffs: any;
     credit: any;
+    genre: any;
     createdAt: string;
   };
 }
@@ -39,6 +41,7 @@ export interface ArtistsData {
   agency: string;
   album: any;
   music: any;
+  genre: any;
   createdAt: string;
 }
 
@@ -73,6 +76,7 @@ export interface MusicsData {
   lyricist: any;
   musicId: string;
   videoId: string;
+  genre: any;
 }
 
 export interface MusicData {

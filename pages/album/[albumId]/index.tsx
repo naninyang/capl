@@ -78,6 +78,17 @@ export default function AlbumDetail({
                   ))}
               </dd>
             </div>
+            {albumData.genre && (
+              <div>
+                <dt>주요장르</dt>
+                <dd>
+                  {Array.isArray(albumData.genre) &&
+                    albumData.genre.map((genre: string, index: number) => (
+                      <React.Fragment key={index}>{genre}</React.Fragment>
+                    ))}
+                </dd>
+              </div>
+            )}
           </dl>
         </div>
       </div>
@@ -109,7 +120,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
         const musicPromises = albumResponse.list.map(async (id: number) => {
           const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}`);
           const musicData = await musicResponse.json();
-          console.log('musicData: ', musicData);
           return musicData;
         });
 

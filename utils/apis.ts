@@ -71,6 +71,7 @@ export async function getAlbumData(albumId: number) {
     relationStaffs: albumData.attributes.relationStaffs,
     credit: albumData.attributes.credit,
     list: albumData.attributes.list,
+    genre: albumData.attributes.genre,
     createdAt: albumData.attributes.createdAt,
   };
 
@@ -153,6 +154,7 @@ export async function getArtistData(artistId: number) {
     isSolo: artistData.attributes.isSolo,
     album: artistData.attributes.album,
     music: artistData.attributes.music,
+    genre: artistData.attributes.genre,
     createdAt: artistData.attributes.createdAt,
   };
 
@@ -242,6 +244,7 @@ export async function getMusicData(musicId: number) {
     lyricist: musicData.attributes.lyricist,
     musicId: musicData.attributes.musicId,
     videoId: musicData.attributes.videoId,
+    genre: musicData.attributes.genre,
   };
 
   return music;
@@ -276,6 +279,7 @@ export async function getMusicsTypeData(musicId?: number, type?: string) {
     lyricist: musicData.attributes.lyricist,
     musicId: musicData.attributes.musicId,
     videoId: musicData.attributes.videoId,
+    genre: musicData.attributes.genre,
   };
 
   return music;
