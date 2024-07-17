@@ -352,6 +352,7 @@ export async function getPlaylistData(playlistId: number) {
     description: playlistData.attributes.description,
     list: playlistData.attributes.list,
     tags: playlistData.attributes.tags,
+    createdAt: playlistData.attributes.createdAt,
   };
 
   return playlist;

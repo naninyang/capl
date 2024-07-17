@@ -38,7 +38,7 @@ export default function Home({
                 <div className={styles.content}>
                   {playlists.map((playlist: PlaylistsData) => (
                     <div className={styles.item} key={playlist.idx}>
-                      <Anchor href="/">
+                      <Anchor href={`/playlist/${playlist.idx}`}>
                         <Image
                           src={`https://cdn.dev1stud.io/capl/playlist/${playlist.id}.svg`}
                           width={272}
