@@ -15,7 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       console.log('Unsupported method');
     }
   } else {
-    if (type === null) {
+    if (!type) {
       try {
         const data = await getMusicData(id);
         res.status(200).json(data);
