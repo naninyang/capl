@@ -108,7 +108,10 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
               <dd>
                 {Array.isArray(artistData.genre) &&
                   artistData.genre.map((genre: string, index: number) => (
-                    <React.Fragment key={index}>{genre}</React.Fragment>
+                    <React.Fragment key={index}>
+                      {genre}
+                      {index < artistData.genre.length - 1 && ', '}
+                    </React.Fragment>
                   ))}
               </dd>
             </div>

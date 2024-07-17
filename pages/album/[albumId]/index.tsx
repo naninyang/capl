@@ -88,7 +88,10 @@ export default function AlbumDetail({
                 <dd>
                   {Array.isArray(albumData.genre) &&
                     albumData.genre.map((genre: string, index: number) => (
-                      <React.Fragment key={index}>{genre}</React.Fragment>
+                      <React.Fragment key={index}>
+                        {genre}
+                        {index < albumData.genre.length - 1 && ', '}
+                      </React.Fragment>
                     ))}
                 </dd>
               </div>
