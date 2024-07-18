@@ -133,6 +133,11 @@ export default function Search() {
                       <PlaylistSearch playlistData={data.playlistData} />
                     </section>
                   )}
+                  {data.musicData.length === 0 &&
+                    data.videoData.length === 0 &&
+                    data.albumData.length === 0 &&
+                    data.artistData.length === 0 &&
+                    data.playlistData.length === 0 && <p>‘{query}’에 대한 결과가 없습니다.</p>}
                 </div>
               ) : (
                 <>

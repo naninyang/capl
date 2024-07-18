@@ -32,7 +32,7 @@ export default function Header() {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    if (query.length >= 2) {
+    if (query.length >= 1) {
       router.push(`/search?q=${query}`);
     }
   };
@@ -90,14 +90,14 @@ export default function Header() {
                 <button
                   type="button"
                   className={styles['search-cancel']}
-                  disabled={query.length < 2}
+                  disabled={query.length < 1}
                   onClick={handleCancel}
                 >
                   <CloseIcon />
                   <span>키워드 삭제</span>
                 </button>
               )}
-              <button type="submit" className={styles['search-submit']} disabled={query.length < 2}>
+              <button type="submit" className={styles['search-submit']} disabled={query.length < 1}>
                 <SearchIcon />
                 <span>검색하기</span>
               </button>
