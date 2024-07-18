@@ -385,3 +385,72 @@ export async function getPlaylistsSearchData(page?: number, pageSize?: number, p
 
   return playlists;
 }
+
+export const getComposerData = async (
+  composerId: number,
+): Promise<{ musics: MusicsData[]; artists: ArtistsData[] }> => {
+  const response = await fetch(
+    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[composer][$contains]=${composerId}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
+      },
+    },
+  );
+
+  const musicResponse = await response.json();
+  const musicData = musicResponse.data;
+
+  const musics: MusicsData[] = musicData.map((data: MusicData) => ({
+    id: data.id,
+    idx: `${formatDate(data.attributes.createdAt)}${data.id}`,
+    title: data.attributes.title,
+    album: data.attributes.album,
+    originMusic: data.attributes.originMusic,
+    originAlbum: data.attributes.originAlbum,
+    artist: data.attributes.artist,
+    relationArtists: data.attributes.relationArtists,
+    cover: data.attributes.cover,
+    composer: data.attributes.composer,
+    lyricist: data.attributes.lyricist,
+    musicId: data.attributes.musicId,
+    videoId: data.attributes.videoId,
+  }));
+
+  let artists: ArtistsData[] = [];
+  const artistIds = musicData
+    .flatMap((data: MusicData) => data.attributes.composer)
+    .filter((id: number) => id === composerId);
+
+  if (artistIds.length > 0) {
+    const artistResponse = await fetch(
+      `${process.env.STRAPI_URL}/api/capl-artists?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[id][$eq]=${composerId}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
+        },
+      },
+    );
+
+    const artistResponseJson = await artistResponse.json();
+    const artistData = artistResponseJson.data;
+
+    artists = artistData.map((data: ArtistData) => ({
+      id: data.id,
+      idx: `${formatDate(data.attributes.createdAt)}${data.id}`,
+      name: data.attributes.name,
+      otherName: data.attributes.otherName,
+      debut: formatDateInfo(data.attributes.debut),
+      birth: formatDateInfo(data.attributes.birth),
+      member: data.attributes.member,
+      group: data.attributes.group,
+      abbr: data.attributes.abbr,
+      album: data.attributes.album,
+      isSolo: data.attributes.isSolo,
+    }));
+  }
+
+  return { musics, artists };
+};
