@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import styles from '@/styles/Image.module.sass';
-import { PlayMusicIcon, ProfileIcon } from './Icons';
+import { ProfileIcon } from './Icons';
 
 interface ImageRenderProps {
   imageUrl: string;
@@ -62,7 +62,7 @@ const ImageRender = ({ imageUrl, width, height, type }: ImageRenderProps) => {
           )}
           {type === 'video' && (
             <div className={`${styles.missing} ${styles.video}`}>
-              <PlayMusicIcon />
+              <Image src={'/missing.webp'} width={1920} height={1080} priority alt="" />
             </div>
           )}
         </>

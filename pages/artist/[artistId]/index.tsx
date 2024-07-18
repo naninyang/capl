@@ -20,6 +20,8 @@ export default function ArtistDetail({
   albumData,
   memberData,
   groupData,
+  composeData,
+  lyricsData,
 }: {
   artistId: number;
   artistNumber: number;
@@ -29,6 +31,8 @@ export default function ArtistDetail({
   albumData: AlbumsData[];
   memberData: ArtistsData[];
   groupData: ArtistsData[];
+  composeData: MusicsData[];
+  lyricsData: MusicsData[];
 }) {
   return (
     <main className={styles.artist}>
@@ -103,10 +107,40 @@ export default function ArtistDetail({
                 </Anchor>
               </h2>
               <div className={styles.more}>
-                <Anchor href={`/artist/${artistId}/?s=artist`}>더보기</Anchor>
+                <Anchor href={`/artist/${artistId}/artist`}>더보기</Anchor>
               </div>
             </div>
             <ArtistSearch artistData={groupData} />
+          </section>
+        )}
+        {composeData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/artist/${artistId}/music`}>
+                  작곡한 노래 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/artist/${artistId}/music`}>더보기</Anchor>
+              </div>
+            </div>
+            <MusicSearch musicData={composeData} />
+          </section>
+        )}
+        {lyricsData.length > 0 && (
+          <section>
+            <div className={styles.headline}>
+              <h2>
+                <Anchor href={`/artist/${artistId}/music`}>
+                  작사한 노래 <MoreLinkIcon />
+                </Anchor>
+              </h2>
+              <div className={styles.more}>
+                <Anchor href={`/artist/${artistId}/music`}>더보기</Anchor>
+              </div>
+            </div>
+            <MusicSearch musicData={lyricsData} />
           </section>
         )}
       </div>
@@ -123,6 +157,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
   let albumData = [];
   let memberData = [];
   let groupData = [];
+  let composeData = [];
+  let lyricsData = [];
 
   if (artistId && typeof artistId === 'string') {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/artist?id=${artistId.substring(14)}`);
@@ -182,6 +218,26 @@ export const getStaticProps: GetStaticProps = async (context) => {
 
         groupData = await Promise.all(groupPromises);
       }
+
+      if (artistResponse.compose && Array.isArray(artistResponse.compose)) {
+        const musicPromises = artistResponse.compose.map(async (id: number) => {
+          const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}&type=music`);
+          const composeData = await musicResponse.json();
+          return composeData;
+        });
+
+        composeData = await Promise.all(musicPromises);
+      }
+
+      if (artistResponse.lyrics && Array.isArray(artistResponse.lyrics)) {
+        const musicPromises = artistResponse.lyrics.map(async (id: number) => {
+          const musicResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/music?id=${id}&type=music`);
+          const lyricsData = await musicResponse.json();
+          return lyricsData;
+        });
+
+        lyricsData = await Promise.all(musicPromises);
+      }
     }
   }
 
@@ -196,6 +252,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
         albumData: [],
         memberData: [],
         groupData: [],
+        composeData: [],
+        lyricsData: [],
       },
     };
   }
@@ -210,6 +268,8 @@ export const getStaticProps: GetStaticProps = async (context) => {
       albumData,
       memberData,
       groupData,
+      composeData,
+      lyricsData,
     },
     revalidate: 1,
   };

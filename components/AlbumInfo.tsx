@@ -52,11 +52,9 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
   const fetchData = async (id: number) => {
     const response = await fetch(`/api/album?id=${id}`);
     const result: AlbumsData = await response.json();
-    console.log('result: ', result);
     setData(result);
 
     const artistIds = result.artist;
-    console.log('artistIds: ', artistIds);
     const artistPromises = artistIds.map(async (artistId: number) => {
       const artistResponse = await fetch(`/api/artist?id=${artistId}`);
       const artistResult = await artistResponse.json();

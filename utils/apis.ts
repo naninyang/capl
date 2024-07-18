@@ -155,6 +155,8 @@ export async function getArtistData(artistId: number) {
     album: artistData.attributes.album,
     music: artistData.attributes.music,
     genre: artistData.attributes.genre,
+    compose: artistData.attributes.compose,
+    lyrics: artistData.attributes.lyrics,
     createdAt: artistData.attributes.createdAt,
   };
 

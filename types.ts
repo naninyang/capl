@@ -42,6 +42,8 @@ export interface ArtistsData {
   album: any;
   music: any;
   genre: any;
+  compose: any;
+  lyrics: any;
   createdAt: string;
 }
 
