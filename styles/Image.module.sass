@@ -4,7 +4,16 @@
   display: flex
   justify-content: center
   align-items: center
-  aspect-ratio: 1 / 1
+
+  &.artist
+    aspect-ratio: 1 / 1
+    border-radius: 100%
+    background-color: rgba($hex-white, .2)
+
+    svg
+      width: 50%
+      height: auto
+      aspect-ratio: 1 / 1
 
   &.video
     width: 100%

@@ -5,6 +5,7 @@ import { formatDate } from '@/utils/apis';
 import { AlbumsData, ArtistsData, MusicsData } from '@/types';
 import Anchor from '@/components/Anchor';
 import MusicList from '@/components/MusicList';
+import { GenreName } from '@/components/GenreName';
 import styles from '@/styles/Album.module.sass';
 import { MoreLinkIcon } from '@/components/Icons';
 
@@ -20,7 +21,7 @@ export default function AlbumDetail({
   musicData: MusicsData[];
 }) {
   const [showAll, setShowAll] = useState(false);
-  const creditItems = albumData.credit;
+  const creditItems = albumData.credit || [];
   const displayItems = showAll ? creditItems : creditItems.slice(0, 2);
   return (
     <main className={styles.album}>
@@ -89,23 +90,24 @@ export default function AlbumDetail({
                   {Array.isArray(albumData.genre) &&
                     albumData.genre.map((genre: string, index: number) => (
                       <React.Fragment key={index}>
-                        {genre}
+                        {GenreName(genre)}
                         {index < albumData.genre.length - 1 && ', '}
                       </React.Fragment>
                     ))}
                 </dd>
               </div>
             )}
-            {displayItems.map((credit: any, index: number) => {
-              const key = Object.keys(credit)[0];
-              const value = credit[key];
-              return (
-                <div key={index}>
-                  <dt>{key}</dt>
-                  <dd>{value}</dd>
-                </div>
-              );
-            })}
+            {displayItems &&
+              displayItems.map((credit: any, index: number) => {
+                const key = Object.keys(credit)[0];
+                const value = credit[key];
+                return (
+                  <div key={index}>
+                    <dt>{key}</dt>
+                    <dd>{value}</dd>
+                  </div>
+                );
+              })}
           </dl>
           {creditItems.length > 2 && (
             <div className={styles.button}>

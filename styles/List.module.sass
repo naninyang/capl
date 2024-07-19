@@ -537,11 +537,10 @@
 
 .search-music-items
   display: flex
-  flex-direction: column
   width: 100%
 
-  +mq(minLarge)
-    width: 33.33%
+  +mq(maxMedium)
+    flex-direction: column
 
   .item
     +row
@@ -549,6 +548,9 @@
     gap: rem(10)
     position: relative
     padding: rem(7)
+
+    +mq(minLarge)
+      width: 33.33%
 
     &:hover
       button

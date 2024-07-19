@@ -1,7 +1,8 @@
 import React from 'react';
-import Image from 'next/image';
 import { ArtistsData } from '@/types';
 import Anchor from '@/components/Anchor';
+import ImageRender from '@/components/ImageRender';
+import { GenreName } from '@/components/GenreName';
 import styles from '@/styles/Artist.module.sass';
 
 type Props = {
@@ -15,24 +16,20 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
   return (
     <div className={styles.cover}>
       <div className={styles.background}>
-        <Image
-          src={`https://cdn.dev1stud.io/capl/artist/${artistNumber}.webp`}
+        <ImageRender
+          imageUrl={`https://cdn.dev1stud.io/capl/artist/${artistNumber}.webp`}
           width={230}
           height={230}
-          unoptimized
-          priority
-          alt=""
+          type="artist"
         />
         <div className={styles.dummy} />
       </div>
       <div className={styles.thumbnail}>
-        <Image
-          src={`https://cdn.dev1stud.io/capl/artist/${artistNumber}.webp`}
+        <ImageRender
+          imageUrl={`https://cdn.dev1stud.io/capl/artist/${artistNumber}.webp`}
           width={230}
           height={230}
-          unoptimized
-          priority
-          alt=""
+          type="artist"
         />
       </div>
       <div className={styles.info}>
@@ -109,7 +106,7 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
                 {Array.isArray(artistData.genre) &&
                   artistData.genre.map((genre: string, index: number) => (
                     <React.Fragment key={index}>
-                      {genre}
+                      {GenreName(genre)}
                       {index < artistData.genre.length - 1 && ', '}
                     </React.Fragment>
                   ))}
