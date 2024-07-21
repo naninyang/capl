@@ -1,24 +1,447 @@
+import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from 'react';
+import Image from 'next/image';
+import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
+import { useRecoilValue } from 'recoil';
+import { playlistState } from '@/recoil/atom';
 import styles from '@/styles/Music.module.sass';
-import { MusicIcon } from './Icons';
+import {
+  MusicIcon,
+  NextMusicIcon,
+  PauseMusicIcon,
+  PlaylistIcon,
+  PlayMusicIcon,
+  PrevMusicIcon,
+  RepeatIcon,
+  VolumeIsMutedIcon,
+  VolumeNotMutedIcon,
+} from './Icons';
+
+type Music = {
+  id: number;
+  title: string;
+  musicId: string;
+  artist: {
+    id: number;
+    name: string;
+    otherName: string;
+  };
+  album: {
+    id: number;
+    title: string;
+    release: string;
+    albumnumbering: string;
+  };
+};
 
 export default function Music() {
+  const playlist = useRecoilValue(playlistState);
+  const [isClient, setIsClient] = useState(false);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [isSingleTrackRepeating, setIsSingleTrackRepeating] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+  const [isPlaylistVisible, setIsPlaylistVisible] = useState(false);
+  const [isPlayerOpen, setIsPlayerOpen] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
+  const [isPlaying, setIsPlaying] = useState(true);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [seekTime, setSeekTime] = useState(0);
+  const [isSeeking, setIsSeeking] = useState(false);
+  const [volume, setVolume] = useState(100);
+  const [previousVolume, setPreviousVolume] = useState(100);
+  const playerRef = useRef<YouTubePlayer | null>(null);
+
+  const currentPlaylistTitle = Object.keys(playlist)[0];
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const playlistData = JSON.parse(playlist[currentPlaylistTitle]) || [];
+      const musicDetails = await Promise.all(
+        playlistData.map(async (id: number) => {
+          const response = await fetch(`/api/music?id=${id}`);
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+          const music = await response.json();
+
+          const artistResponse = await fetch(`/api/artist?id=${music.artist}`);
+          const artist = await artistResponse.json();
+
+          const albumResponse = await fetch(`/api/album?id=${music.album}`);
+          const album = await albumResponse.json();
+
+          return {
+            id: music.id,
+            title: music.title,
+            musicId: music.musicId,
+            artist: {
+              id: artist.id,
+              name: artist.name,
+              otherName: artist.otherName,
+            },
+            album: {
+              id: album.id,
+              title: album.title,
+              release: album.release,
+              albumnumbering: album.albumnumbering,
+            },
+          };
+        }),
+      );
+      setCurrentPlaylist(musicDetails);
+    };
+
+    if (currentPlaylistTitle) {
+      fetchData();
+    }
+
+    setIsClient(true);
+  }, [currentPlaylistTitle, playlist]);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (playerRef.current && !isSeeking) {
+        setCurrentTime(playerRef.current.getCurrentTime());
+        setDuration(playerRef.current.getDuration());
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, [isSeeking]);
+
+  const currentTrack = currentPlaylist[currentTrackIndex];
+
+  const handleToggleRepeat = () => {
+    setIsSingleTrackRepeating((prev) => !prev);
+  };
+
+  const handleNextTrack = useCallback(() => {
+    if (currentTrackIndex === currentPlaylist.length - 1) {
+      setCurrentTrackIndex(0);
+    } else {
+      setCurrentTrackIndex(currentTrackIndex + 1);
+    }
+  }, [currentTrackIndex, currentPlaylist.length]);
+
+  const handlePrevTrack = () => {
+    if (currentTrackIndex === 0) {
+      setCurrentTrackIndex(currentPlaylist.length - 1);
+    } else {
+      setCurrentTrackIndex(currentTrackIndex - 1);
+    }
+  };
+
+  const handleToggleMute = () => {
+    if (playerRef.current) {
+      if (isMuted) {
+        playerRef.current.unMute();
+        setVolume(previousVolume);
+      } else {
+        playerRef.current.mute();
+        setPreviousVolume(volume);
+        setVolume(0);
+      }
+      setIsMuted((prev) => !prev);
+    }
+  };
+
+  const handleTogglePlaylistVisibility = () => {
+    setIsPlaylistVisible((prev) => !prev);
+  };
+
+  const handleTogglePlayerVisibility = () => {
+    setIsPlayerOpen((prev) => !prev);
+  };
+
+  const handlePlayPause = () => {
+    if (playerRef.current) {
+      if (playerRef.current.getPlayerState() === 1) {
+        playerRef.current.pauseVideo();
+        setIsPlaying(false);
+      } else {
+        playerRef.current.playVideo();
+        setIsPlaying(true);
+      }
+    }
+  };
+
+  const onReady = (event: { target: YouTubePlayer }) => {
+    playerRef.current = event.target;
+    if (playerRef.current) {
+      playerRef.current.setVolume(volume);
+    }
+  };
+
+  const onEnd = () => {
+    if (isSingleTrackRepeating) {
+      if (playerRef.current) {
+        playerRef.current.seekTo(0);
+        playerRef.current.playVideo();
+      }
+    } else {
+      handleNextTrack();
+    }
+  };
+
+  const formatTime = (time: number) => {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  };
+
+  const handleMouseMove = (event: MouseEvent<HTMLButtonElement>) => {
+    if (!playerRef.current) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const newSeekTime = (offsetX / rect.width) * duration;
+
+    setSeekTime(newSeekTime);
+  };
+
+  const handleSeek = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(seekTime, true);
+      setCurrentTime(seekTime);
+    }
+    setIsSeeking(false);
+  };
+
+  const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
+    setIsSeeking(true);
+    handleMouseMove(event);
+  };
+
+  const handleMouseLeave = () => {
+    setIsSeeking(false);
+  };
+
+  const handleVolumeChange = (event: MouseEvent<HTMLButtonElement> | TouchEvent<HTMLButtonElement>) => {
+    if (!playerRef.current) return;
+
+    let clientX;
+    if ('touches' in event) {
+      clientX = event.touches[0].clientX;
+    } else {
+      clientX = event.clientX;
+    }
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const newVolume = Math.min(Math.max((offsetX / rect.width) * 100, 0), 100);
+
+    setVolume(newVolume);
+    playerRef.current.setVolume(newVolume);
+    if (newVolume > 0 && isMuted) {
+      setIsMuted(false);
+    }
+  };
+
+  const handleVolumeTouchStart = (event: TouchEvent<HTMLButtonElement>) => {
+    setIsSeeking(true);
+    handleVolumeChange(event);
+  };
+
+  const handleVolumeTouchMove = (event: TouchEvent<HTMLButtonElement>) => {
+    handleVolumeChange(event);
+  };
+
+  const handleVolumeTouchEnd = () => {
+    setIsSeeking(false);
+  };
+
+  if (!isClient) {
+    return null;
+  }
+
+  const renderTrackInfo = (track: Music) => (
+    <>
+      <div className={styles.thumbnail}>
+        <Image
+          src={`https://cdn.dev1stud.io/capl/album/thm-${track.album.id}.webp`}
+          width={47}
+          height={47}
+          unoptimized
+          priority
+          alt=""
+        />
+      </div>
+      <div className={styles.info}>
+        <strong>{track.title}</strong>
+        <cite>{track.artist.name}</cite>
+      </div>
+    </>
+  );
+
   return (
     <div className={`${styles.music} ${styles.day}`}>
-      <div className={styles['music-player']}>뮤직 플레이어</div>
+      <div className={`${styles['music-player']} ${isPlayerOpen ? styles.open : ''}`}>
+        <h2>뮤직 플레이어</h2>
+        <dl>
+          {Object.entries(playlist).map(([key, value]) => (
+            <div key={key}>
+              <dt>{key}</dt>
+              <dd>{JSON.stringify(value)}</dd>
+            </div>
+          ))}
+        </dl>
+        {currentTrack && (
+          <YouTube
+            videoId={currentTrack.musicId}
+            opts={{ playerVars: { autoplay: 1, controls: 1 } }}
+            onEnd={onEnd}
+            onReady={onReady}
+          />
+        )}
+      </div>
       <div className={styles['music-bar']}>
-        <div className={styles.started}>
-          <button type="button">
-            <div className={styles['music-info']}>
-              <div className={styles.thumbnail}>
-                <MusicIcon />
+        {Object.keys(playlist).length > 0 ? (
+          <div className={styles['music-container']}>
+            <button
+              type="button"
+              className={styles.seektime}
+              onMouseMove={handleMouseMove}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              onClick={handleSeek}
+            >
+              <s>
+                <i
+                  style={{
+                    width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                  }}
+                  className={isSeeking ? styles.seeking : undefined}
+                />
+                {isSeeking && (
+                  <span style={{ left: `${(seekTime / duration) * 100}%` }}>
+                    <strong>{formatTime(seekTime)}</strong>
+                  </span>
+                )}
+              </s>
+            </button>
+            <div className={styles.songsong}>
+              <div className={styles['music-info']}>
+                <div className={styles['info-container']}>
+                  <button type="button" onClick={handleTogglePlayerVisibility}>
+                    <span>{isPlayerOpen ? '플레이어 숨기기' : '플레이어 보기'}</span>
+                  </button>
+                  {currentTrack ? (
+                    renderTrackInfo(currentTrack)
+                  ) : (
+                    <>
+                      <div className={styles.thumbnail}>
+                        <MusicIcon />
+                      </div>
+                      <div className={styles.info}>
+                        <strong>노래 불러오는 중</strong>
+                        <cite>잠시만 기다려 주세요</cite>
+                      </div>
+                    </>
+                  )}
+                </div>
+                <div className={styles.repeat}>
+                  <button
+                    type="button"
+                    onClick={handleToggleRepeat}
+                    className={isSingleTrackRepeating ? styles.all : undefined}
+                  >
+                    <RepeatIcon />
+                    <span>{isSingleTrackRepeating ? '재생목록 모든곡 반복하기' : '현재곡 반복하기'}</span>
+                  </button>
+                </div>
+                <div className={styles.time}>
+                  <dl>
+                    <div>
+                      <dt>재생된 시간</dt>
+                      <dd>{formatTime(currentTime)}</dd>
+                    </div>
+                    <div>
+                      <dt>전체 재생시간</dt>
+                      <dd>{duration > 0 ? formatTime(duration) : '0:00'}</dd>
+                    </div>
+                  </dl>
+                </div>
               </div>
-              <div className={styles.info}>
-                <strong>어떤 노래를 듣고 싶으세요?</strong>
-                <cite>밤과 어울리는 곡을 추천해 드려요</cite>
+              <div className={styles['music-controller']}>
+                <button type="button" className={styles.side} onClick={handlePrevTrack}>
+                  <PrevMusicIcon />
+                  <span>이전곡 재생</span>
+                </button>
+                <button type="button" className={styles.play} onClick={handlePlayPause}>
+                  {isPlaying ? (
+                    <>
+                      <PauseMusicIcon />
+                      <span>일시 정지하기</span>
+                    </>
+                  ) : (
+                    <>
+                      <PlayMusicIcon />
+                      <span>계속 재생하기</span>
+                    </>
+                  )}
+                </button>
+                <button type="button" className={styles.side} onClick={handleNextTrack}>
+                  <NextMusicIcon />
+                  <span>다음곡 재생</span>
+                </button>
+              </div>
+              <div className={styles['music-playlist']}>
+                <div className={styles.volume}>
+                  <button type="button" className={isMuted ? styles.muted : undefined} onClick={handleToggleMute}>
+                    {isMuted ? (
+                      <>
+                        <VolumeIsMutedIcon />
+                        <span>음소거 취소하기</span>
+                      </>
+                    ) : (
+                      <>
+                        <VolumeNotMutedIcon />
+                        <span>음소거 하기</span>
+                      </>
+                    )}
+                  </button>
+                  <button
+                    type="button"
+                    className={styles.level}
+                    onClick={handleVolumeChange}
+                    onMouseMove={handleVolumeChange}
+                    onTouchStart={handleVolumeTouchStart}
+                    onTouchMove={handleVolumeTouchMove}
+                    onTouchEnd={handleVolumeTouchEnd}
+                  >
+                    <s>
+                      <i style={{ width: `${volume}%` }} />
+                    </s>
+                  </button>
+                </div>
+                <div className={styles.playlist}>
+                  <button
+                    type="button"
+                    className={isPlaylistVisible ? styles.visible : undefined}
+                    onClick={handleTogglePlaylistVisibility}
+                  >
+                    <PlaylistIcon />
+                    <span>{isPlaylistVisible ? '재생목록 숨기기' : '재생목록 보기'}</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </button>
-        </div>
+          </div>
+        ) : (
+          <div className={styles.started}>
+            <button type="button">
+              <div className={styles['music-info']}>
+                <div className={styles.thumbnail}>
+                  <MusicIcon />
+                </div>
+                <div className={styles.info}>
+                  <strong>어떤 노래를 듣고 싶으세요?</strong>
+                  <cite>밤과 어울리는 곡을 추천해 드려요</cite>
+                </div>
+              </div>
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );

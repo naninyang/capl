@@ -120,7 +120,11 @@ export default function AlbumDetail({
         </div>
       </div>
       <div className={styles.content}>
-        <MusicList musicData={musicData} />
+        <MusicList
+          musicData={musicData}
+          playlistName={`${albumData.title} (${artistData[0].name})`}
+          albumInfo={albumData}
+        />
       </div>
     </main>
   );

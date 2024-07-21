@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { MusicsData } from '@/types';
+import { useRecoilState } from 'recoil';
+import { playlistState } from '@/recoil/atom';
+import { AlbumsData, MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
 import styles from '@/styles/List.module.sass';
@@ -10,9 +12,12 @@ import { CheckedCheckboxIcon, EndListIcon, PlayMusicIcon, StartListIcon, Uncheck
 
 type Props = {
   musicData: MusicsData[];
+  playlistName?: string;
+  albumInfo?: AlbumsData;
 };
 
-const MusicList = ({ musicData }: Props) => {
+const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
   const isTablet = useTablet();
 
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>(() => {
@@ -49,7 +54,19 @@ const MusicList = ({ musicData }: Props) => {
   };
 
   const handlePlayAll = () => {
-    console.log(musicData.map((music) => music.id));
+    if (playlistName && albumInfo) {
+      const newTitle = playlistName;
+      const newList = JSON.stringify(albumInfo.list);
+
+      if (playlist[newTitle] && playlist[newTitle] === newList) {
+        alert('이미 재생목록에 등록되어 있습니다.');
+      } else {
+        setPlaylist((prevPlaylist: any) => ({
+          ...prevPlaylist,
+          [newTitle]: newList,
+        }));
+      }
+    }
   };
 
   const handlePlayNextOrEnd = () => {
@@ -61,15 +78,17 @@ const MusicList = ({ musicData }: Props) => {
   return (
     <div className={styles['music-content']}>
       <div className={styles.controller}>
-        <button
-          type="button"
-          className={styles['all-play']}
-          disabled={selectedMusicIds.length > 0}
-          onClick={handlePlayAll}
-        >
-          <PlayMusicIcon />
-          전체 재생
-        </button>
+        {playlistName && (
+          <button
+            type="button"
+            className={styles['all-play']}
+            disabled={selectedMusicIds.length > 0}
+            onClick={handlePlayAll}
+          >
+            <PlayMusicIcon />
+            전체 재생
+          </button>
+        )}
         <button type="button" onClick={handlePlayNextOrEnd} disabled={selectedMusicIds.length === 0}>
           <StartListIcon />
           바로 다음

@@ -49,7 +49,7 @@ export default function PlaylistDetail({
         </div>
       </div>
       <div className={styles.content}>
-        <MusicList musicData={musicData} />
+        <MusicList musicData={musicData} playlistName={playlistData.title} />
       </div>
     </main>
   );

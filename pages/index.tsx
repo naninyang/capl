@@ -1,6 +1,8 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
+import { useRecoilState } from 'recoil';
 import { PlaylistsData } from '@/types';
+import { playlistState } from '@/recoil/atom';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.sass';
@@ -16,8 +18,24 @@ export default function Home({
   error: string;
   currentPage: number;
 }) {
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
+
   const isLandscapeDesktop = useLandscapeDesktop();
   const isPortraitDesktop = usePortraitDesktop();
+
+  const handlePlaylist = (data: any) => {
+    const newTitle = data.title;
+    const newList = JSON.stringify(data.list);
+
+    if (playlist[newTitle] && playlist[newTitle] === newList) {
+      alert('이미 재생목록에 등록되어 있습니다.');
+    } else {
+      setPlaylist((prevPlaylist: any) => ({
+        ...prevPlaylist,
+        [newTitle]: newList,
+      }));
+    }
+  };
 
   return (
     <>
@@ -50,7 +68,7 @@ export default function Home({
                         <span>플레이리스트 재생</span>
                       </Anchor>
                       {(isLandscapeDesktop || isPortraitDesktop) && (
-                        <button type="button">
+                        <button type="button" onClick={() => handlePlaylist(playlist)}>
                           <i>
                             <PlayMusicIcon />
                           </i>

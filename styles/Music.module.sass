@@ -8,6 +8,7 @@ nav
   position: fixed
   bottom: 0
   left: 0
+  z-index: 77
   width: 100%
 
   &.day
@@ -31,6 +32,7 @@ nav
   .music-bar
     display: flex
     justify-content: space-between
+    position: relative
 
     +mq(portraitMobile)
       padding: rem(12) rem(23)
@@ -88,6 +90,8 @@ nav
           font-size: rem(12)
 
       +mq(landscapeDesktop)
+        gap: rem(7)
+
         strong
           font-size: rem(16)
 
@@ -95,6 +99,8 @@ nav
           font-size: rem(14)
 
       +mq(portraitDesktop)
+        gap: rem(7)
+
         strong
           font-size: rem(16)
 
@@ -135,7 +141,286 @@ nav
           width: rem(27)
           height: rem(27)
 
+    .music-container
+      width: 100%
+
+      button
+        background-color: transparent
+
+      .seektime
+        position: absolute
+        top: 0
+        left: 0
+        width: 100%
+        height: rem(10)
+
+        button
+          display: flex
+          justify-content: flex-start
+          align-items: flex-start
+          position: relative
+          width: 100%
+          height: rem(10)
+
+          &:hover
+            s
+              height: rem(10)
+
+            i, span
+              height: rem(10)
+
+            i
+              min-width: rem(10)
+
+            span
+              border-radius: rem(10)
+              width: rem(10)
+              height: rem(10)
+
+          s
+            display: block
+            background-color: rgba($hex-white, .5)
+            width: 100%
+            height: rem(2)
+
+          i, span
+            background-color: $hex-accent
+            position: absolute
+            top: 0
+            height: rem(2)
+
+          i
+            left: 0
+            min-width: rem(2)
+
+            &.seeking
+              background-color: $hex-light
+
+          span
+            border-radius: rem(2)
+            width: rem(2)
+            height: rem(2)
+
+            strong
+              position: absolute
+              top: rem(-27)
+              left: 50%
+              background-color: $hex-accent
+              transform: translateX(-50%)
+              border-radius: rem(3)
+              padding: rem(5) rem(7)
+              font-size: rem(12)
+              font-variation-settings: $fw-900
+              line-height: 1
+              color: $hex-white
+
+      .songsong
+        +row
+        justify-content: space-between
+        width: 100%
+
+        .music-info, .music-playlist
+          +row
+          gap: rem(12)
+
+        .music-info
+          display: flex
+          width: 50%
+          padding-right: rem(116)
+
+          .info-container
+            display: flex
+            gap: rem(12)
+            position: relative
+            width: auto
+
+            button
+              position: absolute
+              top: 0
+              left: 0
+              width: 100%
+              height: 100%
+
+              span
+                +screen-reader-only
+
+          .thumbnail, .repeat
+            +coln
+
+          .thumbnail, img
+            width: rem(47)
+            height: rem(47)
+
+          .thumbnail
+            display: flex
+            justify-content: center
+            align-items: center
+
+            svg
+              width: rem(27)
+              height: rem(27)
+
+            img
+              display: block
+
+          .info
+            display: flex
+            flex-direction: column
+            justify-content: center
+            +col-auto
+            gap: rem(7)
+
+          .repeat
+            display: flex
+            align-items: center
+            width: rem(28)
+
+            button
+              svg
+                width: rem(27)
+                height: rem(27)
+
+                path:nth-of-type(2)
+                  fill: transparent
+
+              &.all
+                svg
+                  path:nth-of-type(2)
+                    fill: $hex-light
+
+              span
+                +screen-reader-only
+
+          .time
+            display: flex
+            align-items: center
+            +col
+
+            dl
+              display: flex
+              gap: rem(5)
+
+              div
+                display: flex
+
+                &:last-of-type
+                  gap: rem(5)
+
+                  &::before
+                    content: '/'
+                    font-size: rem(12)
+                    color: rgba($hex-white, .5)
+
+              dt
+                +screen-reader-only
+
+              dd
+                font-size: rem(14)
+                line-height: 1
+                color: rgba($hex-white, .7)
+
+        .music-controller
+          transform: translate(-50%, -50%)
+          position: absolute
+          top: 50%
+          left: 50%
+          display: flex
+          align-items: center
+          width: auto
+
+          button
+            width: rem(52)
+            height: rem(52)
+
+            span
+              +screen-reader-only
+
+            svg
+              width: rem(52)
+              height: rem(52)
+
+              path
+                fill: $hex-accent
+
+            &.side
+              width: rem(32)
+              height: rem(32)
+
+              svg
+                width: rem(32)
+                height: rem(32)
+
+                path
+                  fill: $hex-white
+
+        .music-playlist
+          display: flex
+          align-items: center
+          width: rem(162)
+
+          .volume
+            display: flex
+            gap: rem(3)
+            width: auto
+            height: rem(20)
+
+            button
+              width: rem(20)
+              height: rem(20)
+
+              svg
+                width: rem(20)
+                height: rem(20)
+
+              span
+                +screen-reader-only
+
+              &.muted
+                svg
+                  path
+                    fill: rgba($hex-white, .5)
+
+            .level
+              display: flex
+              justify-content: flex-start
+              align-items: center
+              width: rem(100)
+
+              s
+                display: flex
+                border-radius: rem(10)
+                width: 100%
+                height: rem(10)
+                background-color: rgba($hex-white, .2)
+
+                i
+                  border-radius: rem(10)
+                  width: 20%
+                  height: rem(10)
+                  background-color: $hex-white
+
+          .playlist
+            width: rem(27)
+            height: rem(27)
+
+            button, svg
+              width: rem(27)
+
+            button
+              &.visible
+                svg
+                  path
+                    fill: $hex-light
+
+              span
+                +screen-reader-only
+
   .music-player
+    height: calc(100dvh - rem(67))
+
     &:not(.open)
       height: 0
       overflow: hidden
+
+    h2
+      +screen-reader-only
