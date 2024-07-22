@@ -15,6 +15,7 @@ import {
   VolumeIsMutedIcon,
   VolumeNotMutedIcon,
 } from './Icons';
+import { useLandscapeDesktop, usePortraitDesktop, useTablet } from './MediaQuery';
 
 type Music = {
   id: number;
@@ -52,6 +53,8 @@ export default function Music() {
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   const currentPlaylistTitle = Object.keys(playlist)[0];
+
+  const isTablet = useTablet();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -349,18 +352,20 @@ export default function Music() {
                     <span>{isSingleTrackRepeating ? '재생목록 모든곡 반복하기' : '현재곡 반복하기'}</span>
                   </button>
                 </div>
-                <div className={styles.time}>
-                  <dl>
-                    <div>
-                      <dt>재생된 시간</dt>
-                      <dd>{formatTime(currentTime)}</dd>
-                    </div>
-                    <div>
-                      <dt>전체 재생시간</dt>
-                      <dd>{duration > 0 ? formatTime(duration) : '0:00'}</dd>
-                    </div>
-                  </dl>
-                </div>
+                {isTablet && (
+                  <div className={styles.time}>
+                    <dl>
+                      <div>
+                        <dt>재생된 시간</dt>
+                        <dd>{formatTime(currentTime)}</dd>
+                      </div>
+                      <div>
+                        <dt>전체 재생시간</dt>
+                        <dd>{duration > 0 ? formatTime(duration) : '0:00'}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                )}
               </div>
               <div className={styles['music-controller']}>
                 <button type="button" className={styles.side} onClick={handlePrevTrack}>
@@ -386,34 +391,36 @@ export default function Music() {
                 </button>
               </div>
               <div className={styles['music-playlist']}>
-                <div className={styles.volume}>
-                  <button type="button" className={isMuted ? styles.muted : undefined} onClick={handleToggleMute}>
-                    {isMuted ? (
-                      <>
-                        <VolumeIsMutedIcon />
-                        <span>음소거 취소하기</span>
-                      </>
-                    ) : (
-                      <>
-                        <VolumeNotMutedIcon />
-                        <span>음소거 하기</span>
-                      </>
-                    )}
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.level}
-                    onClick={handleVolumeChange}
-                    onMouseMove={handleVolumeChange}
-                    onTouchStart={handleVolumeTouchStart}
-                    onTouchMove={handleVolumeTouchMove}
-                    onTouchEnd={handleVolumeTouchEnd}
-                  >
-                    <s>
-                      <i style={{ width: `${volume}%` }} />
-                    </s>
-                  </button>
-                </div>
+                {isTablet && (
+                  <div className={styles.volume}>
+                    <button type="button" className={isMuted ? styles.muted : undefined} onClick={handleToggleMute}>
+                      {isMuted ? (
+                        <>
+                          <VolumeIsMutedIcon />
+                          <span>음소거 취소하기</span>
+                        </>
+                      ) : (
+                        <>
+                          <VolumeNotMutedIcon />
+                          <span>음소거 하기</span>
+                        </>
+                      )}
+                    </button>
+                    <button
+                      type="button"
+                      className={styles.level}
+                      onClick={handleVolumeChange}
+                      onMouseMove={handleVolumeChange}
+                      onTouchStart={handleVolumeTouchStart}
+                      onTouchMove={handleVolumeTouchMove}
+                      onTouchEnd={handleVolumeTouchEnd}
+                    >
+                      <s>
+                        <i style={{ width: `${volume}%` }} />
+                      </s>
+                    </button>
+                  </div>
+                )}
                 <div className={styles.playlist}>
                   <button
                     type="button"

@@ -4,7 +4,7 @@ import { useMediaQuery } from 'react-responsive';
 export function useLandscapeDesktop() {
   const [isLandscapeDesktop, setIsLandscapeDesktop] = useState(false);
   const landscapeDesktop = useMediaQuery({
-    query: `(min-aspect-ratio: 1/1) and (min-width: ${1151 / 16}rem)`,
+    query: `(min-aspect-ratio: 1/1) and (min-width: ${1200 / 16}rem)`,
   });
   useEffect(() => {
     setIsLandscapeDesktop(landscapeDesktop);
@@ -26,7 +26,7 @@ export function usePortraitDesktop() {
 export function useLandscapeMobile() {
   const [isLandscapeMobile, setIsLandscapeMobile] = useState(false);
   const landscapeMobile = useMediaQuery({
-    query: `(min-aspect-ratio: 1/1) and (max-width: ${1150 / 16}rem)`,
+    query: `(min-aspect-ratio: 1/1) and (max-width: ${1199 / 16}rem)`,
   });
   useEffect(() => {
     setIsLandscapeMobile(landscapeMobile);

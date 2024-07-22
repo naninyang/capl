@@ -71,9 +71,11 @@ nav
       display: flex
       flex-direction: column
       gap: rem(5)
+      overflow: hidden
 
       strong, cite
         line-height: 1
+        +ellipsis
 
       +mq(portraitMobile)
         strong
@@ -225,14 +227,21 @@ nav
 
         .music-info
           display: flex
-          width: 50%
-          padding-right: rem(116)
+          flex-wrap: nowrap
+          padding-right: rem(139)
+          width: auto
+
+          +mq(minExtraLarge)
+            width: 50%
+            padding-right: rem(58)
 
           .info-container
             display: flex
             gap: rem(12)
+            +coln
             position: relative
             width: auto
+            overflow: hidden
 
             button
               position: absolute
@@ -267,8 +276,12 @@ nav
             display: flex
             flex-direction: column
             justify-content: center
-            +col-auto
-            gap: rem(7)
+            gap: rem(5)
+            max-width: calc(100vw - rem(304))
+
+            +mq(minExtraLarge)
+              gap: rem(7)
+              max-width: calc(50vw - rem(292))
 
           .repeat
             display: flex
@@ -294,7 +307,7 @@ nav
           .time
             display: flex
             align-items: center
-            +col
+            width: rem(100)
 
             dl
               display: flex
@@ -320,35 +333,57 @@ nav
                 color: rgba($hex-white, .7)
 
         .music-controller
-          transform: translate(-50%, -50%)
+          transform: translateY(-50%)
           position: absolute
           top: 50%
-          left: 50%
           display: flex
           align-items: center
           width: auto
 
+          +mq(maxLarge)
+            right: rem(60)
+
+          +mq(minExtraLarge)
+            transform: translate(-50%, -50%)
+            left: 50%
+
           button
-            width: rem(52)
-            height: rem(52)
+            width: rem(43)
+            height: rem(43)
+
+            +mq(minExtraLarge)
+              width: rem(52)
+              height: rem(52)
 
             span
               +screen-reader-only
 
             svg
-              width: rem(52)
-              height: rem(52)
+              width: rem(43)
+              height: rem(43)
+
+              +mq(minExtraLarge)
+                width: rem(52)
+                height: rem(52)
 
               path
                 fill: $hex-accent
 
             &.side
-              width: rem(32)
-              height: rem(32)
+              width: rem(27)
+              height: rem(27)
 
-              svg
+              +mq(minExtraLarge)
                 width: rem(32)
                 height: rem(32)
+
+              svg
+                width: rem(27)
+                height: rem(27)
+
+                +mq(minExtraLarge)
+                  width: rem(32)
+                  height: rem(32)
 
                 path
                   fill: $hex-white
@@ -356,7 +391,10 @@ nav
         .music-playlist
           display: flex
           align-items: center
-          width: rem(162)
+          width: auto
+
+          +mq(minExtraLarge)
+            width: rem(162)
 
           .volume
             display: flex
@@ -400,11 +438,20 @@ nav
                   background-color: $hex-white
 
           .playlist
-            width: rem(27)
-            height: rem(27)
+            width: rem(20)
+            height: rem(20)
+
+            +mq(minExtraLarge)
+              width: rem(27)
+              height: rem(27)
 
             button, svg
-              width: rem(27)
+              width: rem(20)
+              height: rem(20)
+
+              +mq(minExtraLarge)
+                width: rem(27)
+                height: rem(27)
 
             button
               &.visible
