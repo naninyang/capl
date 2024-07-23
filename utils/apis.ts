@@ -29,7 +29,7 @@ export const formatDateInfo = (dateinfo: string) => {
 
 export async function getAlbumsData(page?: number, pageSize?: number) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-albums?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+    `${process.env.STRAPI_URL}/api/albums?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
     {
       method: 'GET',
       headers: {
@@ -53,7 +53,7 @@ export async function getAlbumsData(page?: number, pageSize?: number) {
 }
 
 export async function getAlbumData(albumId: number) {
-  const response = await fetch(`${process.env.STRAPI_URL}/api/capl-albums/${albumId}`, {
+  const response = await fetch(`${process.env.STRAPI_URL}/api/albums/${albumId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
@@ -80,7 +80,7 @@ export async function getAlbumData(albumId: number) {
 
 export async function getAlbumsSearchData(page?: number, pageSize?: number, albumTitle?: string) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-albums?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[title][$contains]=${albumTitle}`,
+    `${process.env.STRAPI_URL}/api/albums?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[title][$contains]=${albumTitle}`,
     {
       method: 'GET',
       headers: {
@@ -105,7 +105,7 @@ export async function getAlbumsSearchData(page?: number, pageSize?: number, albu
 
 export async function getArtistsData(page?: number, pageSize?: number) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+    `${process.env.STRAPI_URL}/api/artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
     {
       method: 'GET',
       headers: {
@@ -132,7 +132,7 @@ export async function getArtistsData(page?: number, pageSize?: number) {
 }
 
 export async function getArtistData(artistId: number) {
-  const response = await fetch(`${process.env.STRAPI_URL}/api/capl-artists/${artistId}`, {
+  const response = await fetch(`${process.env.STRAPI_URL}/api/artists/${artistId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
@@ -165,7 +165,7 @@ export async function getArtistData(artistId: number) {
 
 export async function getArtistsSearchData(page?: number, pageSize?: number, artistName?: any) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[abbr][$contains]=${artistName}`,
+    `${process.env.STRAPI_URL}/api/artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[abbr][$contains]=${artistName}`,
     {
       method: 'GET',
       headers: {
@@ -194,7 +194,7 @@ export async function getArtistsSearchData(page?: number, pageSize?: number, art
 
 export async function getMusicsData(page?: number, pageSize?: number) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+    `${process.env.STRAPI_URL}/api/musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
     {
       method: 'GET',
       headers: {
@@ -224,7 +224,7 @@ export async function getMusicsData(page?: number, pageSize?: number) {
 }
 
 export async function getMusicData(musicId: number) {
-  const response = await fetch(`${process.env.STRAPI_URL}/api/capl-musics/${musicId}`, {
+  const response = await fetch(`${process.env.STRAPI_URL}/api/musics/${musicId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
@@ -253,7 +253,7 @@ export async function getMusicData(musicId: number) {
 }
 
 export async function getMusicsTypeData(musicId?: number, type?: string) {
-  let filterQuery = `${process.env.STRAPI_URL}/api/capl-musics`;
+  let filterQuery = `${process.env.STRAPI_URL}/api/musics`;
   if (type !== null) {
     filterQuery += `/${musicId}?filters[$and][0][id][$eq]=${musicId}&filters[$and][1][${type}Id][$null]=false`;
   } else {
@@ -289,7 +289,7 @@ export async function getMusicsTypeData(musicId?: number, type?: string) {
 
 export async function getMusicsSearchData(page?: number, pageSize?: number, musicTitle?: string, type?: string) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[$and][0][title][$contains]=${musicTitle}&filters[$and][1][${type}Id][$null]=false`,
+    `${process.env.STRAPI_URL}/api/musics?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[$and][0][title][$contains]=${musicTitle}&filters[$and][1][${type}Id][$null]=false`,
     {
       method: 'GET',
       headers: {
@@ -320,7 +320,7 @@ export async function getMusicsSearchData(page?: number, pageSize?: number, musi
 
 export async function getPlaylistsData(page?: number, pageSize?: number) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-playlists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
+    `${process.env.STRAPI_URL}/api/playlists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}`,
     {
       method: 'GET',
       headers: {
@@ -343,7 +343,7 @@ export async function getPlaylistsData(page?: number, pageSize?: number) {
 }
 
 export async function getPlaylistData(playlistId: number) {
-  const response = await fetch(`${process.env.STRAPI_URL}/api/capl-playlists/${playlistId}`, {
+  const response = await fetch(`${process.env.STRAPI_URL}/api/playlists/${playlistId}`, {
     method: 'GET',
     headers: {
       Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
@@ -366,7 +366,7 @@ export async function getPlaylistData(playlistId: number) {
 
 export async function getPlaylistsSearchData(page?: number, pageSize?: number, playlistTag?: any) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-playlists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[tags][$contains]=${playlistTag}`,
+    `${process.env.STRAPI_URL}/api/playlists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[tags][$contains]=${playlistTag}`,
     {
       method: 'GET',
       headers: {
@@ -393,7 +393,7 @@ export const getStaffData = async (
   type: string,
 ): Promise<{ musics: MusicsData[]; artists: ArtistsData[] }> => {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/capl-musics?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[${type}][$contains]=${staffId}`,
+    `${process.env.STRAPI_URL}/api/musics?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[${type}][$contains]=${staffId}`,
     {
       method: 'GET',
       headers: {
@@ -441,7 +441,7 @@ export const getStaffData = async (
 
   if (artistIds.length > 0) {
     const artistResponse = await fetch(
-      `${process.env.STRAPI_URL}/api/capl-artists?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[id][$eq]=${staffId}`,
+      `${process.env.STRAPI_URL}/api/artists?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=100&filters[id][$eq]=${staffId}`,
       {
         method: 'GET',
         headers: {

@@ -30,6 +30,7 @@ nav
           opacity: .5
 
   .music-bar
+    transition: all .3s cubic-bezier(.5,0,.2,0)
     display: flex
     justify-content: space-between
     position: relative
@@ -49,6 +50,9 @@ nav
     +mq(portraitDesktop)
       padding: rem(23)
       height: rem(93)
+
+    &.musicbar-open
+      background-color: transparent
 
     .thumbnail
       +mq(portraitMobile)
@@ -463,11 +467,207 @@ nav
                 +screen-reader-only
 
   .music-player
-    height: calc(100dvh - rem(67))
+    transition: all .3s cubic-bezier(.5,0,.2,0)
+    overflow: hidden
+    position: absolute
+    opacity: 1
+    display: flex
+    flex-direction: column
+    width: 100%
+
+    +mq(portraitMobile)
+      bottom: 0
+      height: 100dvh
+
+    +mq(landscapeMobile)
+      bottom: 0
+      height: 100dvh
+
+    +mq(landscapeDesktop)
+      bottom: 93px
+      height: calc(100dvh - 93px)
+
+    +mq(portraitDesktop)
+      bottom: 93px
+      height: calc(100dvh - 93px)
 
     &:not(.open)
+      opacity: 0
       height: 0
-      overflow: hidden
+
+      +mq(portraitMobile)
+        bottom: rem(67)
+
+      +mq(landscapeMobile)
+        bottom: rem(67)
+
+      +mq(landscapeDesktop)
+        bottom: rem(93)
+
+      +mq(portraitDesktop)
+        bottom: rem(93)
 
     h2
       +screen-reader-only
+
+    button
+      background-color: transparent
+
+    .option
+      display: flex
+      justify-content: space-between
+      position: relative
+      padding: rem(52) rem(23)
+      width: 100%
+
+      .carplay
+        button
+          font-size: rem(24)
+          line-height: 1
+          text-decoration: underline
+
+      .musicNvideo
+        position: absolute
+        top: 50%
+        left: 50%
+        transform: translate(-50%, -50%)
+
+        ul
+          display: inline-flex
+          background-color: rgba($hex-white, .2)
+          border-radius: rem(32)
+          height: rem(32)
+
+          li
+            display: inline-flex
+            height: rem(32)
+
+          button
+            display: inline-flex
+            align-items: center
+            background-color: transparent
+            border-radius: rem(32)
+            padding: 0 rem(16)
+            height: rem(32)
+            font-size: rem(14)
+            color: $hex-white
+
+            &:not(.current)
+              &.isMusic
+                padding-right: rem(8)
+
+              &.isVideo
+                padding-left: rem(8)
+
+            &.current
+              background-color: $hex-accent
+              color: $hex-black
+
+      .close, .close button, .close svg
+        width: rem(32)
+        height: rem(32)
+
+      .close
+        span
+          +screen-reader-only
+
+    .musicplayer-container
+      display: flex
+      flex-grow: 1
+
+      +mq(portraitMobile)
+        flex-direction: column
+
+      +mq(portraitDesktop)
+        flex-direction: column
+
+      > div
+        +col
+
+      .mp-music
+        position: relative
+
+        img
+          display: block
+          position: absolute
+          top: 50%
+          left: 50%
+          width: 90%
+          height: 90%
+          object-fit: contain
+          transform: translate(-50%, -50%)
+
+          & + div
+            +screen-reader-only
+
+      .mp-info
+        display: flex
+        flex-direction: column
+        justify-content: center
+        gap: rem(23)
+
+        .primary
+          dt
+            +screen-reader-only
+
+          div:nth-of-type(1)
+            dd
+              font-size: rem(64)
+              font-variation-settings: $fw-950
+
+          div:nth-of-type(2)
+            padding: rem(5) 0 rem(37)
+
+            dd
+              font-size: rem(36)
+              line-height: 1
+
+          div:nth-of-type(3)
+            dd
+              font-size: rem(32)
+
+        .secondary
+          display: flex
+          flex-direction: column
+          gap: rem(12)
+
+          div
+            +row
+            gap: rem(17)
+
+            dt, dd
+              font-size: rem(24)
+
+            dt
+              width: rem(102)
+
+            dd
+              +col
+
+  .background
+    transition: all .3s cubic-bezier(.5,0,.2,0)
+    position: absolute
+    overflow: hidden
+    bottom: 0
+    left: 0
+    width: 100%
+    height: 100vh
+    opacity: 1
+
+    &:not(.background-open)
+      height: 0
+      opacity: 0
+
+    img
+      width: 100%
+      height: 100%
+      object-fit: cover
+
+    .dummy
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      background-color: rgba($hex-black, .7)
+      backdrop-filter: blur(rem(100))

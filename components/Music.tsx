@@ -1,10 +1,14 @@
 import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
-import YouTube, { YouTubeEvent, YouTubePlayer } from 'react-youtube';
+import YouTube, { YouTubePlayer } from 'react-youtube';
 import { useRecoilValue } from 'recoil';
 import { playlistState } from '@/recoil/atom';
+import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
+import { useTablet } from './MediaQuery';
 import {
+  CarplayIcon,
+  CloseIcon,
   MusicIcon,
   NextMusicIcon,
   PauseMusicIcon,
@@ -15,17 +19,14 @@ import {
   VolumeIsMutedIcon,
   VolumeNotMutedIcon,
 } from './Icons';
-import { useLandscapeDesktop, usePortraitDesktop, useTablet } from './MediaQuery';
 
 type Music = {
   id: number;
   title: string;
   musicId: string;
-  artist: {
-    id: number;
-    name: string;
-    otherName: string;
-  };
+  artist: ArtistsData[];
+  composer: ArtistsData[];
+  lyricist: ArtistsData[];
   album: {
     id: number;
     title: string;
@@ -67,8 +68,35 @@ export default function Music() {
           }
           const music = await response.json();
 
-          const artistResponse = await fetch(`/api/artist?id=${music.artist}`);
-          const artist = await artistResponse.json();
+          const artistPromises = music.artist.map(async (artistId: number) => {
+            const artistResponse = await fetch(`/api/artist?id=${artistId}`);
+            if (!artistResponse.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return artistResponse.json() as Promise<ArtistData>;
+          });
+
+          const artists = await Promise.all(artistPromises);
+
+          const composerPromises = music.composer.map(async (composerId: number) => {
+            const composerResponse = await fetch(`/api/artist?id=${composerId}`);
+            if (!composerResponse.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return composerResponse.json() as Promise<ArtistData>;
+          });
+
+          const composers = await Promise.all(composerPromises);
+
+          const lyricistPromises = music.lyricist.map(async (lyricistId: number) => {
+            const lyricistResponse = await fetch(`/api/artist?id=${lyricistId}`);
+            if (!lyricistResponse.ok) {
+              throw new Error('Network response was not ok');
+            }
+            return lyricistResponse.json() as Promise<ArtistData>;
+          });
+
+          const lyricists = await Promise.all(lyricistPromises);
 
           const albumResponse = await fetch(`/api/album?id=${music.album}`);
           const album = await albumResponse.json();
@@ -77,11 +105,21 @@ export default function Music() {
             id: music.id,
             title: music.title,
             musicId: music.musicId,
-            artist: {
+            composer: composers.map((composer: ArtistsData) => ({
+              id: composer.id,
+              name: composer.name,
+              otherName: composer.otherName,
+            })),
+            lyricist: lyricists.map((lyricist: ArtistsData) => ({
+              id: lyricist.id,
+              name: lyricist.name,
+              otherName: lyricist.otherName,
+            })),
+            artist: artists.map((artist: ArtistsData) => ({
               id: artist.id,
               name: artist.name,
               otherName: artist.otherName,
-            },
+            })),
             album: {
               id: album.id,
               title: album.title,
@@ -271,57 +309,161 @@ export default function Music() {
       </div>
       <div className={styles.info}>
         <strong>{track.title}</strong>
-        <cite>{track.artist.name}</cite>
+        <cite>
+          {track.artist
+            .map((artist: ArtistsData) => `${artist.name}${artist.otherName ? ` (${artist.otherName})` : ''}`)
+            .join(', ')}
+        </cite>
       </div>
     </>
   );
 
   return (
     <div className={`${styles.music} ${styles.day}`}>
+      {currentTrack && (
+        <div className={`${styles['background']} ${isPlayerOpen ? styles['background-open'] : ''}`}>
+          <Image
+            src={`https://cdn.dev1stud.io/capl/album/ext-${currentTrack.album.id}.webp`}
+            width={570}
+            height={570}
+            unoptimized
+            priority
+            alt=""
+          />
+          <div className={styles.dummy} />
+        </div>
+      )}
       <div className={`${styles['music-player']} ${isPlayerOpen ? styles.open : ''}`}>
         <h2>뮤직 플레이어</h2>
-        <dl>
-          {Object.entries(playlist).map(([key, value]) => (
-            <div key={key}>
-              <dt>{key}</dt>
-              <dd>{JSON.stringify(value)}</dd>
-            </div>
-          ))}
-        </dl>
+        <div className={styles.option}>
+          <div className={styles.carplay}>
+            <button type="button">
+              <span>카플레이 모드 전환</span>
+              {!isTablet && (
+                <>
+                  <CarplayIcon />
+                  <s>
+                    <i />
+                  </s>
+                </>
+              )}
+            </button>
+          </div>
+          <div className={styles.musicNvideo}>
+            <ul>
+              <li>
+                <button type="button">노래</button>
+              </li>
+              <li>
+                <button type="button">동영상</button>
+              </li>
+            </ul>
+          </div>
+          <div className={styles.close}>
+            <button type="button" onClick={() => setIsPlayerOpen(false)}>
+              <CloseIcon />
+              <span>뮤직 플레이어 닫기</span>
+            </button>
+          </div>
+        </div>
+        {isPlaylistVisible && (
+          <dl>
+            {Object.entries(playlist).map(([key, value]) => (
+              <div key={key}>
+                <dt>{key}</dt>
+                <dd>{JSON.stringify(value)}</dd>
+              </div>
+            ))}
+          </dl>
+        )}
         {currentTrack && (
-          <YouTube
-            videoId={currentTrack.musicId}
-            opts={{ playerVars: { autoplay: 1, controls: 1 } }}
-            onEnd={onEnd}
-            onReady={onReady}
-          />
+          <div className={styles['musicplayer-container']}>
+            <div className={`${styles['mp-visual']} ${styles['mp-music']}`}>
+              <Image
+                src={`https://cdn.dev1stud.io/capl/album/ext-${currentTrack.album.id}.webp`}
+                width={570}
+                height={570}
+                unoptimized
+                priority
+                alt=""
+              />
+              <YouTube
+                videoId={currentTrack.musicId}
+                opts={{ playerVars: { autoplay: 1, controls: 1 } }}
+                onEnd={onEnd}
+                onReady={onReady}
+              />
+            </div>
+            <div className={styles['mp-info']}>
+              <dl className={styles.primary}>
+                <div>
+                  <dt>곡명</dt>
+                  <dd>{currentTrack.title}</dd>
+                </div>
+                <div>
+                  <dt>아티스트</dt>
+                  <dd>
+                    {currentTrack.artist
+                      .map((artist: ArtistsData) => `${artist.name}${artist.otherName ? ` (${artist.otherName})` : ''}`)
+                      .join(', ')}
+                  </dd>
+                </div>
+                <div>
+                  <dt>앨범명</dt>
+                  <dd>
+                    {currentTrack.album.title} ({currentTrack.album.release})
+                  </dd>
+                </div>
+              </dl>
+              <dl className={styles.secondary}>
+                <div>
+                  <dt>작곡</dt>
+                  <dd>
+                    {currentTrack.composer
+                      .map((artist: ArtistsData) => `${artist.name}${artist.otherName ? ` (${artist.otherName})` : ''}`)
+                      .join(', ')}
+                  </dd>
+                </div>
+                <div>
+                  <dt>작사</dt>
+                  <dd>
+                    {currentTrack.lyricist
+                      .map((artist: ArtistsData) => `${artist.name}${artist.otherName ? ` (${artist.otherName})` : ''}`)
+                      .join(', ')}
+                  </dd>
+                </div>
+              </dl>
+            </div>
+          </div>
         )}
       </div>
-      <div className={styles['music-bar']}>
+      <div className={`${styles['music-bar']} ${isPlayerOpen ? styles['musicbar-open'] : ''}`}>
         {Object.keys(playlist).length > 0 ? (
           <div className={styles['music-container']}>
-            <button
-              type="button"
-              className={styles.seektime}
-              onMouseMove={handleMouseMove}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              onClick={handleSeek}
-            >
-              <s>
-                <i
-                  style={{
-                    width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
-                  }}
-                  className={isSeeking ? styles.seeking : undefined}
-                />
-                {isSeeking && (
-                  <span style={{ left: `${(seekTime / duration) * 100}%` }}>
-                    <strong>{formatTime(seekTime)}</strong>
-                  </span>
-                )}
-              </s>
-            </button>
+            <div className={styles.seektime}>
+              <button
+                type="button"
+                className={styles.seektime}
+                onMouseMove={handleMouseMove}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={handleSeek}
+              >
+                <s>
+                  <i
+                    style={{
+                      width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                    }}
+                    className={isSeeking ? styles.seeking : undefined}
+                  />
+                  {isSeeking && (
+                    <span style={{ left: `${(seekTime / duration) * 100}%` }}>
+                      <strong>{formatTime(seekTime)}</strong>
+                    </span>
+                  )}
+                </s>
+              </button>
+            </div>
             <div className={styles.songsong}>
               <div className={styles['music-info']}>
                 <div className={styles['info-container']}>
