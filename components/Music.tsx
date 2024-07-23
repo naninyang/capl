@@ -24,6 +24,7 @@ type Music = {
   id: number;
   title: string;
   musicId: string;
+  videoId: string;
   artist: ArtistsData[];
   composer: ArtistsData[];
   lyricist: ArtistsData[];
@@ -51,6 +52,7 @@ export default function Music() {
   const [isSeeking, setIsSeeking] = useState(false);
   const [volume, setVolume] = useState(100);
   const [previousVolume, setPreviousVolume] = useState(100);
+  const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   const currentPlaylistTitle = Object.keys(playlist)[0];
@@ -105,6 +107,7 @@ export default function Music() {
             id: music.id,
             title: music.title,
             musicId: music.musicId,
+            videoId: music.videoId,
             composer: composers.map((composer: ArtistsData) => ({
               id: composer.id,
               name: composer.name,
@@ -151,6 +154,7 @@ export default function Music() {
   }, [isSeeking]);
 
   const currentTrack = currentPlaylist[currentTrackIndex];
+  const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
 
   const handleToggleRepeat = () => {
     setIsSingleTrackRepeating((prev) => !prev);
@@ -291,9 +295,9 @@ export default function Music() {
     setIsSeeking(false);
   };
 
-  if (!isClient) {
-    return null;
-  }
+  const handleToggleMode = () => {
+    setIsMusicMode((prev) => !prev);
+  };
 
   const renderTrackInfo = (track: Music) => (
     <>
@@ -317,6 +321,10 @@ export default function Music() {
       </div>
     </>
   );
+
+  if (!isClient) {
+    return null;
+  }
 
   return (
     <div className={`${styles.music} ${styles.day}`}>
@@ -349,13 +357,25 @@ export default function Music() {
               )}
             </button>
           </div>
-          <div className={styles.musicNvideo}>
+          <div className={styles['musicNvideo']}>
             <ul>
               <li>
-                <button type="button">노래</button>
+                <button
+                  type="button"
+                  onClick={() => setIsMusicMode(true)}
+                  className={`${styles.isMusic} ${isMusicMode ? styles.current : ''}`}
+                >
+                  노래
+                </button>
               </li>
               <li>
-                <button type="button">동영상</button>
+                <button
+                  type="button"
+                  onClick={() => setIsMusicMode(false)}
+                  className={`${styles.isVideo} ${isMusicMode ? '' : styles.current}`}
+                >
+                  동영상
+                </button>
               </li>
             </ul>
           </div>
@@ -378,21 +398,33 @@ export default function Music() {
         )}
         {currentTrack && (
           <div className={styles['musicplayer-container']}>
-            <div className={`${styles['mp-visual']} ${styles['mp-music']}`}>
-              <Image
-                src={`https://cdn.dev1stud.io/capl/album/ext-${currentTrack.album.id}.webp`}
-                width={570}
-                height={570}
-                unoptimized
-                priority
-                alt=""
-              />
+            <div className={styles['mp-visual']}>
+              {isMusicMode && (
+                <Image
+                  src={`https://cdn.dev1stud.io/capl/album/ext-${currentTrack.album.id}.webp`}
+                  width={570}
+                  height={570}
+                  unoptimized
+                  priority
+                  alt=""
+                />
+              )}
               <YouTube
-                videoId={currentTrack.musicId}
-                opts={{ playerVars: { autoplay: 1, controls: 1 } }}
+                videoId={videoId}
+                opts={{
+                  playerVars: {
+                    autoplay: 1,
+                    controls: 0,
+                    modestbranding: 1,
+                    rel: 0,
+                    disablekb: 0,
+                    iv_load_policy: 3,
+                  },
+                }}
                 onEnd={onEnd}
                 onReady={onReady}
               />
+              {!isMusicMode && <span />}
             </div>
             <div className={styles['mp-info']}>
               <dl className={styles.primary}>
