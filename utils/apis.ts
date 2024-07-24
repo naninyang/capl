@@ -124,7 +124,7 @@ export async function getArtistsData(page?: number, pageSize?: number) {
     birth: formatDateInfo(data.attributes.birth),
     member: data.attributes.member,
     group: data.attributes.group,
-    abbr: data.attributes.abbr,
+    tags: data.attributes.tags,
     isSolo: data.attributes.isSolo,
   }));
 
@@ -150,7 +150,7 @@ export async function getArtistData(artistId: number) {
     birth: formatDateInfo(artistData.attributes.birth),
     member: artistData.attributes.member,
     group: artistData.attributes.group,
-    abbr: artistData.attributes.abbr,
+    tags: artistData.attributes.tags,
     isSolo: artistData.attributes.isSolo,
     album: artistData.attributes.album,
     music: artistData.attributes.music,
@@ -165,7 +165,7 @@ export async function getArtistData(artistId: number) {
 
 export async function getArtistsSearchData(page?: number, pageSize?: number, artistName?: any) {
   const response = await fetch(
-    `${process.env.STRAPI_URL}/api/artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[abbr][$contains]=${artistName}`,
+    `${process.env.STRAPI_URL}/api/artists?sort[0]=id:desc&pagination[page]=${page}&pagination[pageSize]=${pageSize}&filters[tags][$contains]=${artistName}`,
     {
       method: 'GET',
       headers: {
@@ -184,7 +184,7 @@ export async function getArtistsSearchData(page?: number, pageSize?: number, art
     birth: formatDateInfo(data.attributes.birth),
     member: data.attributes.member,
     group: data.attributes.group,
-    abbr: data.attributes.abbr,
+    tags: data.attributes.tags,
     album: data.attributes.album,
     isSolo: data.attributes.isSolo,
   }));
@@ -462,7 +462,7 @@ export const getStaffData = async (
       birth: formatDateInfo(data.attributes.birth),
       member: data.attributes.member,
       group: data.attributes.group,
-      abbr: data.attributes.abbr,
+      tags: data.attributes.tags,
       album: data.attributes.album,
       isSolo: data.attributes.isSolo,
     }));

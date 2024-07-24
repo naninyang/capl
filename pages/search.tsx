@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { SearchResult } from '@/types';
+import { AlbumsData, SearchResult } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
 import MusicSearch from '@/components/MusicSearch';
@@ -22,6 +22,19 @@ export default function Search() {
   const { s } = router.query;
   const [query, setQuery] = useState<string>('');
   const [data, setData] = useState<SearchResult | null>(null);
+  const [musicItems, setMusicItems] = useState<AlbumsData>({
+    id: 0,
+    idx: '',
+    title: '',
+    release: 0,
+    artist: null,
+    relationArtists: null,
+    relationStaffs: null,
+    credit: null,
+    list: [],
+    genre: null,
+    createdAt: '',
+  });
 
   useEffect(() => {
     if (q) {
@@ -35,6 +48,22 @@ export default function Search() {
       const response = await fetch(`/api/search?keyword=${keyword}&search=${s}`);
       const result: SearchResult = await response.json();
       setData(result);
+      if (s === 'music' && result?.musicData) {
+        const ids = result.musicData.map((item: { id: number }) => item.id);
+        setMusicItems({
+          id: 0,
+          idx: '',
+          title: '',
+          release: 0,
+          artist: null,
+          relationArtists: null,
+          relationStaffs: null,
+          credit: null,
+          list: ids,
+          genre: null,
+          createdAt: '',
+        });
+      }
     } else {
       const response = await fetch(`/api/search?keyword=${keyword}`);
       const result: SearchResult = await response.json();
@@ -141,7 +170,13 @@ export default function Search() {
                 </div>
               ) : (
                 <>
-                  {s === 'music' && <MusicList musicData={data.musicData} />}
+                  {s === 'music' && (
+                    <MusicList
+                      musicData={data.musicData}
+                      playlistName={`'${data.musicData[0].title}' 외 다수`}
+                      albumInfo={musicItems}
+                    />
+                  )}
                   {s === 'video' && <VideoList videoData={data.videoData} />}
                   {s === 'album' && <AlbumList albumData={data.albumData} />}
                   {s === 'artist' && <ArtistList artistData={data.artistData} />}

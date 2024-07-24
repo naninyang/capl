@@ -37,7 +37,8 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
           <dt>아티스트명</dt>
           <dd>
             <strong>
-              {artistData.name} {artistData.otherName && `(${artistData.otherName})`}
+              {artistData.name}
+              {artistData.otherName && ` (${artistData.otherName})`}
             </strong>
           </dd>
         </dl>
@@ -64,7 +65,8 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
                       groupData.map((artists: ArtistsData, index: number) => (
                         <React.Fragment key={artists.id}>
                           <Anchor href={`/artist/${artists.idx}`}>
-                            {artists.name} {artists.otherName && `(${artists.otherName})`}
+                            {artists.name}
+                            {artists.otherName && ` (${artists.otherName})`}
                           </Anchor>
                           {index < memberData.length - 1 && ', '}
                         </React.Fragment>
@@ -83,7 +85,8 @@ const Cover = ({ artistNumber, artistData, groupData, memberData }: Props) => {
                       memberData.map((artists: ArtistsData, index: number) => (
                         <React.Fragment key={artists.id}>
                           <Anchor href={`/artist/${artists.idx}`}>
-                            {artists.name} {artists.otherName && `(${artists.otherName})`}
+                            {artists.name}
+                            {artists.otherName && ` (${artists.otherName})`}
                           </Anchor>
                           {index < memberData.length - 1 && ', '}
                         </React.Fragment>

@@ -1,8 +1,8 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
-import { PlaylistsData } from '@/types';
 import { playlistState } from '@/recoil/atom';
+import { PlaylistsData } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
 import styles from '@/styles/Home.module.sass';

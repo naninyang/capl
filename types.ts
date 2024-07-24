@@ -36,7 +36,7 @@ export interface ArtistsData {
   birth: string;
   member: any;
   group: any;
-  abbr: any;
+  tags: any;
   isSolo: boolean;
   agency: string;
   album: any;
@@ -57,7 +57,7 @@ export interface ArtistData {
     birth: string;
     member: any;
     group: any;
-    abbr: any;
+    tags: any;
     album: any;
     isSolo: boolean;
     createdAt: string;

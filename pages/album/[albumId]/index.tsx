@@ -61,7 +61,8 @@ export default function AlbumDetail({
                 artistData.map((artists: ArtistsData, index: number) => (
                   <React.Fragment key={artists.id}>
                     <Anchor href={`/artist/${artists.idx}`}>
-                      {artists.name} {artists.otherName && `(${artists.otherName})`}
+                      {artists.name}
+                      {artists.otherName && ` (${artists.otherName})`}
                     </Anchor>
                     {index < artistData.length - 1 && ', '}
                   </React.Fragment>

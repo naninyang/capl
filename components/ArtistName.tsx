@@ -30,7 +30,8 @@ const ArtistName = ({ artistId }: ArtistNameProps) => {
           {isTablet ? (
             <>
               <Anchor href={`/artist/${artist.idx}`}>
-                {artist.name} ({artist.otherName})
+                {artist.name}
+                {artist.otherName && ` (${artist.otherName})`}
               </Anchor>
               {index < artistData.length - 1 && ', '}
             </>
