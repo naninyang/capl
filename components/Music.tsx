@@ -16,6 +16,8 @@ import {
   PlayMusicIcon,
   PrevMusicIcon,
   RepeatIcon,
+  TrashIcon,
+  ViewIcon,
   VolumeIsMutedIcon,
   VolumeNotMutedIcon,
 } from './Icons';
@@ -387,14 +389,62 @@ export default function Music() {
           </div>
         </div>
         {isPlaylistVisible && (
-          <dl>
+          <div className={styles.playlist}>
+            <h2>플레이리스트 선택</h2>
+            <div className={styles.select}>
+              <button type="button" className={styles.selected}>
+                <strong>플레이리스트 이름</strong>
+              </button>
+              <ul>
+                {Object.entries(playlist).map(([key]) => (
+                  <li key={key}>
+                    <button type="button">
+                      {key} <strong>(현재 플레이리스트)</strong>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button type="button" className={styles.view}>
+                <ViewIcon />
+                <span>선택한 플레이리스트 보기</span>
+              </button>
+              <button type="button" className={styles.delete}>
+                <TrashIcon />
+                <span>선택한 플레이리스트 삭제</span>
+              </button>
+            </div>
+            <div className={styles.items}>
+              <ul>
+                <li>
+                  <div className={styles.thumbnail}>
+                    <Image
+                      src={`https://cdn.dev1stud.io/capl/album/thm-1.webp`}
+                      width={47}
+                      height={47}
+                      unoptimized
+                      priority
+                      alt=""
+                    />
+                  </div>
+                  <div className={styles.info}>
+                    <strong>LOVE</strong>
+                    <cite>브라운아이드걸스 (Brown Edyed Girls)</cite>
+                  </div>
+                  <button type="button">
+                    <span>곡 듣기</span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            {/* <dl>
             {Object.entries(playlist).map(([key, value]) => (
               <div key={key}>
                 <dt>{key}</dt>
                 <dd>{JSON.stringify(value)}</dd>
               </div>
             ))}
-          </dl>
+          </dl> */}
+          </div>
         )}
         {currentTrack && (
           <div className={styles['musicplayer-container']}>

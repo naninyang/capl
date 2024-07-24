@@ -12,6 +12,10 @@ nav
   width: 100%
 
   &.day
+    .music-player
+      .playlist
+        background-color: $hex-dark
+
     .music-bar
       background-color: $hex-dark
 
@@ -507,7 +511,7 @@ nav
       +mq(portraitDesktop)
         bottom: rem(93)
 
-    h2
+    > h2
       +screen-reader-only
 
     button
@@ -660,6 +664,135 @@ nav
 
             dd
               +col
+
+    .playlist
+      display: flex
+      flex-direction: column
+      gap: rem(10)
+      position: absolute
+      top: rem(136)
+      right: 0
+      padding: rem(27) rem(23)
+      width: rem(370)
+      height: 100%
+
+      h2
+        font-size: rem(16)
+        line-height: 1
+
+      .select
+        display: flex
+        gap: rem(10)
+        position: relative
+
+        button
+          span
+            +screen-reader-only
+
+        .selected, .view, .delete, ul
+          border-radius: rem(3)
+
+        .selected, .view, .delete
+          height: rem(28)
+
+        .selected
+          +col
+          overflow: hidden
+          border: 1px solid rgba($hex-white, .2)
+          padding: 0 rem(7)
+          height: rem(28)
+          text-align: left
+
+          strong
+            font-size: rem(14)
+            +ellipsis
+
+        ul
+          display: none
+          position: absolute
+          top: 0
+          left: 0
+          width: rem(248)
+          background-color: $hex-white
+
+          li
+            &::before
+              content: ''
+              display: block
+              width: 100%
+              height: 1px
+              background-color: $hex-dark
+
+            &:first-of-type::before
+              display: none
+
+            button
+              padding: rem(7) rem(16)
+              font-size: rem(14)
+              text-align: left
+              color: $hex-black
+
+              strong
+                font-variation-settings: $fw-900
+                color: $hex-accent
+
+        .view, .delete
+          width: rem(28)
+
+          svg
+            width: rem(20)
+            height: rem(20)
+
+        .view
+          border: 1px solid rgba($hex-white, .2)
+
+        .delete
+          border: 1px solid $hex-accent
+          background-color: $hex-accent
+
+      .items
+        padding-top: rem(14)
+
+        ul
+          display: flex
+          flex-direction: column
+          gap: rem(7)
+
+          li
+            +row
+            gap: rem(12)
+
+            .thumbnail
+              width: rem(47)
+              height: rem(47)
+
+              img
+                display: block
+                width: rem(47)
+                height: rem(47)
+
+            .info
+              +col
+              display: flex
+              flex-direction: column
+              justify-content: center
+              gap: rem(7)
+              overflow: hidden
+
+              strong, cite
+                +ellipsis
+                line-height: 1
+
+              strong
+                font-size: rem(16)
+
+              cite
+                font-size: rem(14)
+                color: rgba($hex-white, .5)
+
+            button
+              span
+                +screen-reader-only
 
   .background
     transition: all .3s cubic-bezier(.5,0,.2,0)
