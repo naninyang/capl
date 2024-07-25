@@ -26,9 +26,15 @@ export default function Home({
   const handlePlaylist = (data: any) => {
     const newTitle = data.title;
     const newList = JSON.stringify(data.list);
+    const isCurrentlyPlaying = newTitle === Object.keys(playlist)[0];
 
-    if (playlist[newTitle] && playlist[newTitle] === newList) {
-      alert('이미 재생목록에 등록되어 있습니다.');
+    if (isCurrentlyPlaying) {
+      alert('이미 재생중입니다');
+    } else if (playlist[newTitle] && playlist[newTitle] === newList) {
+      setPlaylist((prevPlaylist: any) => {
+        const { [newTitle]: value, ...rest } = prevPlaylist;
+        return { [newTitle]: value, ...rest };
+      });
     } else {
       setPlaylist((prevPlaylist: any) => ({
         ...prevPlaylist,

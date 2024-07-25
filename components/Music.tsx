@@ -56,10 +56,12 @@ export default function Music() {
   const [previousVolume, setPreviousVolume] = useState(100);
   const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
-
   const currentPlaylistTitle = Object.keys(playlist)[0];
-
   const isTablet = useTablet();
+
+  useEffect(() => {
+    setCurrentTrackIndex(0);
+  }, [playlist]);
 
   useEffect(() => {
     const fetchData = async () => {
