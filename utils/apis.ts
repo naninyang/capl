@@ -72,6 +72,7 @@ export async function getAlbumData(albumId: number) {
     credit: albumData.attributes.credit,
     list: albumData.attributes.list,
     genre: albumData.attributes.genre,
+    albumNumbering: albumData.attributes.albumNumbering,
     createdAt: albumData.attributes.createdAt,
   };
 

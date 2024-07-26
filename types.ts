@@ -9,6 +9,7 @@ export interface AlbumsData {
   credit: any;
   list: any;
   genre: any;
+  albumNumbering: string;
   createdAt: string;
 }
 

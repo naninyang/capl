@@ -34,19 +34,22 @@ type Music = {
     id: number;
     title: string;
     release: string;
-    albumnumbering: string;
+    albumNumbering: string;
   };
 };
 
 export default function Music() {
   const playlist = useRecoilValue(playlistState);
-  const [isClient, setIsClient] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
+  const [isPlaylistDropdownOpen, setIsPlaylistDropdownOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const [isSingleTrackRepeating, setIsSingleTrackRepeating] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaylistVisible, setIsPlaylistVisible] = useState(false);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
+  const [viewedPlaylist, setViewedPlaylist] = useState<Music[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -56,7 +59,8 @@ export default function Music() {
   const [previousVolume, setPreviousVolume] = useState(100);
   const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
-  const currentPlaylistTitle = Object.keys(playlist)[0];
+  const currentPlaylistTitle = Object.keys(playlist)[0] || '재생 목록 없음';
+
   const isTablet = useTablet();
 
   useEffect(() => {
@@ -131,7 +135,7 @@ export default function Music() {
               id: album.id,
               title: album.title,
               release: album.release,
-              albumnumbering: album.albumnumbering,
+              albumNumbering: album.albumNumbering,
             },
           };
         }),
@@ -159,6 +163,97 @@ export default function Music() {
 
   const currentTrack = currentPlaylist[currentTrackIndex];
   const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
+
+  const handleViewPlaylist = () => {
+    if (!selectedPlaylist) return;
+
+    const playlistData = JSON.parse(playlist[selectedPlaylist]);
+    const fetchPlaylistData = async () => {
+      try {
+        const musicDetails = await Promise.all(
+          playlistData.map(async (id: number) => {
+            const response = await fetch(`/api/music?id=${id}`);
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+            const music = await response.json();
+
+            const artistPromises = music.artist.map(async (artistId: number) => {
+              const artistResponse = await fetch(`/api/artist?id=${artistId}`);
+              if (!artistResponse.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return artistResponse.json() as Promise<ArtistData>;
+            });
+
+            const artists = await Promise.all(artistPromises);
+
+            const composerPromises = music.composer.map(async (composerId: number) => {
+              const composerResponse = await fetch(`/api/artist?id=${composerId}`);
+              if (!composerResponse.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return composerResponse.json() as Promise<ArtistData>;
+            });
+
+            const composers = await Promise.all(composerPromises);
+
+            const lyricistPromises = music.lyricist.map(async (lyricistId: number) => {
+              const lyricistResponse = await fetch(`/api/artist?id=${lyricistId}`);
+              if (!lyricistResponse.ok) {
+                throw new Error('Network response was not ok');
+              }
+              return lyricistResponse.json() as Promise<ArtistData>;
+            });
+
+            const lyricists = await Promise.all(lyricistPromises);
+
+            const albumResponse = await fetch(`/api/album?id=${music.album}`);
+            const album = await albumResponse.json();
+
+            return {
+              id: music.id,
+              title: music.title,
+              musicId: music.musicId,
+              videoId: music.videoId,
+              composer: composers.map((composer: ArtistsData) => ({
+                id: composer.id,
+                name: composer.name,
+                otherName: composer.otherName,
+              })),
+              lyricist: lyricists.map((lyricist: ArtistsData) => ({
+                id: lyricist.id,
+                name: lyricist.name,
+                otherName: lyricist.otherName,
+              })),
+              artist: artists.map((artist: ArtistsData) => ({
+                id: artist.id,
+                name: artist.name,
+                otherName: artist.otherName,
+              })),
+              album: {
+                id: album.id,
+                title: album.title,
+                release: album.release,
+                albumNumbering: album.albumNumbering,
+              },
+            };
+          }),
+        );
+        setViewedPlaylist(musicDetails);
+      } catch (error) {
+        console.error('Error fetching playlist data:', error);
+      }
+    };
+
+    fetchPlaylistData();
+  };
+
+  const handlePlayTrack = (index: number) => {
+    setCurrentTrackIndex(index);
+    setCurrentPlaylist(viewedPlaylist);
+    setIsPlaying(true);
+  };
 
   const handleToggleRepeat = () => {
     setIsSingleTrackRepeating((prev) => !prev);
@@ -394,19 +489,32 @@ export default function Music() {
           <div className={styles.playlist}>
             <h2>플레이리스트 선택</h2>
             <div className={styles.select}>
-              <button type="button" className={styles.selected}>
-                <strong>플레이리스트 이름</strong>
+              <button
+                type="button"
+                className={styles.selected}
+                onClick={() => setIsPlaylistDropdownOpen(!isPlaylistDropdownOpen)}
+              >
+                <strong>{selectedPlaylist || currentPlaylistTitle}</strong>
               </button>
-              <ul>
-                {Object.entries(playlist).map(([key]) => (
-                  <li key={key}>
-                    <button type="button">
-                      {key} <strong>(현재 플레이리스트)</strong>
-                    </button>
-                  </li>
-                ))}
-              </ul>
-              <button type="button" className={styles.view}>
+              {isPlaylistDropdownOpen && (
+                <ul>
+                  {Object.entries(playlist).map(([key]) => (
+                    <li key={key}>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedPlaylist(key);
+                          setIsPlaylistDropdownOpen(false);
+                        }}
+                      >
+                        {key}
+                        {key === currentPlaylistTitle ? <strong> (현재 플레이리스트)</strong> : null}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              )}
+              <button type="button" className={styles.view} disabled={!selectedPlaylist} onClick={handleViewPlaylist}>
                 <ViewIcon />
                 <span>선택한 플레이리스트 보기</span>
               </button>
@@ -417,35 +525,29 @@ export default function Music() {
             </div>
             <div className={styles.items}>
               <ul>
-                <li>
-                  <div className={styles.thumbnail}>
-                    <Image
-                      src={`https://cdn.dev1stud.io/capl/album/thm-1.webp`}
-                      width={47}
-                      height={47}
-                      unoptimized
-                      priority
-                      alt=""
-                    />
-                  </div>
-                  <div className={styles.info}>
-                    <strong>LOVE</strong>
-                    <cite>브라운아이드걸스 (Brown Edyed Girls)</cite>
-                  </div>
-                  <button type="button">
-                    <span>곡 듣기</span>
-                  </button>
-                </li>
+                {viewedPlaylist.length > 0 ? (
+                  viewedPlaylist.map((track, index) => (
+                    <li key={index}>
+                      {renderTrackInfo(track)}
+                      <button type="button" onClick={() => handlePlayTrack(index)}>
+                        <span>곡 듣기</span>
+                      </button>
+                    </li>
+                  ))
+                ) : (
+                  <>
+                    {currentPlaylist.map((track, index) => (
+                      <li key={index}>
+                        {renderTrackInfo(track)}
+                        <button type="button" onClick={() => handlePlayTrack(index)}>
+                          <span>곡 듣기</span>
+                        </button>
+                      </li>
+                    ))}
+                  </>
+                )}
               </ul>
             </div>
-            {/* <dl>
-            {Object.entries(playlist).map(([key, value]) => (
-              <div key={key}>
-                <dt>{key}</dt>
-                <dd>{JSON.stringify(value)}</dd>
-              </div>
-            ))}
-          </dl> */}
           </div>
         )}
         {currentTrack && (

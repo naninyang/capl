@@ -708,7 +708,6 @@ nav
             +ellipsis
 
         ul
-          display: none
           position: absolute
           top: 0
           left: 0
@@ -727,6 +726,7 @@ nav
               display: none
 
             button
+              width: 100%
               padding: rem(7) rem(16)
               font-size: rem(14)
               text-align: left
@@ -761,6 +761,7 @@ nav
           li
             +row
             gap: rem(12)
+            position: relative
 
             .thumbnail
               width: rem(47)
@@ -791,6 +792,12 @@ nav
                 color: rgba($hex-white, .5)
 
             button
+              position: absolute
+              top: 0
+              left: 0
+              width: 100%
+              height: 100%
+
               span
                 +screen-reader-only
 
