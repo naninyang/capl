@@ -33,6 +33,7 @@ export default function Search() {
     credit: null,
     list: [],
     genre: null,
+    albumNumbering: '',
     createdAt: '',
   });
 
@@ -61,6 +62,7 @@ export default function Search() {
           credit: null,
           list: ids,
           genre: null,
+          albumNumbering: '',
           createdAt: '',
         });
       }
