@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
-import { useRecoilValue } from 'recoil';
+import { useRecoilState, useRecoilValue } from 'recoil';
 import { playlistState } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
@@ -39,7 +39,7 @@ type Music = {
 };
 
 export default function Music() {
-  const playlist = useRecoilValue(playlistState);
+  const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [isPlaylistDropdownOpen, setIsPlaylistDropdownOpen] = useState(false);
@@ -253,6 +253,19 @@ export default function Music() {
     setCurrentTrackIndex(index);
     setCurrentPlaylist(viewedPlaylist);
     setIsPlaying(true);
+  };
+
+  const handleDeletePlaylist = () => {
+    if (!selectedPlaylist) return;
+
+    const confirmDelete = window.confirm('삭제하시면 복구가 안돼요! 그래도 삭제할까요?');
+    if (confirmDelete) {
+      const newPlaylist = { ...playlist };
+      delete newPlaylist[selectedPlaylist];
+      setPlaylist(newPlaylist);
+      setSelectedPlaylist(null);
+      setViewedPlaylist([]);
+    }
   };
 
   const handleToggleRepeat = () => {
@@ -518,7 +531,12 @@ export default function Music() {
                 <ViewIcon />
                 <span>선택한 플레이리스트 보기</span>
               </button>
-              <button type="button" className={styles.delete}>
+              <button
+                type="button"
+                className={styles.delete}
+                disabled={!selectedPlaylist}
+                onClick={handleDeletePlaylist}
+              >
                 <TrashIcon />
                 <span>선택한 플레이리스트 삭제</span>
               </button>
