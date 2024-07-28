@@ -303,7 +303,12 @@ export default function Music() {
   };
 
   const handleTogglePlaylistVisibility = () => {
-    setIsPlaylistVisible((prev) => !prev);
+    if (!isPlayerOpen) {
+      setIsPlayerOpen(true);
+      setIsPlaylistVisible(true);
+    } else {
+      setIsPlaylistVisible((prev) => !prev);
+    }
   };
 
   const handleTogglePlayerVisibility = () => {
