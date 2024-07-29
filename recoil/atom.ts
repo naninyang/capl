@@ -24,3 +24,26 @@ export const playlistState = atom({
   default: {} as Record<string, string>,
   effects: [localStorageEffect('playlistState')],
 });
+
+export const currentPlaylistTitleState = atom({
+  key: 'currentPlaylistTitleState',
+  default: '',
+  effects: [
+    ({ setSelf, onSet }) => {
+      if (typeof window !== 'undefined') {
+        const savedValue = localStorage.getItem('currentPlaylistTitle');
+        if (savedValue !== null) {
+          setSelf(savedValue);
+        }
+
+        onSet((newValue, _, isReset) => {
+          if (isReset) {
+            localStorage.removeItem('currentPlaylistTitle');
+          } else {
+            localStorage.setItem('currentPlaylistTitle', newValue);
+          }
+        });
+      }
+    },
+  ],
+});

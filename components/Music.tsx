@@ -1,8 +1,8 @@
 import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { playlistState } from '@/recoil/atom';
+import { useRecoilState } from 'recoil';
+import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
 import { useTablet } from './MediaQuery';
@@ -42,7 +42,7 @@ export default function Music() {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
-  const [isPlaylistDropdownOpen, setIsPlaylistDropdownOpen] = useState(false);
+  const [isPlaylistDropdown, setIsPlaylistDropdown] = useState(false);
   const [isClient, setIsClient] = useState(false);
   const [isSingleTrackRepeating, setIsSingleTrackRepeating] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
@@ -59,7 +59,8 @@ export default function Music() {
   const [previousVolume, setPreviousVolume] = useState(100);
   const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
-  const currentPlaylistTitle = Object.keys(playlist)[0] || '재생 목록 없음';
+  const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
+  const prevSelectedPlaylistRef = useRef<string | null>(null);
 
   const isTablet = useTablet();
 
@@ -147,8 +148,15 @@ export default function Music() {
       fetchData();
     }
 
+    if (!currentPlaylistTitle && Object.keys(playlist).length > 0) {
+      setCurrentPlaylistTitle(Object.keys(playlist)[0]);
+    }
+
     setIsClient(true);
   }, [currentPlaylistTitle, playlist]);
+
+  const currentTrack = currentPlaylist[currentTrackIndex];
+  const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -160,9 +168,6 @@ export default function Music() {
 
     return () => clearInterval(interval);
   }, [isSeeking]);
-
-  const currentTrack = currentPlaylist[currentTrackIndex];
-  const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
 
   const handleViewPlaylist = () => {
     if (!selectedPlaylist) return;
@@ -250,8 +255,12 @@ export default function Music() {
   };
 
   const handlePlayTrack = (index: number) => {
+    if (selectedPlaylist) {
+      setCurrentPlaylist(viewedPlaylist);
+    } else {
+      setCurrentPlaylist(currentPlaylist);
+    }
     setCurrentTrackIndex(index);
-    setCurrentPlaylist(viewedPlaylist);
     setIsPlaying(true);
   };
 
@@ -510,11 +519,11 @@ export default function Music() {
               <button
                 type="button"
                 className={styles.selected}
-                onClick={() => setIsPlaylistDropdownOpen(!isPlaylistDropdownOpen)}
+                onClick={() => setIsPlaylistDropdown(!isPlaylistDropdown)}
               >
                 <strong>{selectedPlaylist || currentPlaylistTitle}</strong>
               </button>
-              {isPlaylistDropdownOpen && (
+              {isPlaylistDropdown && (
                 <ul>
                   {Object.entries(playlist).map(([key]) => (
                     <li key={key}>
@@ -522,11 +531,10 @@ export default function Music() {
                         type="button"
                         onClick={() => {
                           setSelectedPlaylist(key);
-                          setIsPlaylistDropdownOpen(false);
+                          setIsPlaylistDropdown(false);
                         }}
                       >
                         {key}
-                        {key === currentPlaylistTitle ? <strong> (현재 플레이리스트)</strong> : null}
                       </button>
                     </li>
                   ))}
