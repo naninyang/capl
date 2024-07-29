@@ -26,7 +26,7 @@ export default function Home({
   const handlePlaylist = (data: any) => {
     const newTitle = data.title;
     const newList = JSON.stringify(data.list);
-    const isCurrentlyPlaying = newTitle === Object.keys(playlist)[0];
+    const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
 
     if (isCurrentlyPlaying) {
       alert('이미 재생중입니다');

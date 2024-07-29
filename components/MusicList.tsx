@@ -38,9 +38,9 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
 
   const handleSelectAll = () => {
     if (allSelected) {
-      setSelectedMusicIds([]);
-    } else {
       setSelectedMusicIds(musicData.map((music) => music.id));
+    } else {
+      setSelectedMusicIds([]);
     }
     setAllSelected(!allSelected);
   };
@@ -57,7 +57,7 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
     if (playlistName && albumInfo) {
       const newTitle = playlistName;
       const newList = JSON.stringify(albumInfo.list);
-      const isCurrentlyPlaying = newTitle === Object.keys(playlist)[0];
+      const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
 
       if (isCurrentlyPlaying) {
         alert('이미 재생중입니다');
@@ -84,6 +84,7 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   return (
     <div className={styles['music-content']}>
       <div className={styles.controller}>
+        {console.log('albumInfo: ', albumInfo)}
         {playlistName && (
           <button
             type="button"
