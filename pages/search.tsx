@@ -42,7 +42,7 @@ export default function Search() {
       setQuery(Array.isArray(q) ? q[0] : q);
       fetchData(Array.isArray(q) ? q[0] : q);
     }
-  }, [q]);
+  }, [q, s]);
 
   const fetchData = async (keyword: string) => {
     if (s) {
