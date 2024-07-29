@@ -84,7 +84,6 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   return (
     <div className={styles['music-content']}>
       <div className={styles.controller}>
-        {console.log('albumInfo: ', albumInfo)}
         {playlistName && (
           <button
             type="button"
