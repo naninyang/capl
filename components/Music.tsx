@@ -270,7 +270,6 @@ export default function Music() {
 
   const handleDeletePlaylist = () => {
     if (!selectedPlaylist) return;
-
     const confirmDelete = window.confirm('삭제하시면 복구가 안돼요! 그래도 삭제할까요?');
     if (confirmDelete) {
       const newPlaylist = { ...playlist };
