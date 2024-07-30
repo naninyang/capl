@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
-import { playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
 import { PlaylistsData } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
@@ -19,6 +19,7 @@ export default function Home({
   currentPage: number;
 }) {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
+  const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
 
   const isLandscapeDesktop = useLandscapeDesktop();
   const isPortraitDesktop = usePortraitDesktop();
@@ -29,17 +30,19 @@ export default function Home({
     const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
 
     if (isCurrentlyPlaying) {
-      alert('이미 재생중입니다');
+      alert('이미 재생중이거나 추가된 플레이리스트입니다');
     } else if (playlist[newTitle] && playlist[newTitle] === newList) {
       setPlaylist((prevPlaylist: any) => {
         const { [newTitle]: value, ...rest } = prevPlaylist;
         return { [newTitle]: value, ...rest };
       });
+      setCurrentPlaylistTitle(newTitle);
     } else {
       setPlaylist((prevPlaylist: any) => ({
         ...prevPlaylist,
         [newTitle]: newList,
       }));
+      setCurrentPlaylistTitle(newTitle);
     }
   };
 

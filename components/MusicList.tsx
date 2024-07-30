@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
 import { AlbumsData, MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
@@ -18,6 +18,7 @@ type Props = {
 
 const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
+  const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const isTablet = useTablet();
 
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>(() => {
@@ -29,20 +30,12 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   });
   const [allSelected, setAllSelected] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('music', JSON.stringify(selectedMusicIds));
-    }
-    setAllSelected(musicData.length > 0 && selectedMusicIds.length === musicData.length);
-  }, [selectedMusicIds, musicData]);
-
   const handleSelectAll = () => {
-    if (allSelected) {
-      setSelectedMusicIds(musicData.map((music) => music.id));
-    } else {
-      setSelectedMusicIds([]);
-    }
-    setAllSelected(!allSelected);
+    setAllSelected((prevAllSelected) => {
+      const newAllSelected = !prevAllSelected;
+      setSelectedMusicIds(newAllSelected ? musicData.map((music) => music.id) : []);
+      return newAllSelected;
+    });
   };
 
   const handleSelectOne = (id: number) => {
@@ -60,17 +53,19 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
       const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
 
       if (isCurrentlyPlaying) {
-        alert('이미 재생중입니다');
+        alert('이미 재생중이거나 추가된 플레이리스트입니다');
       } else if (playlist[newTitle] && playlist[newTitle] === newList) {
         setPlaylist((prevPlaylist: any) => {
           const { [newTitle]: value, ...rest } = prevPlaylist;
           return { [newTitle]: value, ...rest };
         });
+        setCurrentPlaylistTitle(newTitle);
       } else {
         setPlaylist((prevPlaylist: any) => ({
           ...prevPlaylist,
           [newTitle]: newList,
         }));
+        setCurrentPlaylistTitle(newTitle);
       }
     }
   };

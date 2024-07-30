@@ -41,8 +41,8 @@ type Music = {
 export default function Music() {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [isPlaylistDropdown, setIsPlaylistDropdown] = useState(false);
   const [isClient, setIsClient] = useState(false);
