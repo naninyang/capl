@@ -47,3 +47,9 @@ export const currentPlaylistTitleState = atom({
     },
   ],
 });
+
+export const currentTrackIndexState = atom<number>({
+  key: 'currentTrackIndexState',
+  default: 0,
+  effects: [localStorageEffect('currentTrackIndex')],
+});

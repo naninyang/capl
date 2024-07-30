@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, currentTrackIndexState, playlistState } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
 import { useTablet } from './MediaQuery';
@@ -40,7 +40,9 @@ type Music = {
 
 export default function Music() {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
-  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
+  const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
+  const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [isPlaylistDropdown, setIsPlaylistDropdown] = useState(false);
   const [isClient, setIsClient] = useState(false);
@@ -48,7 +50,6 @@ export default function Music() {
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaylistVisible, setIsPlaylistVisible] = useState(false);
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
-  const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
   const [viewedPlaylist, setViewedPlaylist] = useState<Music[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
   const [currentTime, setCurrentTime] = useState(0);
@@ -59,13 +60,13 @@ export default function Music() {
   const [previousVolume, setPreviousVolume] = useState(100);
   const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
-  const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
-  const prevSelectedPlaylistRef = useRef<string | null>(null);
 
   const isTablet = useTablet();
 
   useEffect(() => {
-    setCurrentTrackIndex(0);
+    if (!currentTrackIndex) {
+      setCurrentTrackIndex(0);
+    }
   }, [playlist]);
 
   useEffect(() => {
@@ -254,9 +255,12 @@ export default function Music() {
     fetchPlaylistData();
   };
 
-  const handlePlayTrack = (index: number) => {
+  const handlePlayTrack = (index: number, playlistTitle?: string | null) => {
     if (selectedPlaylist) {
       setCurrentPlaylist(viewedPlaylist);
+      if (playlistTitle !== undefined && playlistTitle !== null) {
+        setCurrentPlaylistTitle(playlistTitle);
+      }
     } else {
       setCurrentPlaylist(currentPlaylist);
     }
@@ -560,7 +564,7 @@ export default function Music() {
                   viewedPlaylist.map((track, index) => (
                     <li key={index}>
                       {renderTrackInfo(track)}
-                      <button type="button" onClick={() => handlePlayTrack(index)}>
+                      <button type="button" onClick={() => handlePlayTrack(index, selectedPlaylist)}>
                         <span>곡 듣기</span>
                       </button>
                     </li>
