@@ -51,21 +51,22 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
       const newTitle = playlistName;
       const newList = JSON.stringify(albumInfo.list);
       const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
+      setCurrentPlaylistTitle(newTitle);
 
       if (isCurrentlyPlaying) {
         alert('이미 재생중이거나 추가된 플레이리스트입니다');
-      } else if (playlist[newTitle] && playlist[newTitle] === newList) {
+      } else if (playlist[currentPlaylistTitle] && playlist[currentPlaylistTitle] === newList) {
         setPlaylist((prevPlaylist: any) => {
-          const { [newTitle]: value, ...rest } = prevPlaylist;
-          return { [newTitle]: value, ...rest };
+          const { [currentPlaylistTitle]: value, ...rest } = prevPlaylist;
+          return { [currentPlaylistTitle]: value, ...rest };
         });
-        setCurrentPlaylistTitle(newTitle);
+        setCurrentPlaylistTitle(currentPlaylistTitle);
       } else {
         setPlaylist((prevPlaylist: any) => ({
           ...prevPlaylist,
-          [newTitle]: newList,
+          [currentPlaylistTitle]: newList,
         }));
-        setCurrentPlaylistTitle(newTitle);
+        setCurrentPlaylistTitle(currentPlaylistTitle);
       }
     }
   };
