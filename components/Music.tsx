@@ -256,6 +256,7 @@ export default function Music() {
   };
 
   const handlePlayTrack = (index: number, playlistTitle?: string | null) => {
+    setCurrentTrackIndex(index);
     if (selectedPlaylist) {
       setCurrentPlaylist(viewedPlaylist);
       if (playlistTitle !== undefined && playlistTitle !== null) {
@@ -264,7 +265,6 @@ export default function Music() {
     } else {
       setCurrentPlaylist(currentPlaylist);
     }
-    setCurrentTrackIndex(index);
     setIsPlaying(true);
   };
 
@@ -316,14 +316,13 @@ export default function Music() {
 
   const handlePlayerClose = () => {
     setIsPlaylistDropdown(false);
-    setViewedPlaylist([]);
+    // setViewedPlaylist([]);
     setIsPlayerOpen(false);
     setIsPlaylistVisible(false);
   };
 
   const handleTogglePlaylistVisibility = () => {
     setIsPlaylistDropdown(false);
-    setViewedPlaylist([]);
     if (!isPlayerOpen) {
       setIsPlayerOpen(true);
       setIsPlaylistVisible(true);
