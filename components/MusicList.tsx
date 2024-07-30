@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, currentTrackIndexState, playlistState } from '@/recoil/atom';
 import { AlbumsData, MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
@@ -19,6 +19,7 @@ type Props = {
 const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
+  const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
   const isTablet = useTablet();
 
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>(() => {
@@ -71,8 +72,34 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
     }
   };
 
-  const handlePlayNextOrEnd = () => {
-    console.log(selectedMusicIds);
+  const handlePlayNext = () => {
+    setCurrentPlaylistTitle(currentPlaylistTitle);
+    if (currentPlaylistTitle && playlist[currentPlaylistTitle]) {
+      const currentPlaylist = JSON.parse(playlist[currentPlaylistTitle]);
+      const updatedPlaylist = [
+        ...currentPlaylist.slice(0, currentTrackIndex + 1),
+        ...selectedMusicIds,
+        ...currentPlaylist.slice(currentTrackIndex + 1),
+      ];
+      setPlaylist((prevPlaylist: any) => ({
+        ...prevPlaylist,
+        [currentPlaylistTitle]: JSON.stringify(updatedPlaylist),
+      }));
+      alert('곡들이 다음에 재생됩니다.');
+    }
+  };
+
+  const handlePlayEnd = () => {
+    setCurrentPlaylistTitle(currentPlaylistTitle);
+    if (currentPlaylistTitle && playlist[currentPlaylistTitle]) {
+      const currentPlaylist = JSON.parse(playlist[currentPlaylistTitle]);
+      const updatedPlaylist = [...currentPlaylist, ...selectedMusicIds];
+      setPlaylist((prevPlaylist: any) => ({
+        ...prevPlaylist,
+        [currentPlaylistTitle]: JSON.stringify(updatedPlaylist),
+      }));
+      alert('곡들이 맨 하단에 추가되었습니다.');
+    }
   };
 
   const router = useRouter();
@@ -91,11 +118,11 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
             전체 재생
           </button>
         )}
-        <button type="button" onClick={handlePlayNextOrEnd} disabled={selectedMusicIds.length === 0}>
+        <button type="button" onClick={handlePlayNext} disabled={selectedMusicIds.length === 0}>
           <StartListIcon />
           바로 다음
         </button>
-        <button type="button" onClick={handlePlayNextOrEnd} disabled={selectedMusicIds.length === 0}>
+        <button type="button" onClick={handlePlayEnd} disabled={selectedMusicIds.length === 0}>
           <EndListIcon />맨 하단
         </button>
       </div>

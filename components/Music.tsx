@@ -69,82 +69,82 @@ export default function Music() {
     }
   }, [playlist]);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const playlistData = JSON.parse(playlist[currentPlaylistTitle]) || [];
-      const musicDetails = await Promise.all(
-        playlistData.map(async (id: number) => {
-          const response = await fetch(`/api/music?id=${id}`);
-          if (!response.ok) {
+  const fetchData = async () => {
+    const playlistData = JSON.parse(playlist[currentPlaylistTitle]) || [];
+    const musicDetails = await Promise.all(
+      playlistData.map(async (id: number) => {
+        const response = await fetch(`/api/music?id=${id}`);
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        const music = await response.json();
+
+        const artistPromises = music.artist.map(async (artistId: number) => {
+          const artistResponse = await fetch(`/api/artist?id=${artistId}`);
+          if (!artistResponse.ok) {
             throw new Error('Network response was not ok');
           }
-          const music = await response.json();
+          return artistResponse.json() as Promise<ArtistData>;
+        });
 
-          const artistPromises = music.artist.map(async (artistId: number) => {
-            const artistResponse = await fetch(`/api/artist?id=${artistId}`);
-            if (!artistResponse.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return artistResponse.json() as Promise<ArtistData>;
-          });
+        const artists = await Promise.all(artistPromises);
 
-          const artists = await Promise.all(artistPromises);
+        const composerPromises = music.composer.map(async (composerId: number) => {
+          const composerResponse = await fetch(`/api/artist?id=${composerId}`);
+          if (!composerResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return composerResponse.json() as Promise<ArtistData>;
+        });
 
-          const composerPromises = music.composer.map(async (composerId: number) => {
-            const composerResponse = await fetch(`/api/artist?id=${composerId}`);
-            if (!composerResponse.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return composerResponse.json() as Promise<ArtistData>;
-          });
+        const composers = await Promise.all(composerPromises);
 
-          const composers = await Promise.all(composerPromises);
+        const lyricistPromises = music.lyricist.map(async (lyricistId: number) => {
+          const lyricistResponse = await fetch(`/api/artist?id=${lyricistId}`);
+          if (!lyricistResponse.ok) {
+            throw new Error('Network response was not ok');
+          }
+          return lyricistResponse.json() as Promise<ArtistData>;
+        });
 
-          const lyricistPromises = music.lyricist.map(async (lyricistId: number) => {
-            const lyricistResponse = await fetch(`/api/artist?id=${lyricistId}`);
-            if (!lyricistResponse.ok) {
-              throw new Error('Network response was not ok');
-            }
-            return lyricistResponse.json() as Promise<ArtistData>;
-          });
+        const lyricists = await Promise.all(lyricistPromises);
 
-          const lyricists = await Promise.all(lyricistPromises);
+        const albumResponse = await fetch(`/api/album?id=${music.album}`);
+        const album = await albumResponse.json();
 
-          const albumResponse = await fetch(`/api/album?id=${music.album}`);
-          const album = await albumResponse.json();
+        return {
+          id: music.id,
+          title: music.title,
+          musicId: music.musicId,
+          videoId: music.videoId,
+          composer: composers.map((composer: ArtistsData) => ({
+            id: composer.id,
+            name: composer.name,
+            otherName: composer.otherName,
+          })),
+          lyricist: lyricists.map((lyricist: ArtistsData) => ({
+            id: lyricist.id,
+            name: lyricist.name,
+            otherName: lyricist.otherName,
+          })),
+          artist: artists.map((artist: ArtistsData) => ({
+            id: artist.id,
+            name: artist.name,
+            otherName: artist.otherName,
+          })),
+          album: {
+            id: album.id,
+            title: album.title,
+            release: album.release,
+            albumNumbering: album.albumNumbering,
+          },
+        };
+      }),
+    );
+    setCurrentPlaylist(musicDetails);
+  };
 
-          return {
-            id: music.id,
-            title: music.title,
-            musicId: music.musicId,
-            videoId: music.videoId,
-            composer: composers.map((composer: ArtistsData) => ({
-              id: composer.id,
-              name: composer.name,
-              otherName: composer.otherName,
-            })),
-            lyricist: lyricists.map((lyricist: ArtistsData) => ({
-              id: lyricist.id,
-              name: lyricist.name,
-              otherName: lyricist.otherName,
-            })),
-            artist: artists.map((artist: ArtistsData) => ({
-              id: artist.id,
-              name: artist.name,
-              otherName: artist.otherName,
-            })),
-            album: {
-              id: album.id,
-              title: album.title,
-              release: album.release,
-              albumNumbering: album.albumNumbering,
-            },
-          };
-        }),
-      );
-      setCurrentPlaylist(musicDetails);
-    };
-
+  useEffect(() => {
     if (currentPlaylistTitle) {
       fetchData();
     }
@@ -314,7 +314,16 @@ export default function Music() {
     }
   };
 
+  const handlePlayerClose = () => {
+    setIsPlaylistDropdown(false);
+    setViewedPlaylist([]);
+    setIsPlayerOpen(false);
+    setIsPlaylistVisible(false);
+  };
+
   const handleTogglePlaylistVisibility = () => {
+    setIsPlaylistDropdown(false);
+    setViewedPlaylist([]);
     if (!isPlayerOpen) {
       setIsPlayerOpen(true);
       setIsPlaylistVisible(true);
@@ -509,7 +518,7 @@ export default function Music() {
             </ul>
           </div>
           <div className={styles.close}>
-            <button type="button" onClick={() => setIsPlayerOpen(false)}>
+            <button type="button" onClick={handlePlayerClose}>
               <CloseIcon />
               <span>뮤직 플레이어 닫기</span>
             </button>
