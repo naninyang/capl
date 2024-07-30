@@ -316,7 +316,6 @@ export default function Music() {
 
   const handlePlayerClose = () => {
     setIsPlaylistDropdown(false);
-    // setViewedPlaylist([]);
     setIsPlayerOpen(false);
     setIsPlaylistVisible(false);
   };
