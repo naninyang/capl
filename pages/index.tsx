@@ -32,15 +32,15 @@ export default function Home({
 
     if (isCurrentlyPlaying) {
       alert('이미 재생중이거나 추가된 플레이리스트입니다');
-    } else if (playlist[currentPlaylistTitle] && playlist[currentPlaylistTitle] === newList) {
+    } else if (playlist[newTitle] && playlist[newTitle] === newList) {
       setPlaylist((prevPlaylist: any) => {
-        const { [currentPlaylistTitle]: value, ...rest } = prevPlaylist;
-        return { [currentPlaylistTitle]: value, ...rest };
+        const { [newTitle]: value, ...rest } = prevPlaylist;
+        return { [newTitle]: value, ...rest };
       });
     } else {
       setPlaylist((prevPlaylist: any) => ({
         ...prevPlaylist,
-        [currentPlaylistTitle]: newList,
+        [newTitle]: newList,
       }));
     }
   };
