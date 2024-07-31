@@ -175,7 +175,7 @@ export default function Search() {
                   {s === 'music' && (
                     <MusicList
                       musicData={data.musicData}
-                      playlistName={`'${data.musicData[0].title}' 외 다수`}
+                      playlistName={`‘${query}’ 키워드 관련 노래`}
                       albumInfo={musicItems}
                     />
                   )}

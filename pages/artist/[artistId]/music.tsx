@@ -19,10 +19,28 @@ export default function MusicPage({
   memberData: ArtistsData[];
   groupData: ArtistsData[];
 }) {
+  const musicItems = {
+    id: 0,
+    idx: '',
+    title: '',
+    release: 0,
+    artist: null,
+    relationArtists: null,
+    relationStaffs: null,
+    credit: null,
+    list: artistData.music,
+    genre: null,
+    albumNumbering: '',
+    createdAt: '',
+  };
   return (
     <main className={styles.artist}>
       <Cover artistNumber={artistNumber} artistData={artistData} groupData={groupData} memberData={memberData} />
-      <div className={styles.content}>{musicData.length > 0 && <MusicList musicData={musicData} />}</div>
+      <div className={styles.content}>
+        {musicData.length > 0 && (
+          <MusicList musicData={musicData} playlistName={`‘${artistData.name}’의 노래들`} albumInfo={musicItems} />
+        )}
+      </div>
     </main>
   );
 }
