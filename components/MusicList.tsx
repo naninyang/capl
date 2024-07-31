@@ -73,9 +73,12 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   const handlePlayOne = (musicInfo: any) => {
     const newTitle = `'${musicInfo.title}' 외 다수`;
     const newList = JSON.stringify([musicInfo.id]);
+    const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
     setCurrentPlaylistTitle(newTitle);
 
-    if (playlist[newTitle] && playlist[newTitle] === newList) {
+    if (isCurrentlyPlaying) {
+      alert('이미 재생중이거나 추가된 플레이리스트입니다');
+    } else if (playlist[newTitle] && playlist[newTitle] === newList) {
       setPlaylist((prevPlaylist: any) => {
         const { [newTitle]: value, ...rest } = prevPlaylist;
         return { [newTitle]: value, ...rest };
