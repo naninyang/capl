@@ -38,7 +38,6 @@ export const getStaticProps: GetStaticProps = async (context) => {
   if (artistId && typeof artistId === 'string') {
     const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/artist/${artistId.substring(14)}/item`);
     const artistResponse = await response.json();
-    console.log('artistResponse: ', artistResponse);
     let createdAt = artistResponse.createdAt;
 
     if (createdAt && formatDate(createdAt) === artistId.substring(0, 14)) {

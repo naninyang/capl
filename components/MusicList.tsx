@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
@@ -56,19 +56,35 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
 
       if (isCurrentlyPlaying) {
         alert('이미 재생중이거나 추가된 플레이리스트입니다');
-      } else if (playlist[currentPlaylistTitle] && playlist[currentPlaylistTitle] === newList) {
+      } else if (playlist[newTitle] && playlist[newTitle] === newList) {
         setPlaylist((prevPlaylist: any) => {
-          const { [currentPlaylistTitle]: value, ...rest } = prevPlaylist;
-          return { [currentPlaylistTitle]: value, ...rest };
+          const { [newTitle]: value, ...rest } = prevPlaylist;
+          return { [newTitle]: value, ...rest };
         });
-        setCurrentPlaylistTitle(currentPlaylistTitle);
       } else {
         setPlaylist((prevPlaylist: any) => ({
           ...prevPlaylist,
-          [currentPlaylistTitle]: newList,
+          [newTitle]: newList,
         }));
-        setCurrentPlaylistTitle(currentPlaylistTitle);
       }
+    }
+  };
+
+  const handlePlayOne = (musicInfo: any) => {
+    const newTitle = `'${musicInfo.title}' 외 다수`;
+    const newList = JSON.stringify([musicInfo.id]);
+    setCurrentPlaylistTitle(newTitle);
+
+    if (playlist[newTitle] && playlist[newTitle] === newList) {
+      setPlaylist((prevPlaylist: any) => {
+        const { [newTitle]: value, ...rest } = prevPlaylist;
+        return { [newTitle]: value, ...rest };
+      });
+    } else {
+      setPlaylist((prevPlaylist: any) => ({
+        ...prevPlaylist,
+        [newTitle]: newList,
+      }));
     }
   };
 
@@ -156,7 +172,7 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
                     <span>{selectedMusicIds.includes(music.id) ? '곡 선택됨' : '선택 안된 곡'}</span>
                   </button>
                 </div>
-                <button type="button">
+                <button type="button" onClick={() => handlePlayOne(music)}>
                   <Image
                     src={`https://cdn.dev1stud.io/capl/album/thm-${music.album}.webp`}
                     width={47}

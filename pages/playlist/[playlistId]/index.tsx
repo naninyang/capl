@@ -13,6 +13,21 @@ export default function PlaylistDetail({
   playlistData: PlaylistsData;
   musicData: MusicsData[];
 }) {
+  const musicItems = {
+    id: 0,
+    idx: '',
+    title: '',
+    release: 0,
+    artist: null,
+    relationArtists: null,
+    relationStaffs: null,
+    credit: null,
+    list: playlistData.list,
+    genre: null,
+    albumNumbering: '',
+    createdAt: '',
+  };
+
   return (
     <main className={styles.playlist}>
       <div className={styles.cover}>
@@ -49,7 +64,7 @@ export default function PlaylistDetail({
         </div>
       </div>
       <div className={styles.content}>
-        <MusicList musicData={musicData} playlistName={playlistData.title} />
+        <MusicList musicData={musicData} playlistName={playlistData.title} albumInfo={musicItems} />
       </div>
     </main>
   );
