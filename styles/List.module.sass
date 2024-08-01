@@ -1,86 +1,87 @@
 @import './designSystem'
 
+.controller
+  +row
+  gap: rem(7)
+
+  button
+    display: flex
+    justify-content: center
+    align-items: center
+    gap: rem(3)
+    background-color: $hex-accent
+    border-radius: rem(3)
+    height: rem(30)
+    font-size: rem(14)
+    font-variation-settings: $fw-500
+    line-height: 1
+    color: $hex-white
+
+    +mq(maxExtraSmall)
+      +col
+
+    +mq(minSmall)
+      display: inline-flex
+      gap: rem(3)
+      width: auto
+      padding: 0 rem(24) 0 rem(17)
+      height: rem(37)
+      font-size: rem(16)
+      font-variation-settings: $fw-500
+
+    &:disabled
+      background-color: rgba($hex-white, .2)
+      color: rgba($hex-white, .5)
+
+      svg
+        path
+          fill: rgba($hex-white, .5)
+
+    svg
+      width: rem(20)
+      height: rem(20)
+
+      path
+        fill: $hex-white
+
+.checkbox-status
+  display: flex
+  gap: rem(12)
+  padding: rem(7)
+
+  .checkbox
+    width: rem(24)
+    height: rem(24)
+
+    button
+      background-color: transparent
+      width: rem(24)
+      height: rem(24)
+
+      svg
+        width: rem(24)
+        height: rem(24)
+
+      span
+        +screen-reader-only
+
+  .count
+    display: flex
+    align-items: center
+    font-size: rem(14)
+    line-height: 1
+
+    strong
+      font-variation-settings: $fw-900
+
 .music-content
   display: flex
   flex-direction: column
   gap: rem(10)
 
-  .controller
-    +row
-    gap: rem(7)
-
-    button
-      display: flex
-      justify-content: center
-      align-items: center
-      gap: rem(3)
-      background-color: $hex-accent
-      border-radius: rem(3)
-      height: rem(30)
-      font-size: rem(14)
-      font-variation-settings: $fw-500
-      line-height: 1
-      color: $hex-white
-
-      +mq(maxExtraSmall)
-        +col
-
-      +mq(minSmall)
-        display: inline-flex
-        gap: rem(3)
-        width: auto
-        padding: 0 rem(24) 0 rem(17)
-        height: rem(37)
-        font-size: rem(16)
-        font-variation-settings: $fw-500
-
-      &:disabled
-        background-color: rgba($hex-white, .2)
-        color: rgba($hex-white, .5)
-
-        svg
-          path
-            fill: rgba($hex-white, .5)
-
-      svg
-        width: rem(20)
-        height: rem(20)
-
-        path
-          fill: $hex-white
-
   .musics
     button
       background-color: transparent
-
-    .checkbox-status
-      display: flex
-      gap: rem(12)
-      padding: rem(7)
-
-      .checkbox
-        width: rem(24)
-        height: rem(24)
-
-        button
-          width: rem(24)
-          height: rem(24)
-
-          svg
-            width: rem(24)
-            height: rem(24)
-
-          span
-            +screen-reader-only
-
-      .count
-        display: flex
-        align-items: center
-        font-size: rem(14)
-        line-height: 1
-
-        strong
-          font-variation-settings: $fw-900
 
     .music-items
       .item
@@ -233,17 +234,13 @@
                     display: none
 
 .video-content
+  display: flex
+  flex-direction: column
+  gap: rem(10)
+
   .videos
     display: flex
     flex-direction: column
-
-    .count
-      padding-bottom: rem(7)
-      font-size: rem(14)
-      line-height: 1
-
-      strong
-        font-variation-settings: $fw-900
 
     .video-items
       display: flex
@@ -262,20 +259,22 @@
         +mq(minLarge)
           width: 16.66%
 
-        button
+        .item-container
           background-color: transparent
           display: flex
           flex-direction: column
-          position: relative
           gap: rem(12)
           overflow: hidden
           width: 100%
-          text-align: left
 
-          &:hover, &:focus
-            i
-              s
-                background-color: $hex-accent
+          > button
+            position: relative
+            text-align: left
+
+            &:hover, &:focus
+              i
+                s
+                  background-color: $hex-accent
 
           img
             display: block
@@ -320,6 +319,23 @@
             +col
             overflow: hidden
             width: 100%
+
+            .option
+              display: flex
+              align-items: center
+              gap: rem(5)
+
+            button
+              background-color: transparent
+              width: rem(24)
+              height: rem(24)
+
+              svg
+                width: rem(24)
+                height: rem(24)
+
+              span
+                +screen-reader-only
 
             strong, cite
               width: 100%

@@ -10,6 +10,7 @@ export interface AlbumsData {
   list: any;
   genre: any;
   albumNumbering: string;
+  isMusicMode: boolean;
   createdAt: string;
 }
 
@@ -108,6 +109,7 @@ export interface PlaylistsData {
   description: string;
   list: any;
   tags: any;
+  isMusicMode: boolean;
   createdAt: string;
 }
 
@@ -119,6 +121,7 @@ export interface PlaylistData {
     description: string;
     list: any;
     tags: any;
+    isMusicMode: boolean;
     createdAt: string;
   };
 }

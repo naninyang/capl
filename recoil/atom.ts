@@ -53,3 +53,9 @@ export const currentTrackIndexState = atom<number>({
   default: 0,
   effects: [localStorageEffect('currentTrackIndex')],
 });
+
+export const musicModeState = atom<boolean>({
+  key: 'musicModeState',
+  default: true,
+  effects: [localStorageEffect('musicMode')],
+});

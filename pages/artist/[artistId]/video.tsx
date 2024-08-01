@@ -19,10 +19,29 @@ export default function VideoPage({
   memberData: ArtistsData[];
   groupData: ArtistsData[];
 }) {
+  const videoItems = {
+    id: 0,
+    idx: '',
+    title: '',
+    release: 0,
+    artist: null,
+    relationArtists: null,
+    relationStaffs: null,
+    credit: null,
+    list: artistData.music,
+    genre: null,
+    albumNumbering: '',
+    isMusicMode: true,
+    createdAt: '',
+  };
   return (
     <main className={styles.artist}>
       <Cover artistNumber={artistNumber} artistData={artistData} groupData={groupData} memberData={memberData} />
-      <div className={styles.content}>{videoData.length > 0 && <VideoList videoData={videoData} />}</div>
+      <div className={styles.content}>
+        {videoData.length > 0 && (
+          <VideoList videoData={videoData} playlistName={`‘${artistData.name}’의 영상`} albumInfo={videoItems} />
+        )}
+      </div>
     </main>
   );
 }

@@ -5,6 +5,7 @@ import { formatDate } from '@/utils/apis';
 import { MusicsData, PlaylistsData } from '@/types';
 import MusicList from '@/components/MusicList';
 import styles from '@/styles/Playlist.module.sass';
+import VideoList from '@/components/VideoList';
 
 export default function PlaylistDetail({
   playlistData,
@@ -25,6 +26,7 @@ export default function PlaylistDetail({
     list: playlistData.list,
     genre: null,
     albumNumbering: '',
+    isMusicMode: playlistData.isMusicMode,
     createdAt: '',
   };
 
@@ -64,7 +66,11 @@ export default function PlaylistDetail({
         </div>
       </div>
       <div className={styles.content}>
-        <MusicList musicData={musicData} playlistName={playlistData.title} albumInfo={musicItems} />
+        {playlistData.isMusicMode ? (
+          <MusicList musicData={musicData} playlistName={playlistData.title} albumInfo={musicItems} />
+        ) : (
+          <VideoList videoData={musicData} playlistName={playlistData.title} albumInfo={musicItems} />
+        )}
       </div>
     </main>
   );

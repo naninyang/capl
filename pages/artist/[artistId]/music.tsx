@@ -31,6 +31,7 @@ export default function MusicPage({
     list: artistData.music,
     genre: null,
     albumNumbering: '',
+    isMusicMode: true,
     createdAt: '',
   };
   return (
@@ -38,7 +39,7 @@ export default function MusicPage({
       <Cover artistNumber={artistNumber} artistData={artistData} groupData={groupData} memberData={memberData} />
       <div className={styles.content}>
         {musicData.length > 0 && (
-          <MusicList musicData={musicData} playlistName={`‘${artistData.name}’의 노래들`} albumInfo={musicItems} />
+          <MusicList musicData={musicData} playlistName={`‘${artistData.name}’의 곡`} albumInfo={musicItems} />
         )}
       </div>
     </main>

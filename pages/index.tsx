@@ -1,7 +1,7 @@
 import { GetServerSideProps } from 'next';
 import Image from 'next/image';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
 import { PlaylistsData } from '@/types';
 import Anchor from '@/components/Anchor';
 import Header from '@/components/Header';
@@ -20,6 +20,8 @@ export default function Home({
 }) {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
+  const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
+  const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
 
   const isLandscapeDesktop = useLandscapeDesktop();
   const isPortraitDesktop = usePortraitDesktop();
@@ -29,6 +31,8 @@ export default function Home({
     const newList = JSON.stringify(data.list);
     const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
     setCurrentPlaylistTitle(newTitle);
+    setIsMusicMode(data.isMusicMode);
+    setCurrentTrackIndex(0);
 
     if (isCurrentlyPlaying) {
       alert('이미 재생중이거나 추가된 플레이리스트입니다');

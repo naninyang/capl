@@ -34,6 +34,22 @@ export default function Search() {
     list: [],
     genre: null,
     albumNumbering: '',
+    isMusicMode: true,
+    createdAt: '',
+  });
+  const [videoItems, setVideoItems] = useState<AlbumsData>({
+    id: 0,
+    idx: '',
+    title: '',
+    release: 0,
+    artist: null,
+    relationArtists: null,
+    relationStaffs: null,
+    credit: null,
+    list: [],
+    genre: null,
+    albumNumbering: '',
+    isMusicMode: false,
     createdAt: '',
   });
 
@@ -63,6 +79,25 @@ export default function Search() {
           list: ids,
           genre: null,
           albumNumbering: '',
+          isMusicMode: true,
+          createdAt: '',
+        });
+      }
+      if (s === 'video' && result?.videoData) {
+        const ids = result.videoData.map((item: { id: number }) => item.id);
+        setMusicItems({
+          id: 0,
+          idx: '',
+          title: '',
+          release: 0,
+          artist: null,
+          relationArtists: null,
+          relationStaffs: null,
+          credit: null,
+          list: ids,
+          genre: null,
+          albumNumbering: '',
+          isMusicMode: false,
           createdAt: '',
         });
       }
@@ -175,11 +210,17 @@ export default function Search() {
                   {s === 'music' && (
                     <MusicList
                       musicData={data.musicData}
-                      playlistName={`‘${query}’ 키워드 관련 노래`}
+                      playlistName={`‘${query}’ 키워드 관련 곡`}
                       albumInfo={musicItems}
                     />
                   )}
-                  {s === 'video' && <VideoList videoData={data.videoData} />}
+                  {s === 'video' && (
+                    <VideoList
+                      videoData={data.videoData}
+                      playlistName={`‘${query}’ 키워드 관련 영상`}
+                      albumInfo={videoItems}
+                    />
+                  )}
                   {s === 'album' && <AlbumList albumData={data.albumData} />}
                   {s === 'artist' && <ArtistList artistData={data.artistData} />}
                   {s === 'playlist' && <PlaylistList playlistData={data.playlistData} />}

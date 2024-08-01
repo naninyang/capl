@@ -2,7 +2,7 @@ import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, currentTrackIndexState, playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
 import { useTablet } from './MediaQuery';
@@ -42,6 +42,7 @@ export default function Music() {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
+  const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
   const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [isPlaylistDropdown, setIsPlaylistDropdown] = useState(false);
@@ -58,7 +59,6 @@ export default function Music() {
   const [isSeeking, setIsSeeking] = useState(false);
   const [volume, setVolume] = useState(100);
   const [previousVolume, setPreviousVolume] = useState(100);
-  const [isMusicMode, setIsMusicMode] = useState(true);
   const playerRef = useRef<YouTubePlayer | null>(null);
 
   const isTablet = useTablet();

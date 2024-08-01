@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, currentTrackIndexState, playlistState } from '@/recoil/atom';
+import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
 import { AlbumsData, MusicsData } from '@/types';
 import ArtistName from './ArtistName';
 import AlbumInfo from './AlbumInfo';
@@ -20,15 +20,11 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
+  const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
+
   const isTablet = useTablet();
 
-  const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>(() => {
-    if (typeof window !== 'undefined') {
-      const savedMusicIds = localStorage.getItem('music');
-      return savedMusicIds ? JSON.parse(savedMusicIds) : [];
-    }
-    return [];
-  });
+  const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState(false);
 
   const handleSelectAll = () => {
@@ -53,6 +49,8 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
       const newList = JSON.stringify(albumInfo.list);
       const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
       setCurrentPlaylistTitle(newTitle);
+      setIsMusicMode(true);
+      setCurrentTrackIndex(0);
 
       if (isCurrentlyPlaying) {
         alert('이미 재생중이거나 추가된 플레이리스트입니다');
@@ -75,6 +73,7 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
     const newList = JSON.stringify([musicInfo.id]);
     const isCurrentlyPlaying = Object.keys(playlist).includes(newTitle);
     setCurrentPlaylistTitle(newTitle);
+    setCurrentTrackIndex(0);
 
     if (isCurrentlyPlaying) {
       alert('이미 재생중이거나 추가된 플레이리스트입니다');

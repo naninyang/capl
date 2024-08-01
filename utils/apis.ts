@@ -73,6 +73,7 @@ export async function getAlbumData(albumId: number) {
     list: albumData.attributes.list,
     genre: albumData.attributes.genre,
     albumNumbering: albumData.attributes.albumNumbering,
+    isMusicMode: albumData.attributes.isMusicMode,
     createdAt: albumData.attributes.createdAt,
   };
 
@@ -338,6 +339,7 @@ export async function getPlaylistsData(page?: number, pageSize?: number) {
     description: data.attributes.description,
     list: data.attributes.list,
     tags: data.attributes.tags,
+    isMusicMode: data.attributes.isMusicMode,
   }));
 
   return playlists;
@@ -359,6 +361,7 @@ export async function getPlaylistData(playlistId: number) {
     description: playlistData.attributes.description,
     list: playlistData.attributes.list,
     tags: playlistData.attributes.tags,
+    isMusicMode: playlistData.attributes.tagisMusicMode,
     createdAt: playlistData.attributes.createdAt,
   };
 
