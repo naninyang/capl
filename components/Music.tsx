@@ -542,7 +542,7 @@ export default function Music() {
             <div className={styles.select}>
               <button
                 type="button"
-                className={styles.selected}
+                className={`${styles.selectbox} ${selectedPlaylist ? styles.selected : ''}`}
                 onClick={() => setIsPlaylistDropdown(!isPlaylistDropdown)}
               >
                 <strong>{selectedPlaylist || currentPlaylistTitle}</strong>

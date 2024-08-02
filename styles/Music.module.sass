@@ -690,19 +690,22 @@ nav
           span
             +screen-reader-only
 
-        .selected, .view, .delete, ul
+        .selectbox, .view, .delete, ul
           border-radius: rem(3)
 
-        .selected, .view, .delete
+        .selectbox, .view, .delete
           height: rem(28)
 
-        .selected
+        .selectbox
           +col
           overflow: hidden
           border: 1px solid rgba($hex-white, .2)
           padding: 0 rem(7)
           height: rem(28)
           text-align: left
+
+          &.selected
+            border: 1px solid $hex-white
 
           strong
             font-size: rem(14)
@@ -746,11 +749,18 @@ nav
             height: rem(20)
 
         .view
-          border: 1px solid rgba($hex-white, .2)
+          border: 1px solid $hex-white
+
+          &:disabled
+            border: 1px solid rgba($hex-white, .2)
 
         .delete
           border: 1px solid $hex-accent
           background-color: $hex-accent
+
+          &:disabled
+            border: 1px solid rgba($hex-white, .2)
+            background-color: rgba($hex-white, .2)
 
       .items
         padding-top: rem(14)
