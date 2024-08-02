@@ -60,8 +60,22 @@ export default function Music() {
   const [volume, setVolume] = useState(100);
   const [previousVolume, setPreviousVolume] = useState(100);
   const playerRef = useRef<YouTubePlayer | null>(null);
+  const playlistRef = useRef<HTMLUListElement | null>(null);
 
   const isTablet = useTablet();
+
+  const handleClickOutside = (event: Event) => {
+    if (playlistRef.current && !playlistRef.current.contains(event.target as Node)) {
+      setIsPlaylistDropdown(false);
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener('click', handleClickOutside, true);
+    return () => {
+      document.removeEventListener('click', handleClickOutside, true);
+    };
+  }, []);
 
   useEffect(() => {
     if (!currentTrackIndex) {
@@ -534,7 +548,7 @@ export default function Music() {
                 <strong>{selectedPlaylist || currentPlaylistTitle}</strong>
               </button>
               {isPlaylistDropdown && (
-                <ul>
+                <ul ref={playlistRef}>
                   {Object.entries(playlist).map(([key]) => (
                     <li key={key}>
                       <button
