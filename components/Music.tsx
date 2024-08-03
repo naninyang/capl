@@ -5,7 +5,13 @@ import { useRecoilState } from 'recoil';
 import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
-import { useTablet } from './MediaQuery';
+import {
+  useLandscapeDesktop,
+  useLandscapeMobile,
+  usePortraitDesktop,
+  usePortraitMobile,
+  useTablet,
+} from './MediaQuery';
 import {
   CarplayIcon,
   CloseIcon,
@@ -63,6 +69,10 @@ export default function Music() {
   const playlistRef = useRef<HTMLUListElement | null>(null);
 
   const isTablet = useTablet();
+  const isLandscapeMobile = useLandscapeMobile();
+  const isPortraitMobile = usePortraitMobile();
+  const isLandscapeDesktop = useLandscapeDesktop();
+  const isPortraitDesktop = usePortraitDesktop();
 
   const handleClickOutside = (event: Event) => {
     if (playlistRef.current && !playlistRef.current.contains(event.target as Node)) {
@@ -477,7 +487,9 @@ export default function Music() {
   }
 
   return (
-    <div className={`${styles.music} ${styles.day}`}>
+    <div
+      className={`${styles.music} ${styles.day} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''}`}
+    >
       {currentTrack && (
         <div className={`${styles['background']} ${isPlayerOpen ? styles['background-open'] : ''}`}>
           <Image
