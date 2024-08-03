@@ -11,8 +11,18 @@ nav
   z-index: 77
   width: 100%
 
-  &.day
+  &.night
     .music-player
+      .option
+        .carplay
+          .isCarplay
+            svg
+              path
+                fill: $hex-light
+
+            s
+              background-color: $hex-light
+
       .playlist
         background-color: $hex-dark
 
@@ -508,9 +518,49 @@ nav
 
     .carplay
       button
-        font-size: rem(24)
+        font-size: rem(16)
         line-height: 1
         text-decoration: underline
+
+        +mq(maxLarge)
+          display: flex
+          gap: rem(3)
+
+          &.isCarplay
+            s
+              i
+                left: rem(25)
+
+          span
+            +screen-reader-only
+
+          svg
+            width: rem(25)
+            height: rem(25)
+            opacity: .5
+            transition: all .3s cubic-bezier(.5,0,.2,0)
+
+            path
+              transition: all .3s cubic-bezier(.5,0,.2,0)
+
+          s, i
+            display: block
+            border-radius: rem(25)
+            height: rem(25)
+
+          s
+            position: relative
+            width: rem(50)
+            background-color: rgba($hex-white, .5)
+            transition: all .3s cubic-bezier(.5,0,.2,0)
+
+          i
+            position: absolute
+            top: 0
+            left: 0
+            width: rem(25)
+            background-color: $hex-white
+            transition: all .3s cubic-bezier(.5,0,.2,0)
 
     .musicNvideo
       position: absolute
@@ -573,9 +623,15 @@ nav
         position: absolute
         top: 50%
         left: 50%
-        width: 90%
-        height: 90%
         transform: translate(-50%, -50%)
+
+        .pd &
+          width: calc(100% - rem(74))
+          height: calc(100% - rem(74))
+
+        .ld &
+          width: 90%
+          height: 90%
 
       img
         display: block
@@ -605,6 +661,9 @@ nav
       flex-direction: column
       justify-content: center
       gap: rem(23)
+
+      .pd &
+        padding: 0 rem(32)
 
       .primary
         dt

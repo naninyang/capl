@@ -2,7 +2,13 @@ import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
 import { useRecoilState } from 'recoil';
-import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
+import {
+  carplayModeState,
+  currentPlaylistTitleState,
+  currentTrackIndexState,
+  musicModeState,
+  playlistState,
+} from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
 import {
@@ -49,6 +55,7 @@ export default function Music() {
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
   const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
+  const [isCarplayMode, setIsCarplayMode] = useRecoilState(carplayModeState);
   const [currentPlaylist, setCurrentPlaylist] = useState<Music[]>([]);
   const [selectedPlaylist, setSelectedPlaylist] = useState<string | null>(null);
   const [isPlaylistDropdown, setIsPlaylistDropdown] = useState(false);
@@ -167,6 +174,10 @@ export default function Music() {
     );
     setCurrentPlaylist(musicDetails);
   };
+
+  useEffect(() => {
+    setIsCarplayMode(false);
+  }, [setIsCarplayMode]);
 
   useEffect(() => {
     if (currentPlaylistTitle) {
@@ -488,7 +499,7 @@ export default function Music() {
 
   return (
     <div
-      className={`${styles.music} ${styles.day} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''}`}
+      className={`${styles.music} ${styles.night} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''} ${isCarplayMode ? styles.cp : ''}`}
     >
       {currentTrack && (
         <div className={`${styles['background']} ${isPlayerOpen ? styles['background-open'] : ''}`}>
@@ -507,8 +518,12 @@ export default function Music() {
         <h2>뮤직 플레이어</h2>
         <div className={styles.option}>
           <div className={styles.carplay}>
-            <button type="button">
-              <span>카플레이 모드 전환</span>
+            <button
+              type="button"
+              className={isCarplayMode ? styles.isCarplay : undefined}
+              onClick={() => setIsCarplayMode((prev) => !prev)}
+            >
+              <span>{isCarplayMode ? '카플레이 모드 취소' : '카플레이 모드 전환'}</span>
               {!isTablet && (
                 <>
                   <CarplayIcon />

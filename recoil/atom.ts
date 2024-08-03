@@ -59,3 +59,9 @@ export const musicModeState = atom<boolean>({
   default: true,
   effects: [localStorageEffect('musicMode')],
 });
+
+export const carplayModeState = atom<boolean>({
+  key: 'carplayModeState',
+  default: false,
+  effects: [localStorageEffect('carplayMode')],
+});
