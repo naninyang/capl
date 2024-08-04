@@ -3,6 +3,10 @@
 nav
   & + .music
     bottom: rem(55)
+    transition: all .3s cubic-bezier(.5,0,.2,0)
+
+    &.expented
+      bottom: 0
 
 .music
   position: fixed
@@ -23,7 +27,7 @@ nav
             s
               background-color: $hex-light
 
-      .playlist
+      > .playlist
         background-color: $hex-dark
 
     .music-bar
@@ -78,6 +82,8 @@ nav
   position: relative
 
   .pm &, .lm &
+    transition: all .3s cubic-bezier(.5,0,.2,0)
+    overflow: hidden
     padding: rem(12) rem(23)
     height: rem(67)
 
@@ -86,7 +92,11 @@ nav
     height: rem(93)
 
   &.musicbar-open
-    background-color: transparent
+    background-color: transparent!important
+
+    .pm &, .lm &
+      padding: 0
+      height: 0
 
   .thumbnail
     .pm &, .lm &
@@ -482,7 +492,7 @@ nav
 
   .pm &, .lm &
     bottom: 0
-    height: calc(100dvh - rem(138))
+    height: 100dvh
 
   .ld &, .pd &
     bottom: rem(93)
@@ -610,20 +620,34 @@ nav
     display: flex
     flex-grow: 1
 
+    .lm &, .ld &
+      padding: rem(23)
+      gap: rem(27)
+
     .pm &, .pd &
       flex-direction: column
 
     > div
-      +col
+      .pd &, .ld &
+        +col
 
     .mp-visual
       position: relative
 
+      .lm &
+        display: flex
+        align-items: center
+        width: calc(100dvh - rem(124))
+
       img, > div
-        position: absolute
-        top: 50%
-        left: 50%
-        transform: translate(-50%, -50%)
+        .lm &
+          height: calc(100dvh - rem(124))
+
+        .pd &, .ld &
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
 
         .pd &
           width: calc(100% - rem(74))
@@ -636,6 +660,12 @@ nav
       img
         display: block
         object-fit: contain
+
+        .lm &
+          object-position: 0 0
+
+        .ld &
+          max-width: rem(480)
 
         & + div
           +screen-reader-only
@@ -662,6 +692,11 @@ nav
       justify-content: center
       gap: rem(23)
 
+      .lm &
+        justify-content: flex-start
+        +col
+        position: relative
+
       .pd &
         padding: 0 rem(32)
 
@@ -671,19 +706,35 @@ nav
 
         div:nth-of-type(1)
           dd
-            font-size: rem(64)
             font-variation-settings: $fw-950
+
+            .lm &, .pm &
+              font-size: rem(24)
+
+            .ld &, .pd &
+              font-size: rem(64)
 
         div:nth-of-type(2)
           padding: rem(5) 0 rem(37)
 
           dd
-            font-size: rem(36)
             line-height: 1
+
+            .lm &, .pm &
+              font-size: rem(16)
+
+            .ld &, .pd &
+              font-size: rem(36)
 
         div:nth-of-type(3)
           dd
             font-size: rem(32)
+
+            .lm &, .pm &
+              font-size: rem(14)
+
+            .ld &, .pd &
+              font-size: rem(32)
 
       .secondary
         display: flex
@@ -697,22 +748,106 @@ nav
           dt, dd
             font-size: rem(24)
 
+            .lm &, .pm &
+              font-size: rem(14)
+
+            .ld &, .pd &
+              font-size: rem(24)
+
           dt
             width: rem(102)
 
           dd
             +col
 
-  .playlist
+      .controller-container
+        position: absolute
+        bottom: 0
+        left: 0
+        display: flex
+        justify-content: space-between
+        width: 100%
+
+        button
+          width: rem(82)
+          height: rem(82)
+
+        span
+          +screen-reader-only
+
+        .repeat
+          display: flex
+          align-items: center
+          width: rem(82)
+
+          button
+            text-align: left
+
+            svg
+              width: rem(27)
+              height: rem(27)
+
+              path:nth-of-type(2)
+                fill: transparent
+
+            &.all
+              svg
+                path:nth-of-type(2)
+                  fill: $hex-light
+
+        .controller
+          display: flex
+          align-items: center
+
+          button
+            svg
+              width: rem(82)
+              height: rem(82)
+
+              path
+                fill: $hex-accent
+
+            &.side
+              svg
+                width: rem(37)
+                height: rem(37)
+
+                path
+                  fill: $hex-white
+
+        .playlist
+          width: rem(82)
+
+          button
+            text-align: right
+
+            svg
+              width: rem(27)
+              height: rem(27)
+
+          button
+            &.visible
+              svg
+                path
+                  fill: $hex-light
+
+  > .playlist
     display: flex
     flex-direction: column
     gap: rem(10)
     position: absolute
-    top: rem(136)
     right: 0
+    z-index: 7
     padding: rem(27) rem(23)
     width: rem(370)
-    height: 100%
+
+    .lm &, .pm &
+      top: rem(78)
+      height: calc(100% - rem(186))
+
+    .ld &, .pd &
+      top: rem(136)
+      height: 100%
 
     h2
       font-size: rem(16)

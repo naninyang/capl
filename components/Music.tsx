@@ -499,7 +499,7 @@ export default function Music() {
 
   return (
     <div
-      className={`${styles.music} ${styles.night} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''} ${isCarplayMode ? styles.cp : ''}`}
+      className={`${styles.music} ${styles.night} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''} ${isCarplayMode ? styles.cp : ''} ${isPlayerOpen && (isLandscapeMobile || isPortraitMobile) ? styles.expented : ''}`}
     >
       {currentTrack && (
         <div className={`${styles['background']} ${isPlayerOpen ? styles['background-open'] : ''}`}>
@@ -701,6 +701,53 @@ export default function Music() {
                   </dd>
                 </div>
               </dl>
+              {(isLandscapeMobile || isPortraitMobile) && (
+                <div className={styles['controller-container']}>
+                  <div className={styles.repeat}>
+                    <button
+                      type="button"
+                      onClick={handleToggleRepeat}
+                      className={isSingleTrackRepeating ? styles.all : undefined}
+                    >
+                      <RepeatIcon />
+                      <span>{isSingleTrackRepeating ? '재생목록 모든곡 반복하기' : '현재곡 반복하기'}</span>
+                    </button>
+                  </div>
+                  <div className={styles.controller}>
+                    <button type="button" className={styles.side} onClick={handlePrevTrack}>
+                      <PrevMusicIcon />
+                      <span>이전곡 재생</span>
+                    </button>
+                    <button type="button" className={styles.play} onClick={handlePlayPause}>
+                      {isPlaying ? (
+                        <>
+                          <PauseMusicIcon />
+                          <span>일시 정지하기</span>
+                        </>
+                      ) : (
+                        <>
+                          <PlayMusicIcon />
+                          <span>계속 재생하기</span>
+                        </>
+                      )}
+                    </button>
+                    <button type="button" className={styles.side} onClick={handleNextTrack}>
+                      <NextMusicIcon />
+                      <span>다음곡 재생</span>
+                    </button>
+                  </div>
+                  <div className={styles.playlist}>
+                    <button
+                      type="button"
+                      className={isPlaylistVisible ? styles.visible : undefined}
+                      onClick={handleTogglePlaylistVisibility}
+                    >
+                      <PlaylistIcon />
+                      <span>{isPlaylistVisible ? '재생목록 숨기기' : '재생목록 보기'}</span>
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
         )}
