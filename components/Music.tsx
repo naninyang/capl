@@ -703,6 +703,30 @@ export default function Music() {
               </dl>
               {(isLandscapeMobile || isPortraitMobile) && (
                 <div className={styles['controller-container']}>
+                  <div className={styles.seektime}>
+                    <button
+                      type="button"
+                      className={styles.seektime}
+                      onMouseMove={handleMouseMove}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      onClick={handleSeek}
+                    >
+                      <s>
+                        <i
+                          style={{
+                            width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                          }}
+                          className={isSeeking ? styles.seeking : undefined}
+                        />
+                        {isSeeking && (
+                          <span style={{ left: `${(seekTime / duration) * 100}%` }}>
+                            <strong>{formatTime(seekTime)}</strong>
+                          </span>
+                        )}
+                      </s>
+                    </button>
+                  </div>
                   <div className={styles.repeat}>
                     <button
                       type="button"
