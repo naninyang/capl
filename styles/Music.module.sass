@@ -795,8 +795,9 @@ nav
           .lm &, .pm
             height: rem(82)
 
-        span
-          +screen-reader-only
+        div:not(.seektime)
+          span
+            +screen-reader-only
 
         .seektime
           position: absolute
@@ -811,7 +812,7 @@ nav
           button
             display: flex
             justify-content: flex-start
-            align-items: flex-start
+            align-items: center
             position: relative
             padding: 0 !important
             width: 100%
@@ -831,16 +832,18 @@ nav
               height: rem(2)
 
             i
+              top: 50%
               left: 0
+              transform: translateY(-50%)
               min-width: rem(2)
 
               &.seeking
                 background-color: $hex-light
 
             span
-              border-radius: rem(2)
-              width: rem(2)
-              height: rem(2)
+              border-radius: rem(10)
+              width: rem(10)
+              height: rem(10)
 
               strong
                 position: absolute
@@ -937,7 +940,8 @@ nav
     right: 0
     z-index: 7
     padding: rem(27) rem(23)
-    width: rem(370)
+    width: 100%
+    max-width: rem(370)
 
     .lm &, .pm &
       top: rem(78)

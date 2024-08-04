@@ -719,11 +719,13 @@ export default function Music() {
                           }}
                           className={isSeeking ? styles.seeking : undefined}
                         />
-                        {isSeeking && (
-                          <span style={{ left: `${(seekTime / duration) * 100}%` }}>
-                            <strong>{formatTime(seekTime)}</strong>
-                          </span>
-                        )}
+                        <span
+                          style={{
+                            left: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                          }}
+                        >
+                          {isSeeking && <strong>{formatTime(seekTime)}</strong>}
+                        </span>
                       </s>
                     </button>
                   </div>
