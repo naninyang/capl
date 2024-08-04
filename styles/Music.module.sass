@@ -634,14 +634,25 @@ nav
     .mp-visual
       position: relative
 
-      .lm &
+      .lm &, .pm &
         display: flex
+
+      .lm &
         align-items: center
         width: calc(100dvh - rem(124))
+
+      .pm &
+        justify-content: center
+        padding: rem(23) 0
 
       img, > div
         .lm &
           height: calc(100dvh - rem(124))
+
+        .pm &
+          width: calc(100% - rem(46))
+          height: auto
+          aspect-ratio: 1 / 1
 
         .pd &, .ld &
           position: absolute
@@ -696,6 +707,9 @@ nav
         justify-content: flex-start
         +col
         position: relative
+
+      .pm &
+        padding: 0 rem(23)
 
       .pd &
         padding: 0 rem(32)
@@ -768,12 +782,28 @@ nav
         justify-content: space-between
         width: 100%
 
+        .pm &
+          padding: 0 rem(23)
+
         button
-          width: rem(82)
-          height: rem(82)
+          .lm &
+            width: rem(82)
+
+          .lm &, .pm
+            height: rem(82)
 
         span
           +screen-reader-only
+
+        .repeat, .playlist
+          .pm &
+            width: rem(62)
+
+        .repeat, .playlist, .controller
+          .pm &
+            button
+              width: rem(62)
+              height: rem(86)
 
         .repeat
           display: flex
@@ -806,6 +836,14 @@ nav
 
               path
                 fill: $hex-accent
+
+            &:not(.side)
+              .pm &
+                width: rem(82)
+
+                svg
+                  width: rem(82)
+                  height: rem(82)
 
             &.side
               svg
