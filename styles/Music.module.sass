@@ -737,6 +737,9 @@ nav
         div:nth-of-type(2)
           padding: rem(5) 0 rem(37)
 
+          .lm &, .pm &
+            padding-bottom: rem(23)
+
           dd
             line-height: 1
 
@@ -760,6 +763,9 @@ nav
         display: flex
         flex-direction: column
         gap: rem(12)
+
+        .lm &, .pm &
+          gap: rem(7)
 
         div
           +row
@@ -791,14 +797,14 @@ nav
         .pm &
           padding: rem(23) rem(23) 0
 
-        .dm &
+        .lm &
           padding-top: rem(23)
 
         button
           .lm &
             width: rem(82)
 
-          .lm &, .pm
+          .lm &, .pm &
             height: rem(82)
 
         div:not(.seektime)
@@ -865,11 +871,11 @@ nav
                 color: $hex-white
 
         .repeat, .playlist
-          .pm &
+          .pm &, .lm &
             width: rem(62)
 
         .repeat, .playlist, .controller
-          .pm &
+          .pm &, .lm &
             button
               width: rem(62)
               height: rem(86)
@@ -907,7 +913,7 @@ nav
                 fill: $hex-accent
 
             &:not(.side)
-              .pm &
+              .pm &, .lm &
                 width: rem(82)
 
                 svg
