@@ -527,6 +527,9 @@ nav
       padding: rem(52) rem(23)
 
     .carplay
+      display: flex
+      align-items: center
+
       button
         font-size: rem(16)
         line-height: 1
@@ -640,13 +643,16 @@ nav
       .lm &
         align-items: center
         width: calc(100dvh - rem(124))
+        height: calc(100dvh - rem(124))
 
       .pm &
         justify-content: center
         padding: rem(23) 0
+        height: calc(100dvh - rem(437))
 
       img, > div
         .lm &
+          width: calc(100dvh - rem(124))
           height: calc(100dvh - rem(124))
 
         .pm &
