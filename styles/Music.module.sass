@@ -94,7 +94,8 @@ nav
   &.musicbar-open
     background-color: transparent!important
 
-    .pm &, .lm &
+    .pm &, .lm &, .pd.cp &, .ld.cp &
+      overflow: hidden
       padding: 0
       height: 0
 
@@ -490,7 +491,7 @@ nav
   flex-direction: column
   width: 100%
 
-  .pm &, .lm &
+  .pm &, .lm &, .pd.cp &, .ld.cp &
     bottom: 0
     height: 100dvh
 
@@ -524,7 +525,7 @@ nav
       padding: rem(23)
 
     .ld &, .pd &
-      padding: rem(52) rem(23)
+      padding: rem(52)
 
     .carplay
       display: flex
@@ -623,12 +624,33 @@ nav
     display: flex
     flex-grow: 1
 
+    .lm.cp &, .ld.cp &
+      flex-direction: row-reverse
+
     .lm &, .ld &
-      padding: rem(23)
       gap: rem(27)
+
+    .lm &
+      padding: 0 rem(32) rem(32)
+
+    .ld &
+      padding: rem(52)
 
     .pm &, .pd &
       flex-direction: column
+
+    .pd &
+      align-items: center
+      padding-top: rem(32)
+
+    .lm.cp &
+      padding: 0 rem(32) rem(32)
+
+    .pd.cp &, .pm.cp &
+      flex-direction: column-reverse
+
+    .pm.cp &
+      justify-content: space-between
 
     > div
       .pd &, .ld &
@@ -650,6 +672,12 @@ nav
         padding: rem(23) 0
         height: calc(100dvh - rem(437))
 
+      .pd &
+        aspect-ratio: 1 / 1
+        width: calc(100vw - rem(64))
+        height: auto
+        flex: none
+
       img, > div
         .lm &
           width: calc(100dvh - rem(124))
@@ -667,8 +695,8 @@ nav
           transform: translate(-50%, -50%)
 
         .pd &
-          width: calc(100% - rem(74))
-          height: calc(100% - rem(74))
+          width: 100%
+          height: 100%
 
         .ld &
           width: 90%
@@ -683,6 +711,11 @@ nav
 
         .ld &
           max-width: rem(480)
+
+        .ld.cp &
+          max-width: none
+          width: 100%
+          height: 100%
 
         & + div
           +screen-reader-only
@@ -717,8 +750,15 @@ nav
       .pm &
         padding: 0 rem(23)
 
+      .ld &
+        justify-content: flex-start
+        position: relative
+
       .pd &
-        padding: 0 rem(32)
+        align-items: flex-start
+        justify-content: flex-start
+        width: 100%
+        padding: rem(52)
 
       .primary
         dt
@@ -767,6 +807,9 @@ nav
         .lm &, .pm &
           gap: rem(7)
 
+        .lm.cp &, .lm &
+          +screen-reader-only
+
         div
           +row
           gap: rem(17)
@@ -797,8 +840,17 @@ nav
         .pm &
           padding: rem(23) rem(23) 0
 
-        .lm &
+        .lm &, .ld &
+          flex-direction: row-reverse
           padding-top: rem(23)
+
+        .pd.cp &
+          bottom: calc(100vw - rem(64))
+          padding: rem(52)
+
+        .pm.cp &
+          bottom: calc(100vh - rem(437))
+          padding: rem(23) rem(23) 0
 
         button
           .lm &
@@ -806,6 +858,9 @@ nav
 
           .lm &, .pm &
             height: rem(82)
+
+          .ld &, .pd &
+            height: rem(123)
 
         div:not(.seektime)
           span
@@ -820,6 +875,9 @@ nav
 
           .pm &
             padding: 0 rem(23)
+
+          .pd.cp &
+            padding: 0 rem(52)
 
           button
             display: flex
@@ -874,23 +932,41 @@ nav
           .pm &, .lm &
             width: rem(62)
 
+          .ld &, .pd &
+            width: rem(123)
+
         .repeat, .playlist, .controller
-          .pm &, .lm &
-            button
+          button
+            .pm &, .lm &
               width: rem(62)
               height: rem(86)
+
+            .ld &, .pd &
+              width: rem(123)
+              height: rem(123)
 
         .repeat
           display: flex
           align-items: center
-          width: rem(82)
+
+          .pm &, .lm &
+            width: rem(82)
+
+          .ld &, .pd &
+            width: rem(123)
 
           button
-            text-align: left
+            .pm &, .lm &
+              text-align: left
 
             svg
-              width: rem(27)
-              height: rem(27)
+              .pm &, .lm &
+                width: rem(27)
+                height: rem(27)
+
+              .ld &, .pd &
+                width: rem(72)
+                height: rem(72)
 
               path:nth-of-type(2)
                 fill: transparent
@@ -906,8 +982,13 @@ nav
 
           button
             svg
-              width: rem(82)
-              height: rem(82)
+              .pm &, .lm &
+                width: rem(82)
+                height: rem(82)
+
+              .ld &, .pd &
+                width: rem(72)
+                height: rem(72)
 
               path
                 fill: $hex-accent
@@ -920,23 +1001,45 @@ nav
                   width: rem(82)
                   height: rem(82)
 
+              .ld &, .pd &
+                width: rem(123)
+
+                svg
+                  width: rem(123)
+                  height: rem(123)
+
             &.side
               svg
-                width: rem(37)
-                height: rem(37)
+                .pm &, .lm &
+                  width: rem(37)
+                  height: rem(37)
+
+                .ld &, .pd &
+                  width: rem(72)
+                  height: rem(72)
 
                 path
                   fill: $hex-white
 
         .playlist
-          width: rem(82)
+          .pm &, .lm &
+            width: rem(82)
+
+          .ld &, .pd &
+            width: rem(123)
 
           button
-            text-align: right
+            .pm &, .lm &
+              text-align: right
 
             svg
-              width: rem(27)
-              height: rem(27)
+              .pm &, .lm &
+                width: rem(27)
+                height: rem(27)
+
+              .ld &, .pd &
+                width: rem(72)
+                height: rem(72)
 
           button
             &.visible
@@ -955,6 +1058,10 @@ nav
     width: 100%
     max-width: rem(370)
 
+    .lm.cp &, .ld.cp &
+      right: auto
+      left: 0
+
     .lm &, .pm &
       top: rem(78)
       height: calc(100% - rem(186))
@@ -962,6 +1069,9 @@ nav
     .ld &, .pd &
       top: rem(136)
       height: 100%
+
+    .ld.cp &, .pd.cp &
+      height: calc(100dvh - rem(330))
 
     h2
       font-size: rem(16)

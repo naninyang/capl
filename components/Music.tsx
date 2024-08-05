@@ -499,7 +499,7 @@ export default function Music() {
 
   return (
     <div
-      className={`${styles.music} ${styles.night} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''} ${isCarplayMode ? styles.cp : ''} ${isPlayerOpen && (isLandscapeMobile || isPortraitMobile) ? styles.expented : ''}`}
+      className={`${styles.music} ${styles.night} ${isLandscapeMobile ? styles.lm : ''} ${isPortraitMobile ? styles.pm : ''} ${isLandscapeDesktop ? styles.ld : ''} ${isPortraitDesktop ? styles.pd : ''} ${isCarplayMode ? styles.cp : ''} ${isPlayerOpen && (isLandscapeMobile || isPortraitMobile || isCarplayMode) ? styles.expented : ''}`}
     >
       {currentTrack && (
         <div className={`${styles['background']} ${isPlayerOpen ? styles['background-open'] : ''}`}>
@@ -701,7 +701,7 @@ export default function Music() {
                   </dd>
                 </div>
               </dl>
-              {(isLandscapeMobile || isPortraitMobile) && (
+              {(isLandscapeMobile || isPortraitMobile || isCarplayMode) && (
                 <div className={styles['controller-container']}>
                   <div className={styles.seektime}>
                     <button
