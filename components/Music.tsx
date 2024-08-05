@@ -470,7 +470,7 @@ export default function Music() {
     setIsMusicMode((prev) => !prev);
   };
 
-  const renderTrackInfo = (track: Music) => (
+  const renderTrackInfo = (track: Music, current?: string) => (
     <>
       <div className={styles.thumbnail}>
         <Image
@@ -481,6 +481,12 @@ export default function Music() {
           priority
           alt=""
         />
+        {current && currentTrack.album.id === track.album.id && (
+          <i>
+            <MusicIcon />
+            <span>현재 재생중인 곡</span>
+          </i>
+        )}
       </div>
       <div className={styles.info}>
         <strong>{track.title}</strong>
@@ -610,7 +616,7 @@ export default function Music() {
                 {viewedPlaylist.length > 0 ? (
                   viewedPlaylist.map((track, index) => (
                     <li key={index}>
-                      {renderTrackInfo(track)}
+                      {renderTrackInfo(track, 'current')}
                       <button type="button" onClick={() => handlePlayTrack(index, selectedPlaylist)}>
                         <span>곡 듣기</span>
                       </button>
@@ -620,7 +626,7 @@ export default function Music() {
                   <>
                     {currentPlaylist.map((track, index) => (
                       <li key={index}>
-                        {renderTrackInfo(track)}
+                        {renderTrackInfo(track, 'current')}
                         <button type="button" onClick={() => handlePlayTrack(index)}>
                           <span>곡 듣기</span>
                         </button>

@@ -1180,11 +1180,36 @@ nav
           .thumbnail
             width: rem(47)
             height: rem(47)
+            position: relative
 
             img
               display: block
               width: rem(47)
               height: rem(47)
+
+            i
+              position: absolute
+              top: 0
+              left: 0
+              width: 100%
+              height: 100%
+              display: flex
+              justify-content: center
+              align-items: center
+
+              .night &
+                background-color: rgba($hex-light, .7)
+
+              svg
+                width: rem(27)
+                height: rem(27)
+
+                .night &
+                  path
+                    fill: rgba($hex-black, .7)
+
+              span
+                +screen-reader-only
 
           .info
             +col
