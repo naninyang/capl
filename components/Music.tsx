@@ -293,6 +293,7 @@ export default function Music() {
 
   const handlePlayTrack = (index: number, playlistTitle?: string | null) => {
     setCurrentTrackIndex(index);
+    setIsPlaying(false);
     if (selectedPlaylist) {
       setCurrentPlaylist(viewedPlaylist);
       if (playlistTitle !== undefined && playlistTitle !== null) {
@@ -321,11 +322,13 @@ export default function Music() {
   };
 
   const handleNextTrack = useCallback(() => {
+    setIsPlaying(false);
     if (currentTrackIndex === currentPlaylist.length - 1) {
       setCurrentTrackIndex(0);
     } else {
       setCurrentTrackIndex(currentTrackIndex + 1);
     }
+    setIsPlaying(true);
   }, [currentTrackIndex, currentPlaylist.length]);
 
   const handlePrevTrack = () => {
@@ -334,6 +337,7 @@ export default function Music() {
     } else {
       setCurrentTrackIndex(currentTrackIndex - 1);
     }
+    setIsPlaying(true);
   };
 
   const handleToggleMute = () => {
@@ -668,8 +672,9 @@ export default function Music() {
                 onReady={onReady}
               />
               {!isMusicMode && (
-                <div>
+                <div className={styles['video-controller']}>
                   <button type="button" onClick={handlePlayPause}>
+                    <div className={styles.dummy} />
                     {isPlaying ? (
                       <>
                         <s>
@@ -679,7 +684,6 @@ export default function Music() {
                       </>
                     ) : (
                       <>
-                        <div className={styles.dummy} />
                         <s>
                           <PlayMusicIcon />
                         </s>
