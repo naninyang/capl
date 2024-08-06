@@ -361,7 +361,7 @@ export async function getPlaylistData(playlistId: number) {
     description: playlistData.attributes.description,
     list: playlistData.attributes.list,
     tags: playlistData.attributes.tags,
-    isMusicMode: playlistData.attributes.tagisMusicMode,
+    isMusicMode: playlistData.attributes.isMusicMode,
     createdAt: playlistData.attributes.createdAt,
   };
 
