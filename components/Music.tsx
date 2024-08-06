@@ -72,6 +72,7 @@ export default function Music() {
   const [isSeeking, setIsSeeking] = useState(false);
   const [volume, setVolume] = useState(100);
   const [previousVolume, setPreviousVolume] = useState(100);
+
   const playerRef = useRef<YouTubePlayer | null>(null);
   const playlistRef = useRef<HTMLUListElement | null>(null);
 
