@@ -666,7 +666,28 @@ export default function Music() {
                 onEnd={onEnd}
                 onReady={onReady}
               />
-              {!isMusicMode && <span />}
+              {!isMusicMode && (
+                <div>
+                  <button type="button" onClick={handlePlayPause}>
+                    {isPlaying ? (
+                      <>
+                        <s>
+                          <PauseMusicIcon />
+                        </s>
+                        <span>영상 일시정지하기</span>
+                      </>
+                    ) : (
+                      <>
+                        <div className={styles.dummy} />
+                        <s>
+                          <PlayMusicIcon />
+                        </s>
+                        <span>영상 재생하기</span>
+                      </>
+                    )}
+                  </button>
+                </div>
+              )}
             </div>
             <div className={styles['mp-info']}>
               <dl className={styles.primary}>
