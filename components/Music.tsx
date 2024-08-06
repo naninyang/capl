@@ -21,6 +21,7 @@ import {
 import {
   CarplayIcon,
   CloseIcon,
+  CrossIcon,
   MusicIcon,
   NextMusicIcon,
   PauseMusicIcon,
@@ -360,6 +361,11 @@ export default function Music() {
     setIsPlaylistVisible(false);
   };
 
+  const handlePlaylistClose = () => {
+    setIsPlaylistDropdown(false);
+    setIsPlaylistVisible(false);
+  };
+
   const handleTogglePlaylistVisibility = () => {
     setIsPlaylistDropdown(false);
     if (!isPlayerOpen) {
@@ -576,7 +582,13 @@ export default function Music() {
         </div>
         {isPlaylistVisible && (
           <div className={styles.playlist}>
-            <h2>플레이리스트 선택</h2>
+            <div className={styles.headline}>
+              <h2>플레이리스트 선택</h2>
+              <button type="button" onClick={handlePlaylistClose}>
+                <CrossIcon />
+                <span>플레이리스트 닫기</span>
+              </button>
+            </div>
             <div className={styles.select}>
               <button
                 type="button"

@@ -896,11 +896,16 @@ nav
         justify-content: space-between
         width: 100%
 
+        .cp &
+          flex-direction: row-reverse
+
         .pm &
           padding: rem(23) rem(23) 0
 
         .lm &, .ld &
-          flex-direction: row-reverse
+          padding-top: rem(23)
+
+        .lm.cp &, .ld.cp &
           padding-top: rem(23)
 
         .pd.cp &
@@ -910,6 +915,7 @@ nav
         .pm.cp &
           bottom: calc(100vh - rem(437))
           padding: rem(23) rem(23) 0
+          flex-direction: row-reverse
 
         button
           .lm &
@@ -1018,6 +1024,9 @@ nav
             .pm &, .lm &
               text-align: left
 
+            .pm.cp &, .lm.cp &
+              text-align: right
+
             svg
               .pm &, .lm &
                 width: rem(27)
@@ -1091,6 +1100,9 @@ nav
             .pm &, .lm &
               text-align: right
 
+            .pm.cp &, .lm.cp &
+              text-align: left
+
             svg
               .pm &, .lm &
                 width: rem(27)
@@ -1117,7 +1129,7 @@ nav
     width: 100%
     max-width: rem(370)
 
-    .lm.cp &, .ld.cp &
+    .cp &
       right: auto
       left: 0
 
@@ -1125,19 +1137,31 @@ nav
       top: rem(78)
       height: calc(100% - rem(78))
 
-    .pm.cp &
-      height: calc(100% - rem(78))
-
     .ld &, .pd &
       top: rem(136)
       height: 100%
 
+    .pm.cp &
+      height: calc(100% - rem(78))
+
     .ld.cp &, .pd.cp &
       height: calc(100dvh - rem(136))
 
-    h2
-      font-size: rem(16)
-      line-height: 1
+    .headline
+      display: flex
+      justify-content: space-between
+      align-items: center
+
+      h2
+        font-size: rem(16)
+        line-height: 1
+
+      button, svg
+        width: rem(20)
+        height: rem(20)
+
+      span
+        +screen-reader-only
 
     .select
       display: flex
