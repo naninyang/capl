@@ -658,7 +658,7 @@ export default function Music() {
         {currentTrack && (
           <div className={styles['musicplayer-container']}>
             <div className={styles['mp-visual']}>
-              {isMusicMode && (
+              {isMusicMode ? (
                 <Image
                   src={`https://cdn.dev1stud.io/capl/album/ext-${currentTrack.album.id}.webp`}
                   width={570}
@@ -667,6 +667,8 @@ export default function Music() {
                   priority
                   alt=""
                 />
+              ) : (
+                <span />
               )}
               <YouTube
                 videoId={videoId}

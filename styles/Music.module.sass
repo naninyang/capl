@@ -525,6 +525,7 @@ nav
     display: flex
     justify-content: space-between
     position: relative
+    z-index: 1
     width: 100%
 
     .pm &, .lm &
@@ -731,6 +732,10 @@ nav
 
         & + div
           +screen-reader-only
+          z-index: -1
+
+      > span
+        +screen-reader-only
 
       > div
         display: flex
