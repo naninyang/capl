@@ -687,7 +687,7 @@ export default function Music() {
               />
               {!isMusicMode && (
                 <div className={styles['video-controller']}>
-                  <button type="button" onClick={handlePlayPause}>
+                  <button type="button" onClick={handlePlayPause} className={isPlaying ? styles.isPlaying : undefined}>
                     <div className={styles.dummy} />
                     {isPlaying ? (
                       <>
