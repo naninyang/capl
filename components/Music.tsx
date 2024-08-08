@@ -854,11 +854,13 @@ export default function Music() {
             <div className={styles.songsong}>
               <div className={styles['music-info']}>
                 <div className={styles['info-container']}>
-                  <button type="button" onClick={handleTogglePlayerVisibility}>
-                    <span>{isPlayerOpen ? '플레이어 숨기기' : '플레이어 보기'}</span>
-                  </button>
                   {currentTrack ? (
-                    renderTrackInfo(currentTrack)
+                    <>
+                      <button type="button" onClick={handleTogglePlayerVisibility}>
+                        <span>{isPlayerOpen ? '플레이어 숨기기' : '플레이어 보기'}</span>
+                      </button>
+                      {renderTrackInfo(currentTrack)}
+                    </>
                   ) : (
                     <>
                       <div className={styles.thumbnail}>
