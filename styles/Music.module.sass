@@ -655,9 +655,7 @@ nav
 
     .pd.cp &, .pm.cp &
       flex-direction: column-reverse
-
-    .pm.cp &
-      justify-content: space-between
+      justify-content: center
 
     > div
       .pd &, .ld &
@@ -677,13 +675,15 @@ nav
       .pm &
         justify-content: center
         padding: rem(23) 0
-        height: calc(100dvh - rem(437))
+        height: calc(50dvh - rem(78))
 
       .pd &
-        aspect-ratio: 1 / 1
-        width: calc(100vw - rem(64))
-        height: auto
+        width: 100%
+        height: calc(50dvh - rem(168))
         flex: none
+
+      .pd.cp &
+        padding: 0 rem(58) rem(58)
 
       > img, > span + div
         .lm &
@@ -699,6 +699,10 @@ nav
           top: 50%
           left: 50%
           transform: translate(-50%, -50%)
+
+        .pd.cp &
+          position: static
+          transform: none
 
         .pd &
           width: 100%
@@ -853,15 +857,23 @@ nav
       .pm &
         padding: 0 rem(23)
 
+      .pm.cp &
+        +col
+        justify-content: flex-end
+        position: relative
+        padding-bottom: rem(132)
+
       .ld &
-        justify-content: flex-start
+        justify-content: center
         position: relative
 
       .pd &
+        +col
         align-items: flex-start
-        justify-content: flex-start
+        justify-content: flex-end
+        position: relative
         width: 100%
-        padding: rem(52)
+        padding: rem(52) rem(52) rem(259)
 
       .primary
         dt
@@ -953,11 +965,11 @@ nav
           padding-top: rem(23)
 
         .pd.cp &
-          bottom: calc(100vw - rem(64))
+          bottom: 0
           padding: rem(52)
 
         .pm.cp &
-          bottom: calc(100vh - rem(437))
+          bottom: 0
           padding: rem(23) rem(23) 0
           flex-direction: row-reverse
 

@@ -685,20 +685,21 @@ export default function Music() {
                 onEnd={onEnd}
                 onReady={onReady}
               />
-              {(isLandscapeMobile ||
-                isPortraitMobile ||
-                (isCarplayMode && (isLandscapeDesktop || isPortraitDesktop))) && (
-                <div className={styles.time}>
-                  <dl>
-                    <div>
-                      <dt>재생된 시간</dt>
-                      <dd>{formatTime(currentTime)}</dd>
-                      <dt>전체 재생시간</dt>
-                      <dd>{duration > 0 ? formatTime(duration) : '0:00'}</dd>
-                    </div>
-                  </dl>
-                </div>
-              )}
+              {!isMusicMode &&
+                (isLandscapeMobile ||
+                  isPortraitMobile ||
+                  (isCarplayMode && (isLandscapeDesktop || isPortraitDesktop))) && (
+                  <div className={styles.time}>
+                    <dl>
+                      <div>
+                        <dt>재생된 시간</dt>
+                        <dd>{formatTime(currentTime)}</dd>
+                        <dt>전체 재생시간</dt>
+                        <dd>{duration > 0 ? formatTime(duration) : '0:00'}</dd>
+                      </div>
+                    </dl>
+                  </div>
+                )}
               {!isMusicMode && (
                 <div className={styles['video-controller']}>
                   <button type="button" onClick={handlePlayPause} className={isPlaying ? styles.isPlaying : undefined}>
@@ -744,6 +745,17 @@ export default function Music() {
                 </div>
               </dl>
               <dl className={styles.secondary}>
+                {isMusicMode &&
+                  (isLandscapeMobile ||
+                    isPortraitMobile ||
+                    (isCarplayMode && (isLandscapeDesktop || isPortraitDesktop))) && (
+                    <div>
+                      <dt>재생시간</dt>
+                      <dd>
+                        {formatTime(currentTime)} / {duration > 0 ? formatTime(duration) : '0:00'}
+                      </dd>
+                    </div>
+                  )}
                 <div>
                   <dt>작곡</dt>
                   <dd>
