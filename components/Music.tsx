@@ -481,6 +481,31 @@ export default function Music() {
     setIsMusicMode((prev) => !prev);
   };
 
+  useEffect(() => {
+    const preventScroll = (e: Event): void => {
+      e.preventDefault();
+    };
+    const preventScrollKeys = (e: KeyboardEvent): void => {
+      if (['ArrowUp', 'ArrowDown', 'Space', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
+        e.preventDefault();
+      }
+    };
+    if (isPlayerOpen) {
+      window.addEventListener('wheel', preventScroll, { passive: false });
+      window.addEventListener('touchmove', preventScroll, { passive: false });
+      window.addEventListener('keydown', preventScrollKeys, { passive: false });
+    } else {
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      window.removeEventListener('keydown', preventScrollKeys);
+    }
+    return () => {
+      window.removeEventListener('wheel', preventScroll);
+      window.removeEventListener('touchmove', preventScroll);
+      window.removeEventListener('keydown', preventScrollKeys);
+    };
+  }, [isPlayerOpen]);
+
   const renderTrackInfo = (track: Music, current?: string) => (
     <>
       <div className={styles.thumbnail}>
