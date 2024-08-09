@@ -1,6 +1,7 @@
 import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from 'react';
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
+import PerfectScrollbar from 'react-perfect-scrollbar';
 import { useRecoilState } from 'recoil';
 import {
   carplayModeState,
@@ -11,6 +12,7 @@ import {
 } from '@/recoil/atom';
 import { ArtistData, ArtistsData } from '@/types';
 import styles from '@/styles/Music.module.sass';
+import 'react-perfect-scrollbar/dist/css/styles.css';
 import {
   useLandscapeDesktop,
   useLandscapeMobile,
@@ -654,29 +656,34 @@ export default function Music() {
               </button>
             </div>
             <div className={styles.items}>
-              <ul>
-                {viewedPlaylist.length > 0 ? (
-                  viewedPlaylist.map((track, index) => (
-                    <li key={index}>
-                      {renderTrackInfo(track, 'current')}
-                      <button type="button" onClick={() => handlePlayTrack(index, selectedPlaylist)}>
-                        <span>곡 듣기</span>
-                      </button>
-                    </li>
-                  ))
-                ) : (
-                  <>
-                    {currentPlaylist.map((track, index) => (
-                      <li key={index}>
+              <PerfectScrollbar className={styles['scrollbar-container']}>
+                <ul>
+                  {viewedPlaylist.length > 0 ? (
+                    viewedPlaylist.map((track, index) => (
+                      <li
+                        key={index}
+                        className={currentTrack.album.id === track.album.id ? styles.currentTrack : undefined}
+                      >
                         {renderTrackInfo(track, 'current')}
-                        <button type="button" onClick={() => handlePlayTrack(index)}>
+                        <button type="button" onClick={() => handlePlayTrack(index, selectedPlaylist)}>
                           <span>곡 듣기</span>
                         </button>
                       </li>
-                    ))}
-                  </>
-                )}
-              </ul>
+                    ))
+                  ) : (
+                    <>
+                      {currentPlaylist.map((track, index) => (
+                        <li key={index}>
+                          {renderTrackInfo(track, 'current')}
+                          <button type="button" onClick={() => handlePlayTrack(index)}>
+                            <span>곡 듣기</span>
+                          </button>
+                        </li>
+                      ))}
+                    </>
+                  )}
+                </ul>
+              </PerfectScrollbar>
             </div>
           </div>
         )}

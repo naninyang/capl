@@ -1181,7 +1181,7 @@ nav
     position: absolute
     right: 0
     z-index: 7
-    padding: rem(27) rem(23)
+    padding: rem(27) 0
     width: 100%
     max-width: rem(370)
 
@@ -1204,7 +1204,7 @@ nav
 
     .ld &, .pd &
       top: rem(136)
-      height: 100%
+      height: calc(100% - rem(136))
 
     .pm.cp &
       height: calc(100% - rem(78))
@@ -1216,6 +1216,7 @@ nav
       display: flex
       justify-content: space-between
       align-items: center
+      padding: 0 rem(23)
 
       h2
         font-size: rem(16)
@@ -1232,6 +1233,7 @@ nav
       display: flex
       gap: rem(10)
       position: relative
+      padding: 0 rem(23)
 
       button
         span
@@ -1315,6 +1317,15 @@ nav
     .items
       padding-top: rem(14)
 
+      .ld &, .pd &
+        height: calc(100dvh - rem(324))
+
+      .ld.cp &, .pd.cp &
+        height: calc(100dvh - rem(258))
+
+      .lm &, .pm &
+        height: calc(100dvh - rem(200))
+
       ul
         display: flex
         flex-direction: column
@@ -1324,6 +1335,11 @@ nav
           +row
           gap: rem(12)
           position: relative
+          padding: rem(12) rem(23)
+
+          &.currentTrack
+            .night &
+              background-color: rgba($hex-white, .05)
 
           .thumbnail
             width: rem(47)
