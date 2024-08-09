@@ -89,7 +89,6 @@ nav
 
   .pm &, .lm &
     transition: all .3s cubic-bezier(.5,0,.2,0)
-    overflow: hidden
     padding: rem(12) rem(23)
     height: rem(67)
 
@@ -174,9 +173,9 @@ nav
     button
       background-color: transparent
 
-    .seektime
+    .seektime-controller
       position: absolute
-      top: 0
+      top: rem(-5)
       left: 0
       width: 100%
       height: rem(10)
@@ -184,39 +183,22 @@ nav
       button
         display: flex
         justify-content: flex-start
-        align-items: flex-start
+        align-items: center
         position: relative
         width: 100%
         height: rem(10)
 
-        &:hover
-          s
-            height: rem(10)
-
-          i, span
-            height: rem(10)
-
-          i
-            min-width: rem(10)
-
-          span
-            border-radius: rem(10)
-            width: rem(10)
-            height: rem(10)
-
         s
           display: block
-          background-color: rgba($hex-white, .5)
           width: 100%
           height: rem(2)
 
         i, span
-          background-color: $hex-accent
           position: absolute
-          top: 0
           height: rem(2)
 
         i
+          top: rem(4)
           left: 0
           min-width: rem(2)
 
@@ -224,6 +206,8 @@ nav
             background-color: $hex-light
 
         span
+          top: 0
+          background-color: $hex-accent
           border-radius: rem(2)
           width: rem(2)
           height: rem(2)
@@ -240,6 +224,54 @@ nav
             font-variation-settings: $fw-900
             line-height: 1
             color: $hex-white
+
+    .seektiming
+      button
+        s
+          background-color: rgba($hex-white, .5)
+
+        i
+          background-color: $hex-accent
+
+        span
+          top: 0
+          z-index: 777
+          border-radius: rem(10)
+          width: rem(10)
+          height: rem(10)
+
+    .seektime
+      button
+        &:hover
+          s
+            height: rem(10)
+
+          i, span
+            height: rem(10)
+
+          i
+            top: 0
+            min-width: rem(10)
+
+          span
+            border-radius: rem(10)
+            width: rem(10)
+            height: rem(10)
+
+        s
+          background-color: rgba($hex-white, .5)
+
+        i, span
+          background-color: $hex-accent
+
+        i
+          left: 0
+          min-width: rem(2)
+
+        span
+          border-radius: rem(2)
+          width: rem(2)
+          height: rem(2)
 
     .songsong
       +row
@@ -992,11 +1024,11 @@ nav
           .ld &, .pd &
             height: rem(123)
 
-        div:not(.seektime)
+        div:not(.seektime-controller)
           span
             +screen-reader-only
 
-        .seektime
+        .seektime-controller
           position: absolute
           top: 0
           left: 0
@@ -1020,7 +1052,6 @@ nav
 
             s
               display: block
-              background-color: rgba($hex-white, .5)
               border-radius: rem(2)
               width: 100%
               height: rem(2)
@@ -1041,10 +1072,6 @@ nav
                 background-color: $hex-light
 
             span
-              border-radius: rem(10)
-              width: rem(10)
-              height: rem(10)
-
               strong
                 position: absolute
                 top: rem(-27)
@@ -1057,6 +1084,36 @@ nav
                 font-variation-settings: $fw-900
                 line-height: 1
                 color: $hex-white
+
+        .seektiming
+          button
+            s
+              background-color: rgba($hex-white, .5)
+
+            span
+              border-radius: rem(10)
+              width: rem(10)
+              height: rem(10)
+
+        .seektime
+          button
+            &:hover
+              s
+                height: rem(10)
+
+              i, span
+                height: rem(10)
+
+              i
+                min-width: rem(10)
+
+              span
+                border-radius: rem(10)
+                width: rem(10)
+                height: rem(10)
+
+            s
+              background-color: $hex-accent
 
         .repeat, .playlist
           .pm &, .lm &

@@ -2,6 +2,7 @@ import { useEffect, useState, useCallback, useRef, MouseEvent, TouchEvent } from
 import Image from 'next/image';
 import YouTube, { YouTubePlayer } from 'react-youtube';
 import PerfectScrollbar from 'react-perfect-scrollbar';
+import { isMobile, isIOS, isAndroid } from 'react-device-detect';
 import { useRecoilState } from 'recoil';
 import {
   carplayModeState,
@@ -437,16 +438,6 @@ export default function Music() {
     return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   };
 
-  const handleMouseMove = (event: MouseEvent<HTMLButtonElement>) => {
-    if (!playerRef.current) return;
-
-    const rect = event.currentTarget.getBoundingClientRect();
-    const offsetX = event.clientX - rect.left;
-    const newSeekTime = (offsetX / rect.width) * duration;
-
-    setSeekTime(newSeekTime);
-  };
-
   const handleSeek = () => {
     if (playerRef.current) {
       playerRef.current.seekTo(seekTime, true);
@@ -455,12 +446,48 @@ export default function Music() {
     setIsSeeking(false);
   };
 
-  const handleMouseEnter = (event: MouseEvent<HTMLButtonElement>) => {
-    setIsSeeking(true);
-    handleMouseMove(event);
+  const handleSeekingMouse = (event: MouseEvent<HTMLButtonElement>) => {
+    if (!playerRef.current) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const offsetX = event.clientX - rect.left;
+    const newSeekTime = (offsetX / rect.width) * duration;
+
+    setSeekTime(newSeekTime);
+    setIsPlaying(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleSeekingTouch = (event: TouchEvent<HTMLButtonElement>) => {
+    if (!playerRef.current) return;
+
+    const rect = event.currentTarget.getBoundingClientRect();
+    const touch = event.touches[0];
+    const offsetX = touch.clientX - rect.left;
+    const newSeekTime = (offsetX / rect.width) * duration;
+
+    setSeekTime(newSeekTime);
+    setIsPlaying(true);
+  };
+
+  const handleSeekStartMouse = (event: MouseEvent<HTMLButtonElement>) => {
+    setIsSeeking(true);
+    handleSeekingMouse(event);
+  };
+
+  const handleSeekStartTouch = (event: TouchEvent<HTMLButtonElement>) => {
+    setIsSeeking(true);
+    handleSeekingTouch(event);
+  };
+
+  const handleSeekEndMouse = () => {
+    setIsSeeking(false);
+  };
+
+  const handleSeekEndTouch = () => {
+    if (playerRef.current) {
+      playerRef.current.seekTo(seekTime, true);
+      setCurrentTime(seekTime);
+    }
     setIsSeeking(false);
   };
 
@@ -827,31 +854,65 @@ export default function Music() {
               </dl>
               {(isLandscapeMobile || isPortraitMobile || isCarplayMode) && (
                 <div className={styles['controller-container']}>
-                  <div className={styles.seektime}>
-                    <button
-                      type="button"
-                      className={styles.seektime}
-                      onMouseMove={handleMouseMove}
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                      onClick={handleSeek}
-                    >
-                      <s>
-                        <i
-                          style={{
-                            width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
-                          }}
-                          className={isSeeking ? styles.seeking : undefined}
-                        />
-                        <span
-                          style={{
-                            left: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
-                          }}
-                        >
-                          {isSeeking && <strong>{formatTime(seekTime)}</strong>}
-                        </span>
-                      </s>
-                    </button>
+                  <div
+                    className={`${isMobile || isIOS || isAndroid ? styles.seektiming : styles.seektime} ${styles['seektime-controller']}`}
+                  >
+                    {isMobile || isIOS || isAndroid ? (
+                      <button
+                        type="button"
+                        onTouchMove={handleSeekingTouch}
+                        onTouchStart={handleSeekStartTouch}
+                        onTouchEnd={handleSeekEndTouch}
+                      >
+                        <s>
+                          <i
+                            style={{
+                              width: isSeeking
+                                ? `${(seekTime / duration) * 100}%`
+                                : `${(currentTime / duration) * 100}%`,
+                            }}
+                            className={isSeeking ? styles.seeking : undefined}
+                          />
+                          <span
+                            style={{
+                              left: isSeeking
+                                ? `${(seekTime / duration) * 100}%`
+                                : `${(currentTime / duration) * 100}%`,
+                            }}
+                          >
+                            {isSeeking && <strong>{formatTime(seekTime)}</strong>}
+                          </span>
+                        </s>
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onMouseMove={handleSeekingMouse}
+                        onMouseEnter={handleSeekStartMouse}
+                        onMouseLeave={handleSeekEndMouse}
+                        onClick={handleSeek}
+                      >
+                        <s>
+                          <i
+                            style={{
+                              width: isSeeking
+                                ? `${(seekTime / duration) * 100}%`
+                                : `${(currentTime / duration) * 100}%`,
+                            }}
+                            className={isSeeking ? styles.seeking : undefined}
+                          />
+                          {isSeeking && (
+                            <span
+                              style={{
+                                left: `${(seekTime / duration) * 100}%`,
+                              }}
+                            >
+                              <strong>{formatTime(seekTime)}</strong>
+                            </span>
+                          )}
+                        </s>
+                      </button>
+                    )}
                   </div>
                   <div className={styles.repeat}>
                     <button
@@ -905,29 +966,55 @@ export default function Music() {
       <div className={`${styles['music-bar']} ${isPlayerOpen ? styles['musicbar-open'] : ''}`}>
         {Object.keys(playlist).length > 0 ? (
           <div className={styles['music-container']}>
-            <div className={styles.seektime}>
-              <button
-                type="button"
-                className={styles.seektime}
-                onMouseMove={handleMouseMove}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={handleSeek}
-              >
-                <s>
-                  <i
-                    style={{
-                      width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
-                    }}
-                    className={isSeeking ? styles.seeking : undefined}
-                  />
-                  {isSeeking && (
-                    <span style={{ left: `${(seekTime / duration) * 100}%` }}>
-                      <strong>{formatTime(seekTime)}</strong>
+            <div
+              className={`${isMobile || isIOS || isAndroid ? styles.seektiming : styles.seektime} ${styles['seektime-controller']}`}
+            >
+              {isMobile || isIOS || isAndroid ? (
+                <button
+                  type="button"
+                  onTouchMove={handleSeekingTouch}
+                  onTouchStart={handleSeekStartTouch}
+                  onTouchEnd={handleSeekEndTouch}
+                >
+                  <s>
+                    <i
+                      style={{
+                        width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                      }}
+                      className={isSeeking ? styles.seeking : undefined}
+                    />
+                    <span
+                      style={{
+                        left: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                      }}
+                    >
+                      {isSeeking && <strong>{formatTime(seekTime)}</strong>}
                     </span>
-                  )}
-                </s>
-              </button>
+                  </s>
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onMouseMove={handleSeekingMouse}
+                  onMouseEnter={handleSeekStartMouse}
+                  onMouseLeave={handleSeekEndMouse}
+                  onClick={handleSeek}
+                >
+                  <s>
+                    <i
+                      style={{
+                        width: isSeeking ? `${(seekTime / duration) * 100}%` : `${(currentTime / duration) * 100}%`,
+                      }}
+                      className={isSeeking ? styles.seeking : undefined}
+                    />
+                    {isSeeking && (
+                      <span style={{ left: `${(seekTime / duration) * 100}%` }}>
+                        <strong>{formatTime(seekTime)}</strong>
+                      </span>
+                    )}
+                  </s>
+                </button>
+              )}
             </div>
             <div className={styles.songsong}>
               <div className={styles['music-info']}>
