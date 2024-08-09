@@ -685,7 +685,7 @@ nav
       .pd.cp &
         padding: 0 rem(58) rem(58)
 
-      > img, > span + div
+      > img, > span + div, .time, .video-controller
         .lm &
           width: calc(100dvh - rem(124))
           height: calc(100dvh - rem(124))
@@ -738,20 +738,26 @@ nav
           display: flex
           align-items: center
 
+          .ld.cp &
+            margin-top: rem(-73)
+
           iframe
             aspect-ratio: 1920 / 1080
             width: 100%
             height: auto
 
-      .video-controller, > .time
-        position: absolute
-        top: 0
-        left: 0
+      > .time, > .video-controller
         display: flex
-        justify-content: center
         align-items: center
-        width: 100%
-        height: 100%
+
+        .lm &, .pm &
+          position: absolute
+          top: 50%
+          left: 50%
+          transform: translate(-50%, -50%)
+
+        .ld.cp &
+          margin-top: rem(-73)
 
       > .time
         z-index: 7
@@ -866,6 +872,9 @@ nav
       .ld &
         justify-content: center
         position: relative
+
+      .ld.cp &
+        padding-bottom: rem(146)
 
       .pd &
         +col
