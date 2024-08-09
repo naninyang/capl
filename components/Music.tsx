@@ -332,7 +332,14 @@ export default function Music() {
     } else {
       setCurrentTrackIndex(currentTrackIndex + 1);
     }
-    setIsPlaying(true);
+
+    if (isIOS) {
+      setTimeout(() => {
+        setIsPlaying(true);
+      }, 1000);
+    } else {
+      setIsPlaying(true);
+    }
   }, [currentTrackIndex, currentPlaylist.length]);
 
   const handlePrevTrack = () => {
@@ -341,7 +348,14 @@ export default function Music() {
     } else {
       setCurrentTrackIndex(currentTrackIndex - 1);
     }
-    setIsPlaying(true);
+
+    if (isIOS) {
+      setTimeout(() => {
+        setIsPlaying(true);
+      }, 1000);
+    } else {
+      setIsPlaying(true);
+    }
   };
 
   const handleToggleMute = () => {
@@ -399,6 +413,15 @@ export default function Music() {
     playerRef.current = event.target;
     if (playerRef.current) {
       playerRef.current.setVolume(volume);
+
+      if (isIOS) {
+        setIsPlaying(false);
+        setTimeout(() => {
+          playerRef.current?.playVideo();
+        }, 1000);
+      } else {
+        playerRef.current.playVideo();
+      }
     }
   };
 
