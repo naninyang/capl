@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import Anchor from './Anchor';
 import styles from '@/styles/Header.module.sass';
 import { useDesktop, useMobile } from './MediaQuery';
-import { CaplLogo, CloseIcon, SearchIcon } from './Icons';
+import { CaplLogo, CrossIcon, SearchIcon } from './Icons';
 
 export default function Header() {
   const router = useRouter();
@@ -83,7 +83,7 @@ export default function Header() {
             <div className={styles['button-group']}>
               {router.pathname !== '/search' ? (
                 <button type="button" className={styles['search-cancel']} onClick={handleSearchHidden}>
-                  <CloseIcon />
+                  <CrossIcon />
                   <span>검색취소</span>
                 </button>
               ) : (
@@ -93,7 +93,7 @@ export default function Header() {
                   disabled={query.length < 1}
                   onClick={handleCancel}
                 >
-                  <CloseIcon />
+                  <CrossIcon />
                   <span>키워드 삭제</span>
                 </button>
               )}
