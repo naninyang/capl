@@ -412,6 +412,25 @@ export default function Music() {
     }
   };
 
+  const onStateChange = (event: { data: number }) => {
+    switch (event.data) {
+      case -1:
+        setIsPlaying(false);
+      case 0:
+        setIsPlaying(false);
+      case 2:
+        setIsPlaying(false);
+      case 3:
+        setIsPlaying(false);
+        break;
+      case 1:
+        setIsPlaying(true);
+        break;
+      default:
+        break;
+    }
+  };
+
   const formatTime = (time: number) => {
     const minutes = Math.floor(time / 60);
     const seconds = Math.floor(time % 60);
@@ -716,6 +735,7 @@ export default function Music() {
                 }}
                 onEnd={onEnd}
                 onReady={onReady}
+                onStateChange={onStateChange}
               />
               {!isMusicMode &&
                 (isLandscapeMobile ||
