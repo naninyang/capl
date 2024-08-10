@@ -77,7 +77,6 @@ export default function Home({
                           priority
                           alt={playlist.title}
                         />
-                        <span>플레이리스트 재생</span>
                       </Anchor>
                       {(isLandscapeDesktop || isPortraitDesktop) && (
                         <button type="button" onClick={() => handlePlaylist(playlist)}>

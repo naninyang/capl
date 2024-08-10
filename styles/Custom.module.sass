@@ -1,0 +1,38 @@
+@import './designSystem'
+
+.custom
+  .content
+    +row
+    margin: rem(-12)
+
+    .item
+      padding: rem(12)
+      width: 50%
+
+      a
+        display: flex
+        flex-direction: column
+        gap: rem(12)
+
+      +mq(minMedium)
+        width: 33.33%
+
+      +mq(minLarge)
+        width: 16.66%
+
+      +mq(landscapeDesktop)
+        position: relative
+
+      +mq(portraitDesktop)
+        position: relative
+
+      img
+        display: block
+        aspect-ratio: 1 / 1
+        width: 100%
+        height: auto
+
+      strong
+        font-size: rem(14)
+        line-height: 1
+        color: $hex-white

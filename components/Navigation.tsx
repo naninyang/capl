@@ -9,6 +9,8 @@ import {
   ChartCurrentMenuIcon,
   ChartDefaultMenuIcon,
   ContactMenuIcon,
+  CustomCurrentMenuIcon,
+  CustomDefaultMenuIcon,
   LicenseMenuIcon,
   MoreMenuIcon,
   NewlyCurrentMenuIcon,
@@ -99,6 +101,12 @@ export default function Navigation() {
                   최근등록
                 </Anchor>
               </li>
+              <li className={router.pathname === '/custom' ? styles.current : undefined}>
+                <Anchor href="/custom" onClick={closeMore}>
+                  {router.pathname === '/custom' ? <CustomCurrentMenuIcon /> : <CustomDefaultMenuIcon />}
+                  재생목록 편집
+                </Anchor>
+              </li>
               <li>
                 <button type="button" onClick={() => setIsMore((more) => !more)}>
                   <MoreMenuIcon />
@@ -136,6 +144,12 @@ export default function Navigation() {
                   <Anchor href="/newly">
                     {router.pathname === '/newly' ? <NewlyCurrentMenuIcon /> : <NewlyDefaultMenuIcon />}
                     최근등록
+                  </Anchor>
+                </li>
+                <li className={router.pathname === '/custom' ? styles.current : undefined}>
+                  <Anchor href="/custom">
+                    {router.pathname === '/custom' ? <CustomCurrentMenuIcon /> : <CustomDefaultMenuIcon />}
+                    재생목록 편집
                   </Anchor>
                 </li>
               </ol>
