@@ -321,57 +321,6 @@ export default function Music() {
     }
   };
 
-  const handleToggleRepeat = () => {
-    setIsSingleTrackRepeating((prev) => !prev);
-  };
-
-  const handleNextTrack = useCallback(() => {
-    setIsPlaying(false);
-    if (currentTrackIndex === currentPlaylist.length - 1) {
-      setCurrentTrackIndex(0);
-    } else {
-      setCurrentTrackIndex(currentTrackIndex + 1);
-    }
-
-    if (isIOS) {
-      setTimeout(() => {
-        setIsPlaying(true);
-      }, 1000);
-    } else {
-      setIsPlaying(true);
-    }
-  }, [currentTrackIndex, currentPlaylist.length]);
-
-  const handlePrevTrack = () => {
-    if (currentTrackIndex === 0) {
-      setCurrentTrackIndex(currentPlaylist.length - 1);
-    } else {
-      setCurrentTrackIndex(currentTrackIndex - 1);
-    }
-
-    if (isIOS) {
-      setTimeout(() => {
-        setIsPlaying(true);
-      }, 1000);
-    } else {
-      setIsPlaying(true);
-    }
-  };
-
-  const handleToggleMute = () => {
-    if (playerRef.current) {
-      if (isMuted) {
-        playerRef.current.unMute();
-        setVolume(previousVolume);
-      } else {
-        playerRef.current.mute();
-        setPreviousVolume(volume);
-        setVolume(0);
-      }
-      setIsMuted((prev) => !prev);
-    }
-  };
-
   const handlePlayerClose = () => {
     setIsPlaylistDropdown(false);
     setIsPlayerOpen(false);
@@ -406,6 +355,57 @@ export default function Music() {
         playerRef.current.playVideo();
         setIsPlaying(true);
       }
+    }
+  };
+
+  const handleToggleRepeat = () => {
+    setIsSingleTrackRepeating((prev) => !prev);
+  };
+
+  const handleToggleMute = () => {
+    if (playerRef.current) {
+      if (isMuted) {
+        playerRef.current.unMute();
+        setVolume(previousVolume);
+      } else {
+        playerRef.current.mute();
+        setPreviousVolume(volume);
+        setVolume(0);
+      }
+      setIsMuted((prev) => !prev);
+    }
+  };
+
+  const handleNextTrack = useCallback(() => {
+    setIsPlaying(false);
+    if (currentTrackIndex === currentPlaylist.length - 1) {
+      setCurrentTrackIndex(0);
+    } else {
+      setCurrentTrackIndex(currentTrackIndex + 1);
+    }
+
+    if (isIOS) {
+      setTimeout(() => {
+        setIsPlaying(true);
+      }, 1000);
+    } else {
+      setIsPlaying(true);
+    }
+  }, [currentTrackIndex, currentPlaylist.length]);
+
+  const handlePrevTrack = () => {
+    if (currentTrackIndex === 0) {
+      setCurrentTrackIndex(currentPlaylist.length - 1);
+    } else {
+      setCurrentTrackIndex(currentTrackIndex - 1);
+    }
+
+    if (isIOS) {
+      setTimeout(() => {
+        setIsPlaying(true);
+      }, 1000);
+    } else {
+      setIsPlaying(true);
     }
   };
 
