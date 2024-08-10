@@ -392,6 +392,30 @@ export async function getPlaylistsSearchData(page?: number, pageSize?: number, p
   return playlists;
 }
 
+export async function getPlaylistsSearchIdentityData(title: string) {
+  const response = await fetch(
+    `${process.env.STRAPI_URL}/api/playlists?sort[0]=id:desc&pagination[page]=1&pagination[pageSize]=1&filters[title][$eq]=${title}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${process.env.STRAPI_BEARER_TOKEN}`,
+      },
+    },
+  );
+  const playlistResponse = await response.json();
+  const playlistData = playlistResponse.data;
+  const playlists: PlaylistsData[] = playlistData.map((data: PlaylistData) => ({
+    id: data.id,
+    idx: `${formatDate(data.attributes.createdAt)}${data.id}`,
+    title: data.attributes.title,
+    description: data.attributes.description,
+    list: data.attributes.list,
+    tags: data.attributes.tags,
+  }));
+
+  return playlists;
+}
+
 export const getStaffData = async (
   staffId: number,
   type: string,
