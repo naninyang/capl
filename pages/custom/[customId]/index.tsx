@@ -16,9 +16,10 @@ import styles from '@/styles/List.module.sass';
 import { CheckedCheckboxIcon, CustomCurrentMenuIcon, TrashIcon, UncheckedCheckboxIcon } from '@/components/Icons';
 import { useTablet } from '@/components/MediaQuery';
 
-type PlaylistImage = {
+type PlaylistCover = {
   title: string;
   imageUrl: string;
+  descriptionTxt: string;
 };
 
 type MusicsData = {
@@ -35,7 +36,7 @@ export default function CustomPlaylistPage() {
   const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
   const [isCarplayMode, setIsCarplayMode] = useRecoilState(carplayModeState);
   const [viewedPlaylist, setViewedPlaylist] = useState<MusicsData[]>([]);
-  const [playlistImage, setPlaylistImage] = useState<PlaylistImage | null>(null);
+  const [playlistCover, setPlaylistCover] = useState<PlaylistCover | null>(null);
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState(false);
 
@@ -65,7 +66,7 @@ export default function CustomPlaylistPage() {
   }
 
   useEffect(() => {
-    const fetchPlaylistImage = async () => {
+    const fetchPlaylistCover = async () => {
       if (!customId || typeof customId !== 'string') return;
 
       const playlistData = playlist[customId];
@@ -74,6 +75,7 @@ export default function CustomPlaylistPage() {
       const parsedData: Number[] = JSON.parse(playlistData as string);
       const firstTrack = parsedData[0];
       let imageUrl = `https://cdn.dev1stud.io/capl/album/thm-${firstTrack}.webp`;
+      let descriptionTxt = '사용자가 생성한 재생목록입니다';
 
       try {
         const response = await fetch(`/api/search?title=${encodeURIComponent(customId)}`);
@@ -81,17 +83,19 @@ export default function CustomPlaylistPage() {
           const data = await response.json();
           if (data.titleData && data.titleData.length > 0) {
             const { id } = data.titleData[0];
+            const { description } = data.titleData[0];
             imageUrl = `https://cdn.dev1stud.io/capl/playlist/${id}.svg`;
+            descriptionTxt = description;
           }
         }
       } catch (error) {
         console.error('Error fetching playlist image:', error);
       }
 
-      setPlaylistImage({ title: customId, imageUrl });
+      setPlaylistCover({ title: customId, imageUrl, descriptionTxt });
     };
 
-    fetchPlaylistImage();
+    fetchPlaylistCover();
   }, [customId, playlist]);
 
   useEffect(() => {
@@ -209,29 +213,35 @@ export default function CustomPlaylistPage() {
     <main className={customs['custom-detail']}>
       <div className={customs.cover}>
         <div className={customs.background}>
-          {playlistImage && <Image src={playlistImage.imageUrl} width={230} height={230} unoptimized priority alt="" />}
+          {playlistCover && <Image src={playlistCover.imageUrl} width={230} height={230} unoptimized priority alt="" />}
           <div className={customs.dummy} />
         </div>
         <div className={customs.thumbnail}>
-          {playlistImage ? (
-            <Image src={playlistImage.imageUrl} width={230} height={230} unoptimized priority alt="" />
+          {playlistCover ? (
+            <Image src={playlistCover.imageUrl} width={230} height={230} unoptimized priority alt="" />
           ) : (
             <span>썸네일 이미지 불러오는 중</span>
           )}
         </div>
         <div className={customs.info}>
           <dl className={customs.primary}>
-            <dt>재생목록 이름</dt>
+            <dt>재생목록 타이틀</dt>
             <dd>
               <strong>{decodeURIComponent(customId as string)}</strong>
             </dd>
+            {playlistCover && (
+              <>
+                <dt>재생목록 설명</dt>
+                <dd>{playlistCover.descriptionTxt}</dd>
+              </>
+            )}
           </dl>
         </div>
       </div>
       <div className={customs.content}>
         <div className={styles['music-content']}>
-          <div className={styles.controller}>
-            <button type="button" className={styles['all-play']} onClick={handlePlaylistDelete}>
+          <div className={`${styles.controller} ${styles.delete}`}>
+            <button type="button" onClick={handlePlaylistDelete}>
               <TrashIcon />
               재생목록 삭제
             </button>

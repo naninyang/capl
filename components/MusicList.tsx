@@ -125,12 +125,7 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
     <div className={styles['music-content']}>
       <div className={styles.controller}>
         {playlistName && (
-          <button
-            type="button"
-            className={styles['all-play']}
-            disabled={selectedMusicIds.length > 0}
-            onClick={handlePlayAll}
-          >
+          <button type="button" disabled={selectedMusicIds.length > 0} onClick={handlePlayAll}>
             <PlayMusicIcon />
             전체 재생
           </button>
