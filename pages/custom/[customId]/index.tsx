@@ -135,15 +135,8 @@ export default function CustomPlaylistPage() {
           resetAllStates();
         }
       }
+      router.push('/custom');
     }
-  };
-
-  const resetAllStates = () => {
-    setCurrentPlaylistTitle('');
-    setIsMusicMode(true);
-    setIsCarplayMode(false);
-    setCurrentTrackIndex(0);
-    setPlaylist({});
   };
 
   const handleMusicDelete = () => {
@@ -158,7 +151,12 @@ export default function CustomPlaylistPage() {
       updatedPlaylist[customId as string] = JSON.stringify(updatedViewedPlaylist.map((music) => music.id));
       setPlaylist(updatedPlaylist);
 
-      if (currentPlaylistTitle !== customId) {
+      if (updatedViewedPlaylist.length === 0) {
+        delete updatedPlaylist[customId as string];
+        setPlaylist(updatedPlaylist);
+        resetAllStates();
+        router.push('/custom');
+      } else if (currentPlaylistTitle !== customId) {
         if (!updatedPlaylist[currentPlaylistTitle]?.includes(viewedPlaylist[currentTrackIndex]?.id)) {
           if (updatedPlaylist[currentPlaylistTitle] && updatedPlaylist[currentPlaylistTitle].length > 0) {
             const newTrackIndex = Math.min(currentTrackIndex, updatedPlaylist[currentPlaylistTitle].length - 1);
@@ -181,7 +179,12 @@ export default function CustomPlaylistPage() {
       updatedPlaylist[customId as string] = JSON.stringify(updatedViewedPlaylist.map((music) => music.id));
       setPlaylist(updatedPlaylist);
 
-      if (currentPlaylistTitle !== customId) {
+      if (updatedViewedPlaylist.length === 0) {
+        delete updatedPlaylist[customId as string];
+        setPlaylist(updatedPlaylist);
+        resetAllStates();
+        router.push('/custom');
+      } else if (currentPlaylistTitle !== customId) {
         if (!updatedPlaylist[currentPlaylistTitle]?.includes(viewedPlaylist[currentTrackIndex]?.id)) {
           if (updatedPlaylist[currentPlaylistTitle] && updatedPlaylist[currentPlaylistTitle].length > 0) {
             const newTrackIndex = Math.min(currentTrackIndex, updatedPlaylist[currentPlaylistTitle].length - 1);
@@ -192,6 +195,14 @@ export default function CustomPlaylistPage() {
         }
       }
     }
+  };
+
+  const resetAllStates = () => {
+    setCurrentPlaylistTitle('');
+    setIsMusicMode(true);
+    setIsCarplayMode(false);
+    setCurrentTrackIndex(0);
+    setPlaylist({});
   };
 
   return (
