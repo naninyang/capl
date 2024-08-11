@@ -101,9 +101,17 @@ export default function Navigation() {
                   최근등록
                 </Anchor>
               </li>
-              <li className={router.pathname === '/custom' ? styles.current : undefined}>
+              <li
+                className={
+                  router.pathname === '/custom' || router.pathname === '/custom/[customId]' ? styles.current : undefined
+                }
+              >
                 <Anchor href="/custom" onClick={closeMore}>
-                  {router.pathname === '/custom' ? <CustomCurrentMenuIcon /> : <CustomDefaultMenuIcon />}
+                  {router.pathname === '/custom' || router.pathname === '/custom/[customId]' ? (
+                    <CustomCurrentMenuIcon />
+                  ) : (
+                    <CustomDefaultMenuIcon />
+                  )}
                   재생목록 편집
                 </Anchor>
               </li>
@@ -146,9 +154,19 @@ export default function Navigation() {
                     최근등록
                   </Anchor>
                 </li>
-                <li className={router.pathname === '/custom' ? styles.current : undefined}>
+                <li
+                  className={
+                    router.pathname === '/custom' || router.pathname === '/custom/[customId]'
+                      ? styles.current
+                      : undefined
+                  }
+                >
                   <Anchor href="/custom">
-                    {router.pathname === '/custom' ? <CustomCurrentMenuIcon /> : <CustomDefaultMenuIcon />}
+                    {router.pathname === '/custom' || router.pathname === '/custom/[customId]' ? (
+                      <CustomCurrentMenuIcon />
+                    ) : (
+                      <CustomDefaultMenuIcon />
+                    )}
                     재생목록 편집
                   </Anchor>
                 </li>
