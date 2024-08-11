@@ -1,19 +1,19 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { useRecoilState, useRecoilValue } from 'recoil';
-import { currentPlaylistTitleState, currentTrackIndexState, musicModeState, playlistState } from '@/recoil/atom';
+import { useRecoilState, useResetRecoilState } from 'recoil';
+import {
+  carplayModeState,
+  currentPlaylistTitleState,
+  currentTrackIndexState,
+  musicModeState,
+  playlistState,
+} from '@/recoil/atom';
 import ArtistName from '@/components/ArtistName';
 import AlbumInfo from '@/components/AlbumInfo';
 import customs from '@/styles/Custom.module.sass';
 import styles from '@/styles/List.module.sass';
-import {
-  CheckedCheckboxIcon,
-  CustomCurrentMenuIcon,
-  PlayMusicIcon,
-  TrashIcon,
-  UncheckedCheckboxIcon,
-} from '@/components/Icons';
+import { CheckedCheckboxIcon, CustomCurrentMenuIcon, TrashIcon, UncheckedCheckboxIcon } from '@/components/Icons';
 import { useTablet } from '@/components/MediaQuery';
 
 type PlaylistImage = {
@@ -30,17 +30,18 @@ type MusicsData = {
 
 export default function CustomPlaylistPage() {
   const [playlist, setPlaylist] = useRecoilState(playlistState);
-  const [viewedPlaylist, setViewedPlaylist] = useState<MusicsData[]>([]);
-  const [playlistImage, setPlaylistImage] = useState<PlaylistImage | null>(null);
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
   const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
+  const [isCarplayMode, setIsCarplayMode] = useRecoilState(carplayModeState);
+  const [viewedPlaylist, setViewedPlaylist] = useState<MusicsData[]>([]);
+  const [playlistImage, setPlaylistImage] = useState<PlaylistImage | null>(null);
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState(false);
 
   const router = useRouter();
-  const isTablet = useTablet();
   const { customId } = router.query;
+  const isTablet = useTablet();
 
   async function fetchPlaylistData(playlistData: number[]) {
     const musicDetails = await Promise.all(
@@ -123,10 +124,26 @@ export default function CustomPlaylistPage() {
       const updatedPlaylist = { ...playlist };
       delete updatedPlaylist[customId as string];
       setPlaylist(updatedPlaylist);
-      setCurrentPlaylistTitle('');
       setViewedPlaylist([]);
-      router.push('/'); // 삭제 후 메인 페이지로 이동
+
+      if (currentPlaylistTitle === customId) {
+        if (Object.keys(updatedPlaylist).length > 0) {
+          const firstPlaylistTitle = Object.keys(updatedPlaylist)[0];
+          setCurrentPlaylistTitle(firstPlaylistTitle);
+          setCurrentTrackIndex(0);
+        } else {
+          resetAllStates();
+        }
+      }
     }
+  };
+
+  const resetAllStates = () => {
+    setCurrentPlaylistTitle('');
+    setIsMusicMode(true);
+    setIsCarplayMode(false);
+    setCurrentTrackIndex(0);
+    setPlaylist({});
   };
 
   const handleMusicDelete = () => {
@@ -140,6 +157,17 @@ export default function CustomPlaylistPage() {
       const updatedPlaylist = { ...playlist };
       updatedPlaylist[customId as string] = JSON.stringify(updatedViewedPlaylist.map((music) => music.id));
       setPlaylist(updatedPlaylist);
+
+      if (currentPlaylistTitle !== customId) {
+        if (!updatedPlaylist[currentPlaylistTitle]?.includes(viewedPlaylist[currentTrackIndex]?.id)) {
+          if (updatedPlaylist[currentPlaylistTitle] && updatedPlaylist[currentPlaylistTitle].length > 0) {
+            const newTrackIndex = Math.min(currentTrackIndex, updatedPlaylist[currentPlaylistTitle].length - 1);
+            setCurrentTrackIndex(newTrackIndex);
+          } else {
+            setCurrentTrackIndex(0);
+          }
+        }
+      }
     }
   };
 
@@ -152,6 +180,17 @@ export default function CustomPlaylistPage() {
       const updatedPlaylist = { ...playlist };
       updatedPlaylist[customId as string] = JSON.stringify(updatedViewedPlaylist.map((music) => music.id));
       setPlaylist(updatedPlaylist);
+
+      if (currentPlaylistTitle !== customId) {
+        if (!updatedPlaylist[currentPlaylistTitle]?.includes(viewedPlaylist[currentTrackIndex]?.id)) {
+          if (updatedPlaylist[currentPlaylistTitle] && updatedPlaylist[currentPlaylistTitle].length > 0) {
+            const newTrackIndex = Math.min(currentTrackIndex, updatedPlaylist[currentPlaylistTitle].length - 1);
+            setCurrentTrackIndex(newTrackIndex);
+          } else {
+            setCurrentTrackIndex(0);
+          }
+        }
+      }
     }
   };
 

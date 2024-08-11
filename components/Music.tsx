@@ -987,7 +987,7 @@ export default function Music() {
         )}
       </div>
       <div className={`${styles['music-bar']} ${isPlayerOpen ? styles['musicbar-open'] : ''}`}>
-        {Object.keys(playlist).length > 0 ? (
+        {Object.keys(playlist).length > 0 && currentPlaylistTitle !== '' ? (
           <div className={styles['music-container']}>
             <div
               className={`${isMobile || isIOS || isAndroid ? styles.seektiming : styles.seektime} ${styles['seektime-controller']}`}
