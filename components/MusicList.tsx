@@ -21,11 +21,10 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
   const [currentPlaylistTitle, setCurrentPlaylistTitle] = useRecoilState(currentPlaylistTitleState);
   const [currentTrackIndex, setCurrentTrackIndex] = useRecoilState(currentTrackIndexState);
   const [isMusicMode, setIsMusicMode] = useRecoilState(musicModeState);
-
-  const isTablet = useTablet();
-
   const [selectedMusicIds, setSelectedMusicIds] = useState<number[]>([]);
   const [allSelected, setAllSelected] = useState(false);
+
+  const isTablet = useTablet();
 
   const handleSelectAll = () => {
     setAllSelected((prevAllSelected) => {

@@ -56,7 +56,7 @@ export default function PlaylistDetail({
         </div>
         <div className={styles.info}>
           <dl className={styles.primary}>
-            <dt>앨범명</dt>
+            <dt>플레이리스트 이름</dt>
             <dd>
               <strong>{playlistData.title}</strong>
             </dd>
