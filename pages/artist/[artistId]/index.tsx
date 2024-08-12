@@ -87,13 +87,10 @@ export default function ArtistDetail({
           <section>
             <div className={styles.headline}>
               <h2>
-                <Anchor href={`/artist/${artistId}/artist`}>
+                <span>
                   멤버 <MoreLinkIcon />
-                </Anchor>
+                </span>
               </h2>
-              <div className={styles.more}>
-                <Anchor href={`/artist/${artistId}/artist`}>더보기</Anchor>
-              </div>
             </div>
             <ArtistSearch artistData={memberData} />
           </section>
@@ -102,13 +99,10 @@ export default function ArtistDetail({
           <section>
             <div className={styles.headline}>
               <h2>
-                <Anchor href={`/artist/${artistId}/artist`}>
+                <span>
                   소속 그룹 <MoreLinkIcon />
-                </Anchor>
+                </span>
               </h2>
-              <div className={styles.more}>
-                <Anchor href={`/artist/${artistId}/artist`}>더보기</Anchor>
-              </div>
             </div>
             <ArtistSearch artistData={groupData} />
           </section>
