@@ -81,6 +81,7 @@ export interface MusicsData {
   musicId: string;
   videoId: string;
   genre: any;
+  type: string;
 }
 
 export interface MusicData {
@@ -98,6 +99,7 @@ export interface MusicData {
     lyricist: any;
     musicId: string;
     videoId: string;
+    type: string;
     createdAt: string;
   };
 }

@@ -220,6 +220,7 @@ export async function getMusicsData(page?: number, pageSize?: number) {
     lyricist: data.attributes.lyricist,
     musicId: data.attributes.musicId,
     videoId: data.attributes.videoId,
+    type: data.attributes.type,
   }));
 
   return musics;
@@ -249,6 +250,7 @@ export async function getMusicData(musicId: number) {
     musicId: musicData.attributes.musicId,
     videoId: musicData.attributes.videoId,
     genre: musicData.attributes.genre,
+    type: musicData.attributes.type,
   };
 
   return music;
@@ -284,6 +286,7 @@ export async function getMusicsTypeData(musicId?: number, type?: string) {
     musicId: musicData.attributes.musicId,
     videoId: musicData.attributes.videoId,
     genre: musicData.attributes.genre,
+    type: musicData.attributes.type,
   };
 
   return music;
@@ -315,6 +318,7 @@ export async function getMusicsSearchData(page?: number, pageSize?: number, musi
     lyricist: data.attributes.lyricist,
     musicId: data.attributes.musicId,
     videoId: data.attributes.videoId,
+    type: data.attributes.type,
   }));
 
   return musics;
@@ -456,6 +460,7 @@ export const getStaffData = async (
       lyricist: data.attributes.lyricist,
       musicId: data.attributes.musicId,
       videoId: data.attributes.videoId,
+      type: data.attributes.type,
     }));
 
   let artists: ArtistsData[] = [];

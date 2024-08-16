@@ -204,13 +204,18 @@ a, button, select, input
   display: flex
   flex-direction: column
   align-items: flex-end
-  gap: rem(5)
   width: auto!important
   border-radius: rem(3)
   padding: rem(12)
 
   &:not([popover-open])
     display: none
+
+  a
+    display: flex
+    flex-direction: column
+    align-items: flex-end
+    gap: rem(5)
 
   strong, cite
     line-height: 1

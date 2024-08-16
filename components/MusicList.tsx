@@ -9,6 +9,7 @@ import AlbumInfo from './AlbumInfo';
 import styles from '@/styles/List.module.sass';
 import { useTablet } from './MediaQuery';
 import { CheckedCheckboxIcon, EndListIcon, PlayMusicIcon, StartListIcon, UncheckedCheckboxIcon } from './Icons';
+import { TypeName } from './TypeName';
 
 type Props = {
   musicData: MusicsData[];
@@ -190,10 +191,19 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
                     <div>
                       <dt>아티스트</dt>
                       <dd>
-                        <ArtistName artistId={music.artist} />
+                        {JSON.stringify(albumInfo?.relationArtists) === JSON.stringify(music.relationArtists) ? (
+                          <ArtistName artistId={music.artist} />
+                        ) : (
+                          <ArtistName artistId={albumInfo?.relationArtists} />
+                        )}
                       </dd>
                     </div>
-                    {router.pathname !== '/album/[albumId]' && (
+                    {router.pathname === '/album/[albumId]' ? (
+                      <div>
+                        <dt>타입</dt>
+                        <dd>{TypeName(music.type)}</dd>
+                      </div>
+                    ) : (
                       <div>
                         <dt>앨범명</dt>
                         <dd>
@@ -206,7 +216,11 @@ const MusicList = ({ musicData, playlistName, albumInfo }: Props) => {
                   <>
                     <div className={styles.info}>
                       <strong>{music.title}</strong>
-                      <ArtistName artistId={music.artist} />
+                      {JSON.stringify(albumInfo?.relationArtists) === JSON.stringify(music.relationArtists) ? (
+                        <ArtistName artistId={music.artist} />
+                      ) : (
+                        <ArtistName artistId={albumInfo?.relationArtists} />
+                      )}
                     </div>
                     <AlbumInfo albumId={music.album} />
                   </>

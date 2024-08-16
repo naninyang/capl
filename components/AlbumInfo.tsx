@@ -32,6 +32,7 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
       const handleClickOutside = (event: MouseEvent) => {
         if (button && popover && !button.contains(event.target as Node) && !popover.contains(event.target as Node)) {
           popover.removeAttribute('popover-open');
+          button?.classList.remove('popover');
         }
       };
 
@@ -85,10 +86,12 @@ const AlbumInfo = ({ albumId }: AlbumInfoProps) => {
             </button>
           </div>
           <div className="popover-content" ref={popoverRef}>
-            <strong>
-              {data?.title} ({data?.release})
-            </strong>
-            <cite>{artistNames.join(', ')}</cite>
+            <Anchor href={`/album/${data?.idx}`}>
+              <strong>
+                {data?.title} ({data?.release})
+              </strong>
+              <cite>{artistNames.join(', ')}</cite>
+            </Anchor>
           </div>
         </>
       )}
