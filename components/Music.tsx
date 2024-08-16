@@ -200,6 +200,16 @@ export default function Music() {
   const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
 
   useEffect(() => {
+    if (currentTrack) {
+      if (currentTrack.musicId === null) {
+        setIsMusicMode(false);
+      } else if (currentTrack.videoId === null) {
+        setIsMusicMode(true);
+      }
+    }
+  }, [currentTrack]);
+
+  useEffect(() => {
     const interval = setInterval(() => {
       if (playerRef.current && !isSeeking) {
         setCurrentTime(playerRef.current.getCurrentTime());
@@ -653,6 +663,7 @@ export default function Music() {
                 <button
                   type="button"
                   onClick={() => setIsMusicMode(true)}
+                  disabled={currentTrack && currentTrack.musicId === null}
                   className={`${styles.isMusic} ${isMusicMode ? styles.current : ''}`}
                 >
                   노래
@@ -662,6 +673,7 @@ export default function Music() {
                 <button
                   type="button"
                   onClick={() => setIsMusicMode(false)}
+                  disabled={currentTrack && currentTrack.videoId === null}
                   className={`${styles.isVideo} ${isMusicMode ? '' : styles.current}`}
                 >
                   동영상
