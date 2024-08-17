@@ -67,6 +67,7 @@ export default function Music() {
   const [isSingleTrackRepeating, setIsSingleTrackRepeating] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [isPlaylistVisible, setIsPlaylistVisible] = useState(false);
+  const [videoId, setVideoId] = useState('');
   const [isPlayerOpen, setIsPlayerOpen] = useState(false);
   const [viewedPlaylist, setViewedPlaylist] = useState<Music[]>([]);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -197,17 +198,22 @@ export default function Music() {
   }, [currentPlaylistTitle, playlist]);
 
   const currentTrack = currentPlaylist[currentTrackIndex];
-  const videoId = isMusicMode ? currentTrack?.musicId : currentTrack?.videoId || currentTrack?.musicId;
 
   useEffect(() => {
     if (currentTrack) {
+      setIsMusicMode(false);
+      if (isMusicMode) {
+        setVideoId(currentTrack.musicId);
+      } else {
+        setVideoId(currentTrack.videoId);
+      }
       if (currentTrack.musicId === null) {
         setIsMusicMode(false);
-      } else if (currentTrack.videoId === null) {
+      } else {
         setIsMusicMode(true);
       }
     }
-  }, [currentTrack]);
+  }, [currentTrack, isMusicMode]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -394,13 +400,13 @@ export default function Music() {
       setCurrentTrackIndex(currentTrackIndex + 1);
     }
 
-    if (isIOS) {
-      setTimeout(() => {
-        setIsPlaying(true);
-      }, 1000);
-    } else {
-      setIsPlaying(true);
-    }
+    // if (isIOS) {
+    //   setTimeout(() => {
+    //     setIsPlaying(true);
+    //   }, 1000);
+    // } else {
+    setIsPlaying(true);
+    // }
   }, [currentTrackIndex, currentPlaylist.length]);
 
   const handlePrevTrack = () => {
@@ -410,13 +416,13 @@ export default function Music() {
       setCurrentTrackIndex(currentTrackIndex - 1);
     }
 
-    if (isIOS) {
-      setTimeout(() => {
-        setIsPlaying(true);
-      }, 1000);
-    } else {
-      setIsPlaying(true);
-    }
+    // if (isIOS) {
+    //   setTimeout(() => {
+    //     setIsPlaying(true);
+    //   }, 1000);
+    // } else {
+    setIsPlaying(true);
+    // }
   };
 
   const onReady = (event: { target: YouTubePlayer }) => {
